@@ -20,8 +20,11 @@ TextElementModel _$TextElementModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TextElementModel {
-  @JsonKey(toJson: _documentToString, fromJson: _documentFromString)
-  Document get document => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
+  bool get isBold => throw _privateConstructorUsedError;
+  double get size => throw _privateConstructorUsedError;
+  @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
+  Color get color => throw _privateConstructorUsedError;
 
   /// Serializes this TextElementModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,8 +43,10 @@ abstract class $TextElementModelCopyWith<$Res> {
       _$TextElementModelCopyWithImpl<$Res, TextElementModel>;
   @useResult
   $Res call(
-      {@JsonKey(toJson: _documentToString, fromJson: _documentFromString)
-      Document document});
+      {String text,
+      bool isBold,
+      double size,
+      @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color});
 }
 
 /// @nodoc
@@ -59,13 +64,28 @@ class _$TextElementModelCopyWithImpl<$Res, $Val extends TextElementModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? document = null,
+    Object? text = null,
+    Object? isBold = null,
+    Object? size = null,
+    Object? color = null,
   }) {
     return _then(_value.copyWith(
-      document: null == document
-          ? _value.document
-          : document // ignore: cast_nullable_to_non_nullable
-              as Document,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      isBold: null == isBold
+          ? _value.isBold
+          : isBold // ignore: cast_nullable_to_non_nullable
+              as bool,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as double,
+      color: null == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as Color,
     ) as $Val);
   }
 }
@@ -79,8 +99,10 @@ abstract class _$$TextElementModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(toJson: _documentToString, fromJson: _documentFromString)
-      Document document});
+      {String text,
+      bool isBold,
+      double size,
+      @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color});
 }
 
 /// @nodoc
@@ -96,13 +118,28 @@ class __$$TextElementModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? document = null,
+    Object? text = null,
+    Object? isBold = null,
+    Object? size = null,
+    Object? color = null,
   }) {
     return _then(_$TextElementModelImpl(
-      document: null == document
-          ? _value.document
-          : document // ignore: cast_nullable_to_non_nullable
-              as Document,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      isBold: null == isBold
+          ? _value.isBold
+          : isBold // ignore: cast_nullable_to_non_nullable
+              as bool,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as double,
+      color: null == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as Color,
     ));
   }
 }
@@ -110,21 +147,31 @@ class __$$TextElementModelImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable()
-class _$TextElementModelImpl implements _TextElementModel {
+class _$TextElementModelImpl extends _TextElementModel {
   const _$TextElementModelImpl(
-      {@JsonKey(toJson: _documentToString, fromJson: _documentFromString)
-      required this.document});
+      {required this.text,
+      required this.isBold,
+      required this.size,
+      @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
+      required this.color})
+      : super._();
 
   factory _$TextElementModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TextElementModelImplFromJson(json);
 
   @override
-  @JsonKey(toJson: _documentToString, fromJson: _documentFromString)
-  final Document document;
+  final String text;
+  @override
+  final bool isBold;
+  @override
+  final double size;
+  @override
+  @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
+  final Color color;
 
   @override
   String toString() {
-    return 'TextElementModel(document: $document)';
+    return 'TextElementModel(text: $text, isBold: $isBold, size: $size, color: $color)';
   }
 
   @override
@@ -132,13 +179,15 @@ class _$TextElementModelImpl implements _TextElementModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TextElementModelImpl &&
-            (identical(other.document, document) ||
-                other.document == document));
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.isBold, isBold) || other.isBold == isBold) &&
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.color, color) || other.color == color));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, document);
+  int get hashCode => Object.hash(runtimeType, text, isBold, size, color);
 
   /// Create a copy of TextElementModel
   /// with the given fields replaced by the non-null parameter values.
@@ -157,17 +206,27 @@ class _$TextElementModelImpl implements _TextElementModel {
   }
 }
 
-abstract class _TextElementModel implements TextElementModel {
+abstract class _TextElementModel extends TextElementModel {
   const factory _TextElementModel(
-      {@JsonKey(toJson: _documentToString, fromJson: _documentFromString)
-      required final Document document}) = _$TextElementModelImpl;
+      {required final String text,
+      required final bool isBold,
+      required final double size,
+      @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
+      required final Color color}) = _$TextElementModelImpl;
+  const _TextElementModel._() : super._();
 
   factory _TextElementModel.fromJson(Map<String, dynamic> json) =
       _$TextElementModelImpl.fromJson;
 
   @override
-  @JsonKey(toJson: _documentToString, fromJson: _documentFromString)
-  Document get document;
+  String get text;
+  @override
+  bool get isBold;
+  @override
+  double get size;
+  @override
+  @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
+  Color get color;
 
   /// Create a copy of TextElementModel
   /// with the given fields replaced by the non-null parameter values.

@@ -3,9 +3,8 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
-import 'package:rubric/src/elements/elements.dart';
-import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
 import 'package:rubric/src/rubric_editor/models/stack.dart';
 import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/element.dart';
@@ -15,7 +14,6 @@ import 'package:rubric/src/rubric_editor/viewer/items/handler.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/menus.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/position.dart';
 import 'package:rubric/src/rubric_editor/viewer/stack/element_stack.dart';
-import 'package:rubric/src/utilities/uuid.dart';
 
 class RubricEditorViewer extends StatefulWidget {
   const RubricEditorViewer({super.key});
@@ -27,6 +25,7 @@ class RubricEditorViewer extends StatefulWidget {
 class RubricEditorViewerState extends State<RubricEditorViewer> {
   ElementModel? scaling;
   bool _dragged = false;
+  ViewModes viewMode = ViewModes.desktop;
   late ScrollController _scrollController;
   late RubricEditorState editorState;
   @override
@@ -52,24 +51,8 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     super.dispose();
   }
 
-  static const blueprintWidth = maximum * 0.5;
-  static const blueprintHeight = maximum * 0.25;
-  (Offset offset, Size size) _getNewElementDimensions(Offset position) {
-    final maxY = editorState.canvas.value.editorPageHeight();
-    final tile = editorState.canvas.value.settings.gridSize.pixelsPerLine;
-    Offset offset = _getIntuitiveLocation(
-        position, Offset(blueprintWidth * 0.5, blueprintHeight * 0.5), tile);
-    offset = Offset(
-      offset.dx.clamp(minimum, maximum - blueprintWidth * 0.5),
-      max(offset.dy, minimum),
-    );
-    final width = min(maximum - offset.dx, blueprintWidth);
-    final height = min(maxY - offset.dy, blueprintHeight);
-    return (Offset(offset.dx, offset.dy), Size(width, height));
-  }
-
   static const minimum = 0.0;
-  static const maximum = GridSizes.pageSize;
+  double get maximum => viewMode.width;
   Offset _getIntuitiveLocation(
     Offset stackHitOffset,
     Offset elementHitOffset,
@@ -95,6 +78,9 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     Offset stackHitOffset,
     Offset elementHitOffset,
   ) {
+    final elementWidth = element.getWidth(viewMode);
+    final elementX = element.getX(viewMode);
+    final elementY = element.getY(viewMode);
     final tile = editorState.canvas.value.settings.gridSize.pixelsPerLock;
     // stack offset - element offset goes to the top left corner of the element
     // so you can add half a tile to make the movement from the center of the tile.
@@ -105,13 +91,13 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     );
 
     newLocation = Offset(
-      newLocation.dx.clamp(minimum, maximum - element.width),
+      newLocation.dx.clamp(minimum, maximum - elementWidth),
       max(newLocation.dy, minimum),
     );
 
-    if (element.x != newLocation.dx || element.y != newLocation.dy) {
+    if (elementX != newLocation.dx || elementY != newLocation.dy) {
       setState(() {
-        editorState.canvas.moveElement(element, newLocation);
+        editorState.canvas.moveElement(viewMode, element, newLocation);
       });
     }
   }
@@ -125,6 +111,11 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     final tile = editorState.canvas.value.settings.gridSize.pixelsPerLock;
     bool movesX = false;
     bool movesY = false;
+    final elementWidth = element.getWidth(viewMode);
+    final elementHeight = element.getHeight(viewMode);
+    final elementX = element.getX(viewMode);
+    final elementY = element.getY(viewMode);
+
     switch (scalarIndex) {
       case 0:
         movesX = true;
@@ -137,9 +128,9 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     Offset loc = _getIntuitiveLocation(
       stackHitOffset,
       switch (scalarIndex) {
-        1 => Offset(element.width, 0),
-        2 => Offset(0, element.height),
-        3 => Offset(element.width, element.height),
+        1 => Offset(elementWidth, 0),
+        2 => Offset(0, elementHeight),
+        3 => Offset(elementWidth, elementHeight),
         _ => Offset(0, 0),
       },
       tile,
@@ -151,18 +142,18 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     double newY;
 
     if (movesX) {
-      width = element.width + (element.x - loc.dx);
+      width = elementWidth + (elementX - loc.dx);
       newX = loc.dx;
     } else {
-      width = element.width + (loc.dx - element.x);
-      newX = element.x;
+      width = elementWidth + (loc.dx - elementX);
+      newX = elementX;
     }
     if (movesY) {
-      height = element.height + (element.y - loc.dy);
+      height = elementHeight + (elementY - loc.dy);
       newY = loc.dy;
     } else {
-      height = element.height + (loc.dy - element.y);
-      newY = element.y;
+      height = elementHeight + (loc.dy - elementY);
+      newY = elementY;
     }
 
     width = max(
@@ -174,12 +165,33 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
       editorState.canvas.value.settings.gridSize.pixelsPerLine,
     );
 
-    if (width != element.width || height != element.height) {
+    if (width != elementWidth || height != elementHeight) {
       setState(() {
-        editorState.canvas.moveElement(element, Offset(newX, newY));
-        editorState.canvas.scaleElement(element, Offset(width, height));
+        editorState.canvas.moveElement(viewMode, element, Offset(newX, newY));
+        editorState.canvas
+            .scaleElement(viewMode, element, Offset(width, height));
       });
     }
+  }
+
+  // This is used to give fixed elements the same size and location by the renderstack class.
+  void _secretSetElementTransform(
+      ElementModel element,
+      double x,
+      double y,
+      double width,
+      double height,
+      double mobileX,
+      double mobileY,
+      double mobileWidth,
+      double mobileHeight) {
+    editorState.canvas.moveElement(ViewModes.desktop, element, Offset(x, y));
+    editorState.canvas
+        .moveElement(ViewModes.mobile, element, Offset(mobileX, mobileY));
+    editorState.canvas
+        .scaleElement(ViewModes.desktop, element, Offset(width, height));
+    editorState.canvas.scaleElement(
+        ViewModes.mobile, element, Offset(mobileWidth, mobileHeight));
   }
 
   bool _wasRightClick = false;
@@ -193,23 +205,6 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
       return;
     }
 
-    if (editorState.edits.value.holding case ElementTypes element) {
-      final position = result.stackHitOffset;
-
-      final (offset, size) = _getNewElementDimensions(position);
-      editorState.canvas.addElement(
-        ElementModel(
-          id: newID(),
-          type: element,
-          x: offset.dx,
-          y: offset.dy,
-          width: size.width,
-          height: size.height,
-          properties: generateDefaultProperties(context, element),
-        ),
-      );
-      editorState.setHolding(null);
-    }
     switch (result) {
       case StackEventResult(cancel: true):
         {
@@ -280,15 +275,11 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     }
   }
 
-  (Offset, Size)? bluePrintDimensions;
+  ElementModel? hoveringOver;
   _handlePointerHover(PointerHoverEvent event, StackEventResult result) {
-    if (editorState.edits.value.holding case ElementTypes type) {
+    if (result.element != hoveringOver) {
       setState(() {
-        bluePrintDimensions = _getNewElementDimensions(result.stackHitOffset);
-      });
-    } else {
-      setState(() {
-        bluePrintDimensions = null;
+        hoveringOver = result.element;
       });
     }
   }
@@ -304,8 +295,10 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     // todo calculate the actual size
     final double pageHeight = editorState.canvas.value.editorPageHeight();
     return LayoutBuilder(builder: (context, constraints) {
-      stackOffset = Offset((constraints.maxWidth - GridSizes.pageSize) * 0.5,
+      stackOffset = Offset(
+          (constraints.maxWidth - editorState.viewMode.width) * 0.5,
           sidebarButtonHeight);
+      viewMode = editorState.viewMode;
       return ValueListenableBuilder(
           valueListenable: editorState.canvas,
           builder: (context, canvas, _) {
@@ -330,6 +323,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
                               .clamp(minScroll, maxScroll));
                     }
                   },
+                  secretSetter: _secretSetElementTransform,
                   onPointerDown: _handlePointerDown,
                   onPointerMove: _handlePointerMove,
                   onPointerUp: _handlePointerUp,
@@ -354,34 +348,18 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
                       ),
                     for (var element in canvas.elements)
                       if (!editorState.edits.isFocused(element)) ...[
-                        ElementWidget(
+                        EditorElementWidget(
+                          viewMode: viewMode,
                           key: ValueKey(element.id),
                           element: element,
                         ),
                         ElementHandlerWidget(
+                          viewMode: viewMode,
                           key: ValueKey("${element.id} handler"),
                           element: element,
+                          hovered: hoveringOver == element,
                         ),
                       ],
-                    if (editorState.edits.value.holding case ElementTypes _)
-                      if (bluePrintDimensions
-                          case (
-                            Offset offset,
-                            Size size,
-                          ))
-                        RubricPositioned(
-                          x: offset.dx,
-                          y: offset.dy,
-                          width: size.width,
-                          height: size.height,
-                          child: IgnorePointer(
-                            child: ColoredBox(
-                              color: editorState.style.theme.withAlpha(
-                                50,
-                              ),
-                            ),
-                          ),
-                        ),
                     if (editorState.edits.value.focused
                         case ElementModel element) ...[
                       CancelSelectionWidget(
@@ -389,13 +367,19 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
                         cancels: true,
                       ),
                       RubricPositioned(
-                        x: element.x,
-                        y: element.y,
-                        width: element.width,
-                        height: element.height,
+                        // ! figure something out for this.
+                        orderIndex: PaintIndexes.front,
+                        x: element.getX(viewMode),
+                        y: element.getY(viewMode),
+                        width: element.getWidth(viewMode),
+                        height: element.getHeight(viewMode),
+                        fixed: false,
+                        fixedWidth: 0,
+
                         child: CancelSelectionWidget(cancels: false),
                       ),
-                      ElementWidget(
+                      EditorElementWidget(
+                        viewMode: viewMode,
                         key: ValueKey(element.id),
                         element: element,
                       ),
@@ -407,4 +391,10 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
           });
     });
   }
+}
+
+abstract class PaintIndexes {
+  static const int back = -1;
+  static const int front = 1000;
+  static const int behindFront = 999;
 }

@@ -12,6 +12,7 @@ _$ImageElementModelImpl _$$ImageElementModelImplFromJson(
       imageUrl: json['imageUrl'] as String,
       borderRadius: (json['borderRadius'] as num).toDouble(),
       fit: json['fit'] as String,
+      aspectRatio: (json['aspectRatio'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$ImageElementModelImplToJson(
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$ImageElementModelImplToJson(
       'imageUrl': instance.imageUrl,
       'borderRadius': instance.borderRadius,
       'fit': instance.fit,
+      'aspectRatio': instance.aspectRatio,
     };

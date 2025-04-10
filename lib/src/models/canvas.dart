@@ -61,7 +61,7 @@ class CanvasModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'elements': elements.map((x) => x.toMap()).toList(),
+      'elements': elements.map((x) => x.toJson()).toList(),
       'settings': settings.toJson(),
     };
   }
@@ -118,5 +118,11 @@ class CanvasModel {
       return previousValue;
     });
     return value - value % GridSizes.medium.pixelsPerLine;
+  }
+
+  Iterable<ElementModel> get orderedElements {
+    final es = List<ElementModel>.from(elements);
+    es.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+    return es;
   }
 }

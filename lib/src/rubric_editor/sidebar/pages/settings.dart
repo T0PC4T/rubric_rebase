@@ -45,7 +45,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
           final style = editorState!.style;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: editorState!.style.paddingNum * 0.5,
+            spacing: RubricEditorStyle.paddingNum * 0.5,
             children: [
               RubricText(
                 "Lesson title",
@@ -62,7 +62,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                   );
                 },
               ),
-              SizedBox(height: style.paddingNum),
+              SizedBox(height: RubricEditorStyle.paddingNum),
               // statuses dropdown
               RubricText(
                 "Lesson icon",
@@ -87,7 +87,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                           hoverColor: style.light9,
                           iconSelectedColor: style.theme2,
                           borderRadius: style.radius,
-                          marginNum: style.paddingNum,
+                          marginNum: RubricEditorStyle.paddingNum,
                         ),
                       );
                     },
@@ -124,7 +124,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
           final style = editorState!.style;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: editorState!.style.paddingNum * 1.5,
+            spacing: RubricEditorStyle.paddingNum * 1.5,
             children: [
               ColorPickerSettingsWidget(
                 title: "Grid Line Color",
@@ -171,7 +171,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
         isExpanded: false,
         bodyBuilder: (context) {
           return Column(
-            spacing: editorState!.style.paddingNum * 1.5,
+            spacing: RubricEditorStyle.paddingNum * 1.5,
             children: [
               ColorPickerSettingsWidget(
                 title: "Canvas Color",
@@ -216,9 +216,9 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                 highlightColor: style.light95,
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return Padding(
-                    padding: style.padding,
+                    padding: RubricEditorStyle.padding,
                     child: Row(
-                      spacing: style.paddingNum,
+                      spacing: RubricEditorStyle.paddingNum,
                       children: [
                         Icon(item.icon, size: 20, color: style.light4),
                         RubricText(item.title),
@@ -228,7 +228,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                 },
                 body: Container(
                   color: style.light95,
-                  padding: style.padding,
+                  padding: RubricEditorStyle.padding,
                   child: item.bodyBuilder(context),
                 ),
                 isExpanded: item.isExpanded,
@@ -258,7 +258,7 @@ class ColorPickerSettingsWidget extends StatelessWidget {
     final editorState = RubricEditorState.of(context);
     final canvas = editorState.canvas.value;
     return Row(
-      spacing: editorState.style.paddingNum,
+      spacing: RubricEditorStyle.paddingNum,
       children: [
         RubricColorButton(
           color: color,

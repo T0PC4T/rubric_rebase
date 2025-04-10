@@ -5,8 +5,11 @@ import 'package:rubric/src/components/atoms/popup.dart';
 import 'package:rubric/src/components/molecules/border_radius_dropdown.dart';
 import 'package:rubric/src/components/molecules/color_picker.dart';
 import 'package:rubric/src/components/shared.dart';
+import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/box/box_model.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
+import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 
 class BoxTooltipWidget extends StatelessWidget {
   final ElementModel element;
@@ -15,6 +18,7 @@ class BoxTooltipWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final editorState = RubricEditorState.of(context);
+    final style = editorState.style;
     return ValueListenableBuilder(
       valueListenable: editorState.canvas,
       builder: (context, canvas, _) {
@@ -59,6 +63,38 @@ class BoxTooltipWidget extends StatelessWidget {
                   );
                 }
               },
+            ),
+            RubricVerticleDivider(),
+            RubricToolbarDropdown(
+              onUpdate: (value) {
+                if (value case double newValue) {
+                  final newProperties = element
+                      .getProperties<BoxElementModel>()
+                      .copyWith(aspectRatio: newValue);
+                  editorState.canvas
+                      .updateElement(element, newProperties.toJson());
+                }
+              },
+              items: [
+                for (var value in AspectRatios.values)
+                  RubricDropdownMenuItem(
+                    value: value.value,
+                    text: value.display,
+                  ),
+              ],
+              child: Row(
+                spacing: RubricEditorStyle.paddingUnit * 0.5,
+                children: [
+                  Icon(
+                    Icons.aspect_ratio,
+                    size: ElementToolbarWidget.iconSize,
+                  ),
+                  RubricText("Aspect Ratio"),
+                ],
+              ),
+            ),
+            ToolbarUniversalIcons(
+              element: element,
             ),
           ],
         );

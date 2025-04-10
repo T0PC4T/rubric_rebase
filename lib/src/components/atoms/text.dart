@@ -18,9 +18,11 @@ class RubricText extends StatelessWidget {
   final String text;
   final TextType textType;
   final bool isDark;
+  final bool isCentered;
   const RubricText(
     this.text, {
     super.key,
+    this.isCentered = false,
     this.textType = TextType.paragraph,
     this.isDark = false,
   });
@@ -29,6 +31,7 @@ class RubricText extends StatelessWidget {
   Widget build(BuildContext context) {
     final styles = RubricEditorStyle.of(context);
     return Text(
+      textAlign: isCentered ? TextAlign.center : TextAlign.center,
       text,
       style: TextStyle(
         color: isDark ? styles.light : styles.dark,
@@ -97,7 +100,8 @@ class _RubricTextFieldState extends State<RubricTextField> {
         focusNode: focusNode,
         cursorColor: style.dark,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: style.paddingNum),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: RubricEditorStyle.paddingNum),
           filled: true,
           fillColor: style.light,
           border: OutlineInputBorder(
@@ -181,7 +185,7 @@ class _RubricBorderlessTextFieldState extends State<RubricBorderlessTextField> {
     final style = RubricEditorStyle.of(context);
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: style.paddingNum),
+      padding: EdgeInsets.symmetric(horizontal: RubricEditorStyle.paddingNum),
       width: widget.width,
       child: TextFormField(
         focusNode: focusNode,

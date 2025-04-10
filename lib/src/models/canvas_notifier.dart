@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
 
 class CanvasNotifier extends ValueNotifier<CanvasModel> {
   CanvasNotifier(super.value);
@@ -43,32 +44,64 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   }
 
   // ? Element are editable, they edit until a fixed point then the entire object is copied
-  scaleElement(ElementModel element, Offset offset) {
-    element.width = offset.dx;
-    element.height = offset.dy;
-  }
-
-  moveElement(ElementModel element, Offset offset) {
-    element.x = offset.dx;
-    element.y = offset.dy;
-  }
-
-  updateElement(ElementModel element, Map<String, dynamic> properties) {
-    element.properties = properties;
-    commit();
-  }
-
-  reorderElements(int oldIndex, int newIndex) {
-    // ? I switched this around because the list is reverse beware.
-    if (oldIndex > newIndex) {
-      newIndex += 1;
+  scaleElement(ViewModes viewMode, ElementModel element, Offset offset) {
+    if (viewMode == ViewModes.desktop) {
+      element.width = offset.dx;
+      element.height = offset.dy;
+    } else {
+      element.mobileWidth = offset.dx;
+      element.mobileHeight = offset.dy;
     }
-    final ElementModel item = value.elements.removeAt(oldIndex);
-    value.elements.insert(newIndex, item);
+  }
+
+  moveElement(ViewModes viewMode, ElementModel element, Offset offset) {
+    if (viewMode == ViewModes.desktop) {
+      element.x = offset.dx;
+      element.y = offset.dy;
+    } else {
+      element.mobileX = offset.dx;
+      element.mobileY = offset.dy;
+    }
+  }
+
+  fixElement(ElementModel element, bool fixed) {
+    element.fixedWidth = fixed ? 1 : 0;
     commit();
   }
 
-  moveItem(int oldIndex, int newIndex) {
+  updateElement(ElementModel element, [Map<String, dynamic>? properties]) {
+    if (properties case Map<String, dynamic> properties) {
+      element.properties = properties;
+    }
+    commit();
+  }
+
+  reorderElements(
+      List<ElementModel> orderedElements, int oldIndex, int newIndex) {
+    // ? I switched this around because the list is reverse beware.
+
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    final ElementModel item = orderedElements.removeAt(oldIndex);
+    orderedElements.insert(newIndex, item);
+    for (var i = 0; i < orderedElements.length; i++) {
+      value.elements
+          .firstWhere(
+            (element) => element.id == orderedElements[i].id,
+          )
+          .orderIndex = i * 2;
+    }
+    commit();
+  }
+
+  sendTo(ElementModel element, {bool front = true}) {
+    var oldIndex = value.elements.indexOf(element);
+    var newIndex = front ? value.elements.length : 0;
+
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
     final ElementModel item = value.elements.removeAt(oldIndex);
     value.elements.insert(newIndex, item);
     commit();

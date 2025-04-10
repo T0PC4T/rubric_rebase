@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/box/box_elements.dart';
 import 'package:rubric/src/elements/box/box_model.dart';
 import 'package:rubric/src/elements/image/image_elements.dart';
@@ -10,6 +10,7 @@ import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/video/video_elements.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/models/style.dart';
 
 typedef ElementBuilderFunction = Widget Function(
     {Key? key, required ElementModel element});
@@ -51,6 +52,15 @@ enum ElementTypes {
     focusable: false,
   );
 
+  // richtext(
+  //   "Rich Text",
+  //   Icons.text_fields_rounded,
+  //   editorBuilder: RichTextEditorElement.new,
+  //   layerBuilder: RichTextLayerWidget.new,
+  //   readerBuilder: RichTextReaderWidget.new,
+  //   focusable: true,
+  // );
+
   final String title;
   final IconData icon;
   final ElementBuilderFunction editorBuilder;
@@ -91,12 +101,28 @@ Map<String, dynamic> generateDefaultProperties(
   ElementTypes elementType,
 ) {
   return switch (elementType) {
-    ElementTypes.box =>
-      BoxElementModel(color: Colors.green, borderRadius: 0).toJson(),
+    ElementTypes.box => BoxElementModel(
+            color: Colors.green,
+            borderRadius: 0,
+            aspectRatio: AspectRatios.fourThree.value)
+        .toJson(),
+    // ElementTypes.heading => TextElementModel(
+    //         text: "",
+    //         size: RubricEditorStyle.minimumFontSize.toDouble(),
+    //         isBold: false,
+    //         color: Colors.black)
+    //     .toJson(),
     ElementTypes.text => TextElementModel(
-        document: Document(),
-      ).toJson(),
+            text: "",
+            size: RubricEditorStyle.minimumFontSize.toDouble(),
+            isBold: false,
+            color: Colors.black)
+        .toJson(),
+    // ElementTypes.richtext => RichTextElementModel(
+    //     document: Document(),
+    //   ).toJson(),
     ElementTypes.image => ImageElementModel(
+            aspectRatio: AspectRatios.fourThree.value,
             borderRadius: 0,
             imageUrl: "https://t0pc4t.github.io/public/default_image.webp",
             fit: "cover")

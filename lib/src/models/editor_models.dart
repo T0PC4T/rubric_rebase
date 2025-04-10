@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
-import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/elements.dart';
 
@@ -9,11 +8,15 @@ These models are dedicated to the editor state. This state does not affect the a
  */
 enum GridSizes {
   none("None", 0),
-  small("Small", 20),
-  medium("Medium", 40),
-  large("Large", 80);
+  small("Small", 25),
+  medium("Medium", 50),
+  large("Large", 100);
 
-  static const double pageSize = 720;
+  static bool isMobile(double screenWidth) {
+    return screenWidth < pageSize;
+  }
+
+  static const double pageSize = 1000;
   static const double padding = 40;
   double get pixelsPerLock => 10;
   final double pixelsPerLine;
@@ -34,14 +37,12 @@ enum GridSizes {
 }
 
 class CanvasEditingModel {
-  final ElementTypes? holding;
   final ElementModel? selected;
   final ElementModel? focused;
   final List<CanvasModel> steps;
   final int undoIndex;
   final bool showGrid;
   CanvasEditingModel({
-    this.holding,
     this.selected,
     this.focused,
     required this.steps,
@@ -52,7 +53,6 @@ class CanvasEditingModel {
   CanvasEditingModel copyWith({
     required ElementModel? selected,
     required ElementModel? focused,
-    ElementTypes? holding,
     List<CanvasModel>? steps,
     int? undoIndex,
     GridSizes? gridSize,
@@ -61,7 +61,6 @@ class CanvasEditingModel {
     return CanvasEditingModel(
       selected: selected,
       focused: focused,
-      holding: holding,
       steps: steps ?? this.steps,
       undoIndex: undoIndex ?? this.undoIndex,
       showGrid: showGrid ?? this.showGrid,
@@ -70,15 +69,14 @@ class CanvasEditingModel {
 
   @override
   String toString() {
-    return 'CanvasEditingModel(holding: $holding, selected: $selected, focused: $focused, steps: $steps, undoIndex: $undoIndex, showGrid: $showGrid)';
+    return 'CanvasEditingModel(selected: $selected, focused: $focused, steps: $steps, undoIndex: $undoIndex, showGrid: $showGrid)';
   }
 
   @override
   bool operator ==(covariant CanvasEditingModel other) {
     if (identical(this, other)) return true;
 
-    return other.holding == holding &&
-        other.selected == selected &&
+    return other.selected == selected &&
         other.focused == focused &&
         listEquals(other.steps, steps) &&
         other.undoIndex == undoIndex &&
@@ -87,8 +85,7 @@ class CanvasEditingModel {
 
   @override
   int get hashCode {
-    return holding.hashCode ^
-        selected.hashCode ^
+    return selected.hashCode ^
         focused.hashCode ^
         steps.hashCode ^
         undoIndex.hashCode ^

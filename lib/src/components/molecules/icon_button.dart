@@ -33,7 +33,7 @@ class RubricIconButton extends StatelessWidget {
         (_, true, true) => style.dark,
         (_, true, false) => style.light,
         (_, false, true) => style.light2,
-        (_, false, false) => style.light9,
+        (_, false, false) => style.light95,
       },
       onTap: onTap,
       child: Icon(

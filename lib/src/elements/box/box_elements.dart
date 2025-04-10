@@ -26,10 +26,13 @@ class BoxEditorElementState extends SelectableState<BoxEditorElement> {
   @override
   Widget build(BuildContext context) {
     final boxElement = widget.element.getProperties<BoxElementModel>();
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: boxElement.color,
-        borderRadius: BorderRadius.circular(boxElement.borderRadius),
+    return AspectRatio(
+      aspectRatio: boxElement.aspectRatio,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: boxElement.color,
+          borderRadius: BorderRadius.circular(boxElement.borderRadius),
+        ),
       ),
     );
   }

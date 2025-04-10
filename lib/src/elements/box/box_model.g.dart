@@ -11,6 +11,7 @@ _$BoxElementModelImpl _$$BoxElementModelImplFromJson(
     _$BoxElementModelImpl(
       color: colorFromJson((json['color'] as num).toInt()),
       borderRadius: (json['borderRadius'] as num).toDouble(),
+      aspectRatio: (json['aspectRatio'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$BoxElementModelImplToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$BoxElementModelImplToJson(
     <String, dynamic>{
       'color': colorToJson(instance.color),
       'borderRadius': instance.borderRadius,
+      'aspectRatio': instance.aspectRatio,
     };

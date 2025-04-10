@@ -9,11 +9,17 @@ part of 'text_model.dart';
 _$TextElementModelImpl _$$TextElementModelImplFromJson(
         Map<String, dynamic> json) =>
     _$TextElementModelImpl(
-      document: _documentFromString(json['document'] as String),
+      text: json['text'] as String,
+      isBold: json['isBold'] as bool,
+      size: (json['size'] as num).toDouble(),
+      color: colorFromJson((json['color'] as num).toInt()),
     );
 
 Map<String, dynamic> _$$TextElementModelImplToJson(
         _$TextElementModelImpl instance) =>
     <String, dynamic>{
-      'document': _documentToString(instance.document),
+      'text': instance.text,
+      'isBold': instance.isBold,
+      'size': instance.size,
+      'color': colorToJson(instance.color),
     };

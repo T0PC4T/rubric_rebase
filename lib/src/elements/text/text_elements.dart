@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
@@ -16,23 +15,19 @@ class TextEditorElement extends StatefulWidget {
 
 class TextEditorElementState
     extends SelectableAndFocusableState<TextEditorElement> {
-  late QuillController controller;
+  late TextEditingController controller;
   late ScrollController _scrollController;
   late FocusNode focusNode;
+  late UndoHistoryController undoController;
 
   @override
   void initState() {
-    final textElement = widget.element.getProperties<TextElementModel>();
+    final textProperties = widget.element.getProperties<TextElementModel>();
+    controller = TextEditingController(text: textProperties.text);
     focusNode = FocusNode(debugLabel: "Text ${widget.element.id}");
     _scrollController = ScrollController();
-    controller = QuillController(
-      document: textElement.document,
-      selection: TextSelection(baseOffset: 0, extentOffset: 0),
-      readOnly: false,
-      editorFocusNode: focusNode,
-      keepStyleOnNewLine: true,
-      configurations: QuillControllerConfigurations(),
-    );
+    undoController = UndoHistoryController();
+
     super.initState();
   }
 
@@ -42,31 +37,19 @@ class TextEditorElementState
   @override
   void onFocus(bool focused) {
     if (focused) {
-      editorState.showToolbar(
-        widget.element,
-        TextTooltipWidget(element: widget.element, controller: controller),
-      );
       focusNode.requestFocus();
     } else {
-      controller.updateSelection(
-        TextSelection.collapsed(offset: 0),
-        ChangeSource.local,
-      );
-
+      final properties = widget.element.getProperties<TextElementModel>();
       editorState.canvas.updateElement(
         widget.element,
-        TextElementModel(document: controller.document).toJson(),
+        properties.copyWith(text: controller.text).toJson(),
       );
     }
   }
 
   @override
   void didUpdateWidget(covariant TextEditorElement oldWidget) {
-    final properties = widget.element.getProperties<TextElementModel>();
-    final oldProperties = oldWidget.element.getProperties<TextElementModel>();
-    if (properties.document.toDelta() != oldProperties.document.toDelta()) {
-      controller.document = properties.document;
-    }
+    // TODO update this widget correctly
 
     super.didUpdateWidget(oldWidget);
   }
@@ -74,8 +57,13 @@ class TextEditorElementState
   @override
   onSelect(bool selected) {
     if (selected) {
-      // ? this replaces the usual show toolbar because there is no tool bar on select.
-      editorState.clearOverlays();
+      editorState.showToolbar(
+        widget.element,
+        TextTooltipWidget(
+            element: widget.element,
+            controller: controller,
+            undoController: undoController),
+      );
     }
   }
 
@@ -89,24 +77,48 @@ class TextEditorElementState
 
   @override
   Widget build(BuildContext context) {
+    final textElement = widget.element.getProperties<TextElementModel>();
+    final textStyle = textElement.textStyle();
     editorState = RubricEditorState.of(context);
-    return QuillEditor(
+    if (textElement.text.isEmpty && !editorState.edits.isFocused(element)) {
+      return Text("[Enter you text in here]", style: textStyle);
+    }
+    return EditableText(
+      undoController: undoController,
+      style: textStyle,
+      cursorColor: Colors.black,
+      backgroundCursorColor: Colors.black,
+      keyboardType: TextInputType.multiline,
+      maxLines: null,
+      textAlign: TextAlign.start,
+      selectionColor: Colors.blue.withAlpha(50),
+      selectionControls: materialTextSelectionControls,
+      rendererIgnoresPointer: false,
+      readOnly: false,
+      // autocorrect: true,
+      // enableSuggestions: true,
+      // expands: true,
+      minLines: null,
+      // obscureText: false,
+      // showCursor: true,
+      // cursorWidth: 2,
+      // cursorRadius: Radius.circular(2),
+      // textInputAction: TextInputAction.newline,
+      // textCapitalization: TextCapitalization.sentences,
+      onChanged: (value) {
+        // editorState.canvas.updateElement(
+        //   widget.element,
+        //   TextElementModel(
+        //           text: value,
+        //           color: Colors.black,
+        //           isBold: false,
+        //           size: 12)
+        //       .toJson(),
+        // );
+      },
       scrollController: _scrollController,
       controller: controller,
       focusNode: focusNode,
-      configurations: QuillEditorConfigurations(
-        placeholder: "Add your text in here...",
-        customStyles: DefaultStyles(
-            paragraph: DefaultTextBlockStyle(
-                TextStyle(
-                  color: Colors.black,
-                  fontSize: RubricEditorStyle.minimumFontSize.toDouble(),
-                ),
-                HorizontalSpacing(0, 16),
-                VerticalSpacing(0, 16),
-                VerticalSpacing(16, 0),
-                null)),
-      ),
     );
   }
 }
@@ -120,59 +132,24 @@ class TextLayerWidget extends StatelessWidget {
     final style = RubricEditorStyle.of(context);
     final textElement = element.getProperties<TextElementModel>();
     return Text(
-      maxLines: 2,
-      textElement.document.toPlainText(),
-      style: TextStyle(color: style.dark, fontSize: 14),
+      maxLines: 1,
+      textElement.text,
+      style: textElement.textStyle(),
       overflow: TextOverflow.ellipsis,
     );
   }
 }
 
-class TextReaderWidget extends StatefulWidget {
+class TextReaderWidget extends StatelessWidget {
   final ElementModel element;
   const TextReaderWidget({super.key, required this.element});
 
   @override
-  State<TextReaderWidget> createState() => _TextReaderWidgetState();
-}
-
-class _TextReaderWidgetState extends State<TextReaderWidget> {
-  late QuillController controller;
-  late ScrollController _scrollController;
-  late FocusNode focusNode;
-
-  @override
-  void initState() {
-    final textElement = widget.element.getProperties<TextElementModel>();
-    focusNode = FocusNode(debugLabel: "Text ${widget.element.id}");
-    _scrollController = ScrollController();
-    controller = QuillController(
-      document: textElement.document,
-      selection: TextSelection(baseOffset: 0, extentOffset: 0),
-      readOnly: true,
-      editorFocusNode: focusNode,
-      configurations: QuillControllerConfigurations(),
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    controller.dispose();
-    focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      child: QuillEditor(
-        scrollController: _scrollController,
-        controller: controller,
-        focusNode: focusNode,
-        configurations: QuillEditorConfigurations(),
-      ),
+    final properties = element.getProperties<TextElementModel>();
+    return Text(
+      properties.text,
+      style: properties.textStyle(),
     );
   }
 }

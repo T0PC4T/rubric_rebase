@@ -22,13 +22,9 @@ class RubricBorderRadiusDropdown extends StatelessWidget {
       onUpdate: onChanged,
       items: [
         for (var value in BorderRadiusPresets.values)
-          DropdownMenuItem(
+          RubricDropdownMenuItem(
             value: value.radius,
-            child: Container(
-              padding: EdgeInsets.only(left: style.paddingNum),
-              alignment: Alignment.centerLeft,
-              child: RubricText(value.name),
-            ),
+            text: value.name,
           ),
       ],
       child: Row(
@@ -36,7 +32,7 @@ class RubricBorderRadiusDropdown extends StatelessWidget {
         children: [
           Icon(
             Icons.check_box_outline_blank_outlined,
-            size: ElementToolbarWidget.iconSize * 0.8,
+            size: ElementToolbarWidget.iconSize,
           ),
           RubricText("Corners"),
         ],

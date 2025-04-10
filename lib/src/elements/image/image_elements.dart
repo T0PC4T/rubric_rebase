@@ -28,20 +28,8 @@ class ImageEditorElementState extends SelectableState<ImageEditorElement> {
 
   @override
   Widget build(BuildContext context) {
-    final imageProperties = widget.element.getProperties<ImageElementModel>();
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(imageProperties.imageUrl),
-          fit: switch (imageProperties.fit) {
-            "cover" => BoxFit.cover,
-            "contain" => BoxFit.contain,
-            "fill" => BoxFit.fill,
-            _ => BoxFit.contain,
-          },
-        ),
-        borderRadius: BorderRadius.circular(imageProperties.borderRadius),
-      ),
+    return ImageReaderElement(
+      element: element,
     );
   }
 }
@@ -64,18 +52,22 @@ class ImageReaderElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageProperties = element.getProperties<ImageElementModel>();
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(imageProperties.imageUrl),
-          fit: switch (imageProperties.fit) {
-            "cover" => BoxFit.cover,
-            "contain" => BoxFit.contain,
-            "fill" => BoxFit.fill,
-            _ => BoxFit.contain,
-          },
+
+    return AspectRatio(
+      aspectRatio: imageProperties.aspectRatio,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(imageProperties.imageUrl),
+            fit: switch (imageProperties.fit) {
+              "cover" => BoxFit.cover,
+              "contain" => BoxFit.contain,
+              "fill" => BoxFit.fill,
+              _ => BoxFit.contain,
+            },
+          ),
+          borderRadius: BorderRadius.circular(imageProperties.borderRadius),
         ),
-        borderRadius: BorderRadius.circular(imageProperties.borderRadius),
       ),
     );
   }

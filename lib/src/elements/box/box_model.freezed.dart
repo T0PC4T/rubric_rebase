@@ -23,6 +23,7 @@ mixin _$BoxElementModel {
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   Color get color => throw _privateConstructorUsedError;
   double get borderRadius => throw _privateConstructorUsedError;
+  double get aspectRatio => throw _privateConstructorUsedError;
 
   /// Serializes this BoxElementModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +43,8 @@ abstract class $BoxElementModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color,
-      double borderRadius});
+      double borderRadius,
+      double aspectRatio});
 }
 
 /// @nodoc
@@ -62,6 +64,7 @@ class _$BoxElementModelCopyWithImpl<$Res, $Val extends BoxElementModel>
   $Res call({
     Object? color = null,
     Object? borderRadius = null,
+    Object? aspectRatio = null,
   }) {
     return _then(_value.copyWith(
       color: null == color
@@ -71,6 +74,10 @@ class _$BoxElementModelCopyWithImpl<$Res, $Val extends BoxElementModel>
       borderRadius: null == borderRadius
           ? _value.borderRadius
           : borderRadius // ignore: cast_nullable_to_non_nullable
+              as double,
+      aspectRatio: null == aspectRatio
+          ? _value.aspectRatio
+          : aspectRatio // ignore: cast_nullable_to_non_nullable
               as double,
     ) as $Val);
   }
@@ -86,7 +93,8 @@ abstract class _$$BoxElementModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color,
-      double borderRadius});
+      double borderRadius,
+      double aspectRatio});
 }
 
 /// @nodoc
@@ -104,6 +112,7 @@ class __$$BoxElementModelImplCopyWithImpl<$Res>
   $Res call({
     Object? color = null,
     Object? borderRadius = null,
+    Object? aspectRatio = null,
   }) {
     return _then(_$BoxElementModelImpl(
       color: null == color
@@ -113,6 +122,10 @@ class __$$BoxElementModelImplCopyWithImpl<$Res>
       borderRadius: null == borderRadius
           ? _value.borderRadius
           : borderRadius // ignore: cast_nullable_to_non_nullable
+              as double,
+      aspectRatio: null == aspectRatio
+          ? _value.aspectRatio
+          : aspectRatio // ignore: cast_nullable_to_non_nullable
               as double,
     ));
   }
@@ -125,7 +138,8 @@ class _$BoxElementModelImpl implements _BoxElementModel {
   const _$BoxElementModelImpl(
       {@JsonKey(toJson: colorToJson, fromJson: colorFromJson)
       required this.color,
-      required this.borderRadius});
+      required this.borderRadius,
+      required this.aspectRatio});
 
   factory _$BoxElementModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$BoxElementModelImplFromJson(json);
@@ -135,10 +149,12 @@ class _$BoxElementModelImpl implements _BoxElementModel {
   final Color color;
   @override
   final double borderRadius;
+  @override
+  final double aspectRatio;
 
   @override
   String toString() {
-    return 'BoxElementModel(color: $color, borderRadius: $borderRadius)';
+    return 'BoxElementModel(color: $color, borderRadius: $borderRadius, aspectRatio: $aspectRatio)';
   }
 
   @override
@@ -148,12 +164,15 @@ class _$BoxElementModelImpl implements _BoxElementModel {
             other is _$BoxElementModelImpl &&
             (identical(other.color, color) || other.color == color) &&
             (identical(other.borderRadius, borderRadius) ||
-                other.borderRadius == borderRadius));
+                other.borderRadius == borderRadius) &&
+            (identical(other.aspectRatio, aspectRatio) ||
+                other.aspectRatio == aspectRatio));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, color, borderRadius);
+  int get hashCode =>
+      Object.hash(runtimeType, color, borderRadius, aspectRatio);
 
   /// Create a copy of BoxElementModel
   /// with the given fields replaced by the non-null parameter values.
@@ -176,7 +195,8 @@ abstract class _BoxElementModel implements BoxElementModel {
   const factory _BoxElementModel(
       {@JsonKey(toJson: colorToJson, fromJson: colorFromJson)
       required final Color color,
-      required final double borderRadius}) = _$BoxElementModelImpl;
+      required final double borderRadius,
+      required final double aspectRatio}) = _$BoxElementModelImpl;
 
   factory _BoxElementModel.fromJson(Map<String, dynamic> json) =
       _$BoxElementModelImpl.fromJson;
@@ -186,6 +206,8 @@ abstract class _BoxElementModel implements BoxElementModel {
   Color get color;
   @override
   double get borderRadius;
+  @override
+  double get aspectRatio;
 
   /// Create a copy of BoxElementModel
   /// with the given fields replaced by the non-null parameter values.

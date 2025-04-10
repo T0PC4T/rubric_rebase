@@ -27,10 +27,13 @@ class GridPainter extends CustomPainter {
       ..color = gridColor
       ..strokeWidth = 2;
 
+    // ? Draw Boundary Lines
     canvas.drawLine(
         Offset(offset.dx, 0), Offset(offset.dx, size.height), paint);
-    canvas.drawLine(Offset(0, offset.dy), Offset(size.width, offset.dy), paint);
+    canvas.drawLine(
+        Offset(0, offset.dy + 1), Offset(size.width, offset.dy + 1), paint);
 
+    // ? Draw Boundary Lines
     canvas.drawLine(Offset(size.width - offset.dx, 0),
         Offset(size.width - offset.dx, size.height), paint);
     canvas.drawLine(Offset(0, size.height - offset.dy),

@@ -21,7 +21,6 @@ CanvasSettings _$CanvasSettingsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CanvasSettings {
   String get name => throw _privateConstructorUsedError;
-  @Deprecated("Use Canvas Color")
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   Color get backgroundColor => throw _privateConstructorUsedError;
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)

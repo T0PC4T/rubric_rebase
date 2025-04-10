@@ -37,26 +37,23 @@ class DeleteMenu extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   hoverColor: editorState.style.light95,
                   height: rightMenuButtonHeight,
-                  padding: editorState.style.padding,
+                  padding: RubricEditorStyle.padding,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: editorState.style.paddingNum,
+                    spacing: RubricEditorStyle.paddingNum,
                     children: [
                       Icon(
                         Icons.arrow_upward_rounded,
                         size: rightMenuButtonHeight * 0.45,
                       ),
                       RubricText(
-                        "Move to front",
+                        "Bring to front",
                       ),
                     ],
                   ),
                   onTap: () {
                     editorState.edits.selectElement(null);
-                    editorState.canvas.moveItem(
-                      editorState.canvas.value.elements.indexOf(element),
-                      editorState.canvas.value.elements.length - 1,
-                    );
+                    editorState.canvas.sendTo(element, front: true);
                   },
                 ),
                 Divider(
@@ -68,26 +65,23 @@ class DeleteMenu extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   hoverColor: editorState.style.light95,
                   height: rightMenuButtonHeight,
-                  padding: editorState.style.padding,
+                  padding: RubricEditorStyle.padding,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: editorState.style.paddingNum,
+                    spacing: RubricEditorStyle.paddingNum,
                     children: [
                       Icon(
                         Icons.arrow_downward_rounded,
                         size: rightMenuButtonHeight * 0.45,
                       ),
                       RubricText(
-                        "Move to back",
+                        "Send to back",
                       ),
                     ],
                   ),
                   onTap: () {
                     editorState.edits.selectElement(null);
-                    editorState.canvas.moveItem(
-                      editorState.canvas.value.elements.indexOf(element),
-                      0,
-                    );
+                    editorState.canvas.sendTo(element, front: false);
                   },
                 ),
                 Divider(
@@ -99,10 +93,10 @@ class DeleteMenu extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   hoverColor: editorState.style.light95,
                   height: rightMenuButtonHeight,
-                  padding: editorState.style.padding,
+                  padding: RubricEditorStyle.padding,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: editorState.style.paddingNum,
+                    spacing: RubricEditorStyle.paddingNum,
                     children: [
                       Icon(
                         Icons.delete,

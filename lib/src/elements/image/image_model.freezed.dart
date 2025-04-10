@@ -23,6 +23,7 @@ mixin _$ImageElementModel {
   String get imageUrl => throw _privateConstructorUsedError;
   double get borderRadius => throw _privateConstructorUsedError;
   String get fit => throw _privateConstructorUsedError;
+  double get aspectRatio => throw _privateConstructorUsedError;
 
   /// Serializes this ImageElementModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +41,8 @@ abstract class $ImageElementModelCopyWith<$Res> {
           ImageElementModel value, $Res Function(ImageElementModel) then) =
       _$ImageElementModelCopyWithImpl<$Res, ImageElementModel>;
   @useResult
-  $Res call({String imageUrl, double borderRadius, String fit});
+  $Res call(
+      {String imageUrl, double borderRadius, String fit, double aspectRatio});
 }
 
 /// @nodoc
@@ -61,6 +63,7 @@ class _$ImageElementModelCopyWithImpl<$Res, $Val extends ImageElementModel>
     Object? imageUrl = null,
     Object? borderRadius = null,
     Object? fit = null,
+    Object? aspectRatio = null,
   }) {
     return _then(_value.copyWith(
       imageUrl: null == imageUrl
@@ -75,6 +78,10 @@ class _$ImageElementModelCopyWithImpl<$Res, $Val extends ImageElementModel>
           ? _value.fit
           : fit // ignore: cast_nullable_to_non_nullable
               as String,
+      aspectRatio: null == aspectRatio
+          ? _value.aspectRatio
+          : aspectRatio // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -87,7 +94,8 @@ abstract class _$$ImageElementModelImplCopyWith<$Res>
       __$$ImageElementModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String imageUrl, double borderRadius, String fit});
+  $Res call(
+      {String imageUrl, double borderRadius, String fit, double aspectRatio});
 }
 
 /// @nodoc
@@ -106,6 +114,7 @@ class __$$ImageElementModelImplCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? borderRadius = null,
     Object? fit = null,
+    Object? aspectRatio = null,
   }) {
     return _then(_$ImageElementModelImpl(
       imageUrl: null == imageUrl
@@ -120,6 +129,10 @@ class __$$ImageElementModelImplCopyWithImpl<$Res>
           ? _value.fit
           : fit // ignore: cast_nullable_to_non_nullable
               as String,
+      aspectRatio: null == aspectRatio
+          ? _value.aspectRatio
+          : aspectRatio // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -129,7 +142,10 @@ class __$$ImageElementModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ImageElementModelImpl implements _ImageElementModel {
   const _$ImageElementModelImpl(
-      {required this.imageUrl, required this.borderRadius, required this.fit});
+      {required this.imageUrl,
+      required this.borderRadius,
+      required this.fit,
+      required this.aspectRatio});
 
   factory _$ImageElementModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ImageElementModelImplFromJson(json);
@@ -140,10 +156,12 @@ class _$ImageElementModelImpl implements _ImageElementModel {
   final double borderRadius;
   @override
   final String fit;
+  @override
+  final double aspectRatio;
 
   @override
   String toString() {
-    return 'ImageElementModel(imageUrl: $imageUrl, borderRadius: $borderRadius, fit: $fit)';
+    return 'ImageElementModel(imageUrl: $imageUrl, borderRadius: $borderRadius, fit: $fit, aspectRatio: $aspectRatio)';
   }
 
   @override
@@ -155,12 +173,15 @@ class _$ImageElementModelImpl implements _ImageElementModel {
                 other.imageUrl == imageUrl) &&
             (identical(other.borderRadius, borderRadius) ||
                 other.borderRadius == borderRadius) &&
-            (identical(other.fit, fit) || other.fit == fit));
+            (identical(other.fit, fit) || other.fit == fit) &&
+            (identical(other.aspectRatio, aspectRatio) ||
+                other.aspectRatio == aspectRatio));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, imageUrl, borderRadius, fit);
+  int get hashCode =>
+      Object.hash(runtimeType, imageUrl, borderRadius, fit, aspectRatio);
 
   /// Create a copy of ImageElementModel
   /// with the given fields replaced by the non-null parameter values.
@@ -183,7 +204,8 @@ abstract class _ImageElementModel implements ImageElementModel {
   const factory _ImageElementModel(
       {required final String imageUrl,
       required final double borderRadius,
-      required final String fit}) = _$ImageElementModelImpl;
+      required final String fit,
+      required final double aspectRatio}) = _$ImageElementModelImpl;
 
   factory _ImageElementModel.fromJson(Map<String, dynamic> json) =
       _$ImageElementModelImpl.fromJson;
@@ -194,6 +216,8 @@ abstract class _ImageElementModel implements ImageElementModel {
   double get borderRadius;
   @override
   String get fit;
+  @override
+  double get aspectRatio;
 
   /// Create a copy of ImageElementModel
   /// with the given fields replaced by the non-null parameter values.

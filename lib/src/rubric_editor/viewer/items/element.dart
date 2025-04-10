@@ -1,18 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/position.dart';
 
 // todo this needs to be optimized in a way that the children aren't constantly being disposed.
-class ElementWidget extends StatelessWidget {
+class EditorElementWidget extends StatelessWidget {
+  final ViewModes viewMode;
   final ElementModel element;
-  const ElementWidget({super.key, required this.element});
+
+  const EditorElementWidget(
+      {super.key, required this.element, required this.viewMode});
 
   @override
   Widget build(BuildContext context) {
     return RubricPositioned.fromElement(
+      multiplier: 1,
+      viewMode: viewMode,
       element: element,
-      child: element.type.editorBuilder(element: element),
+      child: Padding(
+        padding: EdgeInsets.all(element.padding),
+        child: element.type.editorBuilder(element: element),
+      ),
+    );
+  }
+}
+
+class ReaderElementWidget extends StatelessWidget {
+  final ViewModes viewMode;
+  final ElementModel element;
+
+  const ReaderElementWidget(
+      {super.key, required this.element, required this.viewMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return RubricPositioned.fromElement(
+      multiplier: 1,
+      viewMode: viewMode,
+      element: element,
+      child: Padding(
+        padding: EdgeInsets.all(element.padding),
+        child: element.type.readerBuilder(element: element),
+      ),
     );
   }
 }

@@ -6,9 +6,9 @@ import 'package:rubric/src/models/elements.dart';
 class LayersPageWidget extends StatelessWidget {
   const LayersPageWidget({super.key});
 
-  int reverseIndex(int originalIndex, int listLength) {
-    return (listLength - 1) - originalIndex;
-  }
+  // int reverseIndex(int originalIndex, int listLength) {
+  //   return (listLength - 1) - originalIndex;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -16,27 +16,24 @@ class LayersPageWidget extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: editorState.canvas,
       builder: (context, canvas, child) {
+        final orderedElements = canvas.orderedElements.toList();
         return Padding(
           padding: EdgeInsets.all(RubricEditorStyle.paddingUnit),
           child: ReorderableListView(
             onReorder: (oldIndex, newIndex) {
-              int listLength = canvas.elements.length;
-              int reversedOldIndex = reverseIndex(oldIndex, listLength);
-              int reversedNewIndex = reverseIndex(newIndex, listLength);
               editorState.canvas.reorderElements(
-                reversedOldIndex,
-                reversedNewIndex,
+                orderedElements,
+                oldIndex,
+                newIndex,
               );
             },
             padding: EdgeInsets.symmetric(
               vertical: RubricEditorStyle.paddingUnit * 0.5,
             ),
             itemExtent: LayerWidget.layerHeight,
-
             children: [
-              for (var i = canvas.elements.length - 1; i >= 0; i--)
-                if (canvas.elements[i] case ElementModel element)
-                  LayerWidget(key: ValueKey(element.id), element: element),
+              for (var element in orderedElements)
+                LayerWidget(key: ValueKey(element.id), element: element),
             ],
           ),
         );
@@ -68,7 +65,6 @@ class LayerWidget extends StatelessWidget {
           top: 10,
           bottom: 10,
         ),
-
         color: editorState.style.light,
         height: layerHeight,
         width: double.infinity,

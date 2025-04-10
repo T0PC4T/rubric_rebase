@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/atoms/button.dart';
+import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/elements.dart';
-import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
 import 'package:rubric/src/utilities/uuid.dart';
@@ -25,7 +25,7 @@ class ElementPageWidget extends StatelessWidget {
               borderColor: editorState.style.light7,
               borderWidth: 1,
               margin: EdgeInsets.all(RubricEditorStyle.paddingUnit * 0.5),
-              padding: editorState.style.padding,
+              padding: RubricEditorStyle.padding,
               backgroundColor: editorState.style.light,
               width: buttonSize,
               height: buttonSize,
@@ -33,29 +33,17 @@ class ElementPageWidget extends StatelessWidget {
               hoverColor: editorState.style.light9,
               onTap: () {
                 final editorState = RubricEditorState.of(context);
-                if (editorState.edits.value.holding == element) {
-                  final width = GridSizes.pageSize * 0.5;
-                  final height = GridSizes.pageSize * 0.35;
-                  final tile =
-                      editorState.canvas.value.settings.gridSize.pixelsPerLock;
 
-                  editorState.canvas.addElement(
-                    ElementModel(
-                      id: newID(),
-                      type: element,
-                      x: tile,
-                      y:
-                          editorState.edits.scrollOffset -
-                          (editorState.edits.scrollOffset % tile),
-                      width: width - (width % tile),
-                      height: height - (height % tile),
-                      properties: generateDefaultProperties(context, element),
-                    ),
-                  );
-                  editorState.setHolding(null);
-                } else {
-                  editorState.setHolding(element);
-                }
+                editorState.canvas.addElement(
+                  ElementModel(
+                    id: newID(),
+                    type: element,
+                    properties: generateDefaultProperties(context, element),
+                    fixedWidth: 1,
+                    padding: ElementPadding.medium.value,
+                    orderIndex: editorState.canvas.value.elements.length,
+                  ),
+                );
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

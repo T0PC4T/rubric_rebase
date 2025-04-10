@@ -48,12 +48,16 @@ class RubricColorPickerState extends State<RubricColorPicker> {
                     },
                     child: Container(
                       width: (PopupWidget.popWidth -
-                              style.paddingNum * numberOfItemsPerRow * 2) /
+                              RubricEditorStyle.paddingNum *
+                                  numberOfItemsPerRow *
+                                  2) /
                           numberOfItemsPerRow,
                       height: (PopupWidget.popWidth -
-                              style.paddingNum * numberOfItemsPerRow * 2) /
+                              RubricEditorStyle.paddingNum *
+                                  numberOfItemsPerRow *
+                                  2) /
                           numberOfItemsPerRow,
-                      margin: style.padding,
+                      margin: RubricEditorStyle.padding,
                       decoration: BoxDecoration(
                         color: c,
                         shape: BoxShape.circle,
@@ -68,12 +72,16 @@ class RubricColorPickerState extends State<RubricColorPicker> {
                   },
                   child: Container(
                     width: (PopupWidget.popWidth -
-                            style.paddingNum * numberOfItemsPerRow * 2) /
+                            RubricEditorStyle.paddingNum *
+                                numberOfItemsPerRow *
+                                2) /
                         numberOfItemsPerRow,
                     height: (PopupWidget.popWidth -
-                            style.paddingNum * numberOfItemsPerRow * 2) /
+                            RubricEditorStyle.paddingNum *
+                                numberOfItemsPerRow *
+                                2) /
                         numberOfItemsPerRow,
-                    margin: style.padding,
+                    margin: RubricEditorStyle.padding,
                     decoration: BoxDecoration(
                       // radial gradient
                       gradient: LinearGradient(

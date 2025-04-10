@@ -6,7 +6,7 @@ import 'package:rubric/rubric.dart';
 
 class RubricEditorStyle {
   static const paddingUnit = 10.0;
-  static const minimumFontSize = 22;
+  static const minimumFontSize = 18;
 
   final String logoUrl;
   final double radius;
@@ -55,10 +55,10 @@ class RubricEditorStyle {
   Color get light95 => Color.lerp(dark, light, 0.95)!;
   Color get light98 => Color.lerp(dark, light, 0.98)!;
 
-  double get paddingNum => paddingUnit;
-  double get halfPaddingNum => paddingUnit * 0.5;
-  EdgeInsets get padding => EdgeInsets.all(paddingUnit);
-  EdgeInsets get halfPadding => EdgeInsets.all(halfPaddingNum);
+  static double get paddingNum => paddingUnit;
+  static double get halfPaddingNum => paddingUnit * 0.5;
+  static EdgeInsets get padding => EdgeInsets.all(paddingUnit);
+  static EdgeInsets get halfPadding => EdgeInsets.all(halfPaddingNum);
   BorderRadius get borderRadius => BorderRadius.circular(radius);
 
   static RubricEditorStyle of(BuildContext context) {

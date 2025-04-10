@@ -4,8 +4,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rubric/rubric.dart';
-import 'package:rubric/src/components/molecules/mouse_overlay.dart';
-import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/models/canvas_notifier.dart';
 import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/editor_notifier.dart';
@@ -50,7 +48,6 @@ class RubricEditorState extends State<RubricEditor> {
     web.document.oncontextmenu = (JSAny e) {
       if (e.isA<web.PointerEvent>()) {
         (e as web.PointerEvent).preventDefault();
-        web.console.log("HELLO".toJS);
       }
     }.toJS;
     super.initState();
@@ -134,22 +131,20 @@ class RubricEditorState extends State<RubricEditor> {
     });
   }
 
-  setHolding(ElementTypes? el) {
-    setState(() {
-      edits.value = edits.value.copyWith(
-        focused: null,
-        selected: null,
-        holding: el,
-      );
-    });
+  bool previewing = false;
+  ViewModes viewMode = ViewModes.desktop;
+  setPreview(bool preview) {
+    previewing = preview;
+    clearOverlays();
   }
 
-  ViewModes? previewing;
-  setPreview(ViewModes? newValue) {
-    if (previewing != newValue) {
-      previewing = newValue;
+  changeViewMode(ViewModes newValue) {
+    if (viewMode == newValue) {
+      return;
     }
-    clearOverlays();
+    setState(() {
+      viewMode = newValue;
+    });
   }
 
   showToolbar(ElementModel element, Widget child) {
@@ -193,7 +188,7 @@ class RubricEditorState extends State<RubricEditor> {
               child: Column(
                 children: [
                   NavbarWidget(),
-                  if (previewing case ViewModes viewMode)
+                  if (previewing)
                     Expanded(
                       child: Container(
                           color: viewMode == ViewModes.mobile
@@ -201,7 +196,9 @@ class RubricEditorState extends State<RubricEditor> {
                               : canvas.value.settings.canvasColor,
                           alignment: Alignment.center,
                           child: SizedBox(
-                            width: viewMode.width,
+                            width: viewMode == ViewModes.mobile
+                                ? ViewModes.mobile.width
+                                : double.infinity,
                             child: RubricReader(
                               canvasModel: canvas.value,
                             ),
@@ -221,8 +218,6 @@ class RubricEditorState extends State<RubricEditor> {
               ),
             ),
             for (var overlay in overlays) overlay,
-            if (edits.value.holding case ElementTypes elementType)
-              RubricHoldingOverlay(elementType: elementType),
           ],
         ),
       ),

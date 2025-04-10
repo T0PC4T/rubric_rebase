@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
-import 'package:rubric/src/components/atoms/button.dart';
+import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/utilities/uuid.dart';
 
 class RubricToolbarDropdown<T> extends StatefulWidget {
   final Widget child;
-  final List<DropdownMenuItem<T>> items;
+  final List<RubricDropdownMenuItem<T>> items;
   final Function(T? value) onUpdate;
   const RubricToolbarDropdown({
     super.key,
@@ -30,7 +30,7 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
     final box = (context.findRenderObject() as RenderBox);
     size = box.size;
     offset = box.localToGlobal(
-      Offset(0, size.height - editorState.style.radius),
+      Offset(0, size.height),
     );
     if (editorState.overlays
         case List(
@@ -51,7 +51,10 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: editorState.style.light,
-              borderRadius: editorState.style.borderRadius,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(editorState.style.radius),
+                bottomRight: Radius.circular(editorState.style.radius),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: style.dark.withAlpha(50),
@@ -67,7 +70,7 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
               children: [
                 for (var item in widget.items)
                   RubricButton(
-                    padding: editorState.style.padding,
+                    padding: RubricEditorStyle.padding,
                     backgroundColor: editorState.style.light,
                     hoverColor: editorState.style.light95,
                     onTap: () {
@@ -89,16 +92,35 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
     final style = RubricEditorStyle.of(context);
     return RubricButton(
       padding: EdgeInsets.symmetric(
-        horizontal: style.paddingNum,
-        vertical: style.paddingNum * 0.5,
+        horizontal: RubricEditorStyle.paddingNum,
+        vertical: RubricEditorStyle.paddingNum * 0.5,
       ),
       onTap: showDropdown,
       backgroundColor: style.light,
       hoverColor: style.light95,
       child: Row(
-        spacing: style.paddingNum,
+        spacing: RubricEditorStyle.paddingNum,
         children: [widget.child, Icon(Icons.keyboard_arrow_down_rounded)],
       ),
     );
   }
+}
+
+class RubricDropdownMenuItem<T> {
+  const RubricDropdownMenuItem({
+    this.onTap,
+    this.enabled = true,
+    required this.value,
+    required this.text,
+  });
+
+  Widget get child => Container(
+        padding: EdgeInsets.only(left: RubricEditorStyle.paddingNum),
+        alignment: Alignment.centerLeft,
+        child: RubricText(text),
+      );
+  final String text;
+  final VoidCallback? onTap;
+  final T? value;
+  final bool enabled;
 }

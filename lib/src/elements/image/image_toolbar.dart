@@ -6,6 +6,7 @@ import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/atoms/divider.dart';
 import 'package:rubric/src/components/molecules/border_radius_dropdown.dart';
 import 'package:rubric/src/components/shared.dart';
+import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
@@ -73,13 +74,9 @@ class ImageTooltipWidget extends StatelessWidget {
           },
           items: [
             for (var value in ["cover", "fill", "contain"])
-              DropdownMenuItem(
+              RubricDropdownMenuItem(
                 value: value,
-                child: Container(
-                  padding: EdgeInsets.only(left: style.paddingNum),
-                  alignment: Alignment.centerLeft,
-                  child: RubricText(value),
-                ),
+                text: value,
               ),
           ],
           child: Row(
@@ -87,11 +84,44 @@ class ImageTooltipWidget extends StatelessWidget {
             children: [
               Icon(
                 Icons.crop_outlined,
-                size: ElementToolbarWidget.iconSize * 0.8,
+                size: ElementToolbarWidget.iconSize,
               ),
               RubricText("Fit"),
             ],
           ),
+        ),
+        RubricVerticleDivider(),
+
+        // Aspect Ratio
+        RubricToolbarDropdown(
+          onUpdate: (value) {
+            if (value case double newValue) {
+              final newProperties = element
+                  .getProperties<ImageElementModel>()
+                  .copyWith(aspectRatio: newValue);
+              editorState.canvas.updateElement(element, newProperties.toJson());
+            }
+          },
+          items: [
+            for (var value in AspectRatios.values)
+              RubricDropdownMenuItem(
+                value: value.value,
+                text: value.display,
+              ),
+          ],
+          child: Row(
+            spacing: RubricEditorStyle.paddingUnit * 0.5,
+            children: [
+              Icon(
+                Icons.aspect_ratio,
+                size: ElementToolbarWidget.iconSize,
+              ),
+              RubricText("Aspect Ratio"),
+            ],
+          ),
+        ),
+        ToolbarUniversalIcons(
+          element: element,
         ),
       ],
     );

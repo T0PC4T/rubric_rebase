@@ -19,12 +19,12 @@ class NavbarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-              padding: style.halfPadding,
+              padding: RubricEditorStyle.halfPadding,
               width: navbarHeight,
               height: navbarHeight,
               child: Image.network(style.logoUrl)),
           Container(
-            padding: style.padding,
+            padding: RubricEditorStyle.padding,
             width: NavbarWidget.navbarHeight * 4,
             child: RubricText(
               isDark: true,
@@ -48,27 +48,25 @@ class NavbarWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                if (editorState.previewing case ViewModes mode) ...[
-                  // todo add mobile support.
-                  RubricIconButton(
-                    isDark: true,
-                    isActive: mode == ViewModes.mobile,
-                    iconData: Icons.phone_android,
-                    size: NavbarWidget.navbarHeight,
-                    onTap: () {
-                      editorState.setPreview(ViewModes.mobile);
-                    },
-                  ),
-                  RubricIconButton(
-                    isDark: true,
-                    isActive: mode == ViewModes.desktop,
-                    iconData: Icons.desktop_mac_rounded,
-                    size: NavbarWidget.navbarHeight,
-                    onTap: () {
-                      editorState.setPreview(ViewModes.desktop);
-                    },
-                  ),
-                ],
+                // todo add mobile support.
+                RubricIconButton(
+                  isDark: true,
+                  isActive: editorState.viewMode == ViewModes.mobile,
+                  iconData: Icons.phone_android,
+                  size: NavbarWidget.navbarHeight,
+                  onTap: () {
+                    editorState.changeViewMode(ViewModes.mobile);
+                  },
+                ),
+                RubricIconButton(
+                  isDark: true,
+                  isActive: editorState.viewMode == ViewModes.desktop,
+                  iconData: Icons.desktop_mac_rounded,
+                  size: NavbarWidget.navbarHeight,
+                  onTap: () {
+                    editorState.changeViewMode(ViewModes.desktop);
+                  },
+                ),
               ],
             ),
           ),
@@ -94,17 +92,13 @@ class NavbarWidget extends StatelessWidget {
           ),
           RubricIconButton(
             isDark: true,
-            iconData: editorState.previewing == null
-                ? Icons.remove_red_eye_rounded
-                : Icons.edit,
+            iconData: editorState.previewing
+                ? Icons.edit
+                : Icons.remove_red_eye_rounded,
             size: NavbarWidget.navbarHeight,
             onTap: () {
               editorState.edits.selectElement(null);
-              if (editorState.previewing == null) {
-                editorState.setPreview(ViewModes.desktop);
-              } else {
-                editorState.setPreview(null);
-              }
+              editorState.setPreview(!editorState.previewing);
             },
           ),
           RubricButton.theme(

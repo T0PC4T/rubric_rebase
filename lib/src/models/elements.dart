@@ -1,10 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:rubric/src/elements/box/box_model.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
 
 class ElementModel {
   final String id;
@@ -13,25 +16,57 @@ class ElementModel {
   double y;
   double width;
   double height;
+  double mobileX;
+  double mobileY;
+  double mobileWidth;
+  double mobileHeight;
+  bool get fixed => fixedWidth > 0;
+  double fixedWidth;
+  double padding;
+  int orderIndex;
+
   Map<String, dynamic> properties;
   ElementModel({
     required this.id,
     required this.type,
-    required this.x,
-    required this.y,
-    required this.width,
-    required this.height,
+    required this.padding,
+    required this.orderIndex,
     required this.properties,
+    this.fixedWidth = 1,
+    this.x = 0,
+    this.y = 0,
+    this.width = 0,
+    this.height = 0,
+    this.mobileX = 0,
+    this.mobileY = 0,
+    this.mobileWidth = 0,
+    this.mobileHeight = 0,
   });
+
+  double getX(ViewModes viewMode) {
+    return viewMode == ViewModes.desktop ? x : mobileX;
+  }
+
+  double getY(ViewModes viewMode) {
+    return viewMode == ViewModes.desktop ? y : mobileY;
+  }
+
+  double getWidth(ViewModes viewMode) {
+    return viewMode == ViewModes.desktop ? width : mobileWidth;
+  }
+
+  double getHeight(ViewModes viewMode) {
+    return viewMode == ViewModes.desktop ? height : mobileHeight;
+  }
 
   T getProperties<T>() {
     return switch (type) {
-          ElementTypes.box => BoxElementModel.fromJson(properties),
-          ElementTypes.text => TextElementModel.fromJson(properties),
-          ElementTypes.image => ImageElementModel.fromJson(properties),
-          ElementTypes.video => VideoElementModel.fromJson(properties),
-        }
-        as T;
+      ElementTypes.text => TextElementModel.fromJson(properties),
+      ElementTypes.box => BoxElementModel.fromJson(properties),
+      ElementTypes.image => ImageElementModel.fromJson(properties),
+      ElementTypes.video => VideoElementModel.fromJson(properties),
+      // ElementTypes.richtext => RichTextElementModel.fromJson(properties),
+    } as T;
   }
 
   ElementModel copyWith({
@@ -41,6 +76,13 @@ class ElementModel {
     double? y,
     double? width,
     double? height,
+    double? mobileX,
+    double? mobileY,
+    double? mobileWidth,
+    double? mobileHeight,
+    double? fixedWidth,
+    double? padding,
+    int? orderIndex,
     Map<String, dynamic>? properties,
   }) {
     return ElementModel(
@@ -50,7 +92,14 @@ class ElementModel {
       y: y ?? this.y,
       width: width ?? this.width,
       height: height ?? this.height,
-      properties: Map.from(properties ?? this.properties),
+      mobileX: mobileX ?? this.mobileX,
+      mobileY: mobileY ?? this.mobileY,
+      mobileWidth: mobileWidth ?? this.mobileWidth,
+      mobileHeight: mobileHeight ?? this.mobileHeight,
+      fixedWidth: fixedWidth ?? this.fixedWidth,
+      padding: padding ?? this.padding,
+      orderIndex: orderIndex ?? this.orderIndex,
+      properties: properties ?? this.properties,
     );
   }
 
@@ -62,6 +111,13 @@ class ElementModel {
       'y': y,
       'width': width,
       'height': height,
+      'mobileX': mobileX,
+      'mobileY': mobileY,
+      'mobileWidth': mobileWidth,
+      'mobileHeight': mobileHeight,
+      'fixedWidth': fixedWidth,
+      'padding': padding,
+      'orderIndex': orderIndex,
       'properties': properties,
     };
   }
@@ -69,20 +125,31 @@ class ElementModel {
   factory ElementModel.fromMap(Map<String, dynamic> map) {
     return ElementModel(
       id: map['id'] as String,
-      type: ElementTypes.fromName(map['type'] as String),
+      type: ElementTypes.fromName(map['type']),
       x: map['x'] as double,
       y: map['y'] as double,
       width: map['width'] as double,
       height: map['height'] as double,
-      properties: Map<String, dynamic>.from(
-        (map['properties'] as Map<String, dynamic>),
-      ),
+      mobileX: map['mobileX'] as double,
+      mobileY: map['mobileY'] as double,
+      mobileWidth: map['mobileWidth'] as double,
+      mobileHeight: map['mobileHeight'] as double,
+      fixedWidth: map['fixedWidth'] as double,
+      padding: map['padding'] as double,
+      orderIndex: map['orderIndex'] as int,
+      properties:
+          Map<String, dynamic>.from(map['properties'] as Map<String, dynamic>),
     );
   }
 
+  String toJson() => json.encode(toMap());
+
+  factory ElementModel.fromJson(String source) =>
+      ElementModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
   @override
   String toString() {
-    return 'ElementModel(id: $id, type: $type, x: $x, y: $y, width: $width, height: $height, properties: $properties)';
+    return 'ElementModel(id: $id, type: $type, x: $x, y: $y, width: $width, height: $height, mobileX: $mobileX, mobileY: $mobileY, mobileWidth: $mobileWidth, mobileHeight: $mobileHeight, fixedWidth: $fixedWidth, padding: $padding, orderIndex: $orderIndex, properties: $properties)';
   }
 
   @override
@@ -95,6 +162,13 @@ class ElementModel {
         other.y == y &&
         other.width == width &&
         other.height == height &&
+        other.mobileX == mobileX &&
+        other.mobileY == mobileY &&
+        other.mobileWidth == mobileWidth &&
+        other.mobileHeight == mobileHeight &&
+        other.fixedWidth == fixedWidth &&
+        other.padding == padding &&
+        other.orderIndex == orderIndex &&
         mapEquals(other.properties, properties);
   }
 
@@ -106,6 +180,13 @@ class ElementModel {
         y.hashCode ^
         width.hashCode ^
         height.hashCode ^
+        mobileX.hashCode ^
+        mobileY.hashCode ^
+        mobileWidth.hashCode ^
+        mobileHeight.hashCode ^
+        fixedWidth.hashCode ^
+        padding.hashCode ^
+        orderIndex.hashCode ^
         properties.hashCode;
   }
 }

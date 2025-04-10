@@ -12,6 +12,7 @@ class BoxElementModel with _$BoxElementModel {
   const factory BoxElementModel({
     @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color color,
     required double borderRadius,
+    required double aspectRatio,
   }) = _BoxElementModel;
 
   factory BoxElementModel.fromJson(Map<String, dynamic> json) =>

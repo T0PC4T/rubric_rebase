@@ -10,6 +10,7 @@ class ImageElementModel with _$ImageElementModel {
     required String imageUrl,
     required double borderRadius,
     required String fit,
+    required double aspectRatio,
   }) = _ImageElementModel;
 
   factory ImageElementModel.fromJson(Map<String, dynamic> json) =>

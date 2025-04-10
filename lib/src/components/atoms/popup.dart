@@ -49,7 +49,7 @@ class _PopupWidgetState<T> extends State<PopupWidget<T>> {
         child: GestureDetector(
           onTap: () => {},
           child: Container(
-            padding: style.padding,
+            padding: RubricEditorStyle.padding,
             decoration: BoxDecoration(
               color: style.light,
               borderRadius: style.borderRadius,
