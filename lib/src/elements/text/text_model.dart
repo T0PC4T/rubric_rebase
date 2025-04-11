@@ -13,7 +13,9 @@ abstract class TextElementModel with _$TextElementModel {
   @JsonSerializable()
   const factory TextElementModel({
     required String text,
-    required bool isBold,
+    @Default(false) bool isBold,
+    @Default(false) bool isItalic,
+    @Default(false) isUnderline,
     required double size,
     @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color color,
   }) = _TextElementModel;
@@ -25,5 +27,7 @@ abstract class TextElementModel with _$TextElementModel {
       color: color,
       fontSize: size,
       fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+      fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
+      decoration: isUnderline ? TextDecoration.underline : TextDecoration.none,
       height: 1.5);
 }

@@ -44,19 +44,27 @@ class ElementModel {
   });
 
   double getX(ViewModes viewMode) {
-    return viewMode == ViewModes.desktop ? x : mobileX;
+    return viewMode == ViewModes.desktop
+        ? x * ViewModes.desktop.width
+        : mobileX * ViewModes.mobile.width;
   }
 
   double getY(ViewModes viewMode) {
-    return viewMode == ViewModes.desktop ? y : mobileY;
+    return viewMode == ViewModes.desktop
+        ? y * ViewModes.desktop.width
+        : mobileY * ViewModes.mobile.width;
   }
 
   double getWidth(ViewModes viewMode) {
-    return viewMode == ViewModes.desktop ? width : mobileWidth;
+    return viewMode == ViewModes.desktop
+        ? width * ViewModes.desktop.width
+        : mobileWidth * ViewModes.mobile.width;
   }
 
   double getHeight(ViewModes viewMode) {
-    return viewMode == ViewModes.desktop ? height : mobileHeight;
+    return viewMode == ViewModes.desktop
+        ? height * ViewModes.desktop.width
+        : mobileHeight * ViewModes.mobile.width;
   }
 
   T getProperties<T>() {
@@ -137,8 +145,9 @@ class ElementModel {
       fixedWidth: map['fixedWidth'] as double,
       padding: map['padding'] as double,
       orderIndex: map['orderIndex'] as int,
-      properties:
-          Map<String, dynamic>.from(map['properties'] as Map<String, dynamic>),
+      properties: Map<String, dynamic>.from(
+        (map['properties']),
+      ),
     );
   }
 

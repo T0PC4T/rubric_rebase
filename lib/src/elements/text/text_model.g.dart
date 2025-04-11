@@ -10,7 +10,9 @@ _$TextElementModelImpl _$$TextElementModelImplFromJson(
         Map<String, dynamic> json) =>
     _$TextElementModelImpl(
       text: json['text'] as String,
-      isBold: json['isBold'] as bool,
+      isBold: json['isBold'] as bool? ?? false,
+      isItalic: json['isItalic'] as bool? ?? false,
+      isUnderline: json['isUnderline'] ?? false,
       size: (json['size'] as num).toDouble(),
       color: colorFromJson((json['color'] as num).toInt()),
     );
@@ -20,6 +22,8 @@ Map<String, dynamic> _$$TextElementModelImplToJson(
     <String, dynamic>{
       'text': instance.text,
       'isBold': instance.isBold,
+      'isItalic': instance.isItalic,
+      'isUnderline': instance.isUnderline,
       'size': instance.size,
       'color': colorToJson(instance.color),
     };

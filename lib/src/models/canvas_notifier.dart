@@ -46,21 +46,21 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   // ? Element are editable, they edit until a fixed point then the entire object is copied
   scaleElement(ViewModes viewMode, ElementModel element, Offset offset) {
     if (viewMode == ViewModes.desktop) {
-      element.width = offset.dx;
-      element.height = offset.dy;
+      element.width = offset.dx / ViewModes.desktop.width;
+      element.height = offset.dy / ViewModes.desktop.width;
     } else {
-      element.mobileWidth = offset.dx;
-      element.mobileHeight = offset.dy;
+      element.mobileWidth = offset.dx / ViewModes.mobile.width;
+      element.mobileHeight = offset.dy / ViewModes.mobile.width;
     }
   }
 
   moveElement(ViewModes viewMode, ElementModel element, Offset offset) {
     if (viewMode == ViewModes.desktop) {
-      element.x = offset.dx;
-      element.y = offset.dy;
+      element.x = offset.dx / ViewModes.desktop.width;
+      element.y = offset.dy / ViewModes.desktop.width;
     } else {
-      element.mobileX = offset.dx;
-      element.mobileY = offset.dy;
+      element.mobileX = offset.dx / ViewModes.mobile.width;
+      element.mobileY = offset.dy / ViewModes.mobile.width;
     }
   }
 

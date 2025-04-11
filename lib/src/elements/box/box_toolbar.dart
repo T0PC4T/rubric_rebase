@@ -28,7 +28,7 @@ class BoxTooltipWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: RubricEditorStyle.padding,
               child: RubricColorButton(
                 color: properties.color,
                 onTap: () async {
@@ -76,10 +76,10 @@ class BoxTooltipWidget extends StatelessWidget {
                 }
               },
               items: [
-                for (var value in AspectRatios.values)
+                for (var ratio in AspectRatios.values)
                   RubricDropdownMenuItem(
-                    value: value.value,
-                    text: value.display,
+                    value: ratio,
+                    text: AspectRatios.doubleToRatio(ratio),
                   ),
               ],
               child: Row(

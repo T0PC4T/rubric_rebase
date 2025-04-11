@@ -104,7 +104,7 @@ Map<String, dynamic> generateDefaultProperties(
     ElementTypes.box => BoxElementModel(
             color: Colors.green,
             borderRadius: 0,
-            aspectRatio: AspectRatios.fourThree.value)
+            aspectRatio: AspectRatios.fourThree)
         .toJson(),
     // ElementTypes.heading => TextElementModel(
     //         text: "",
@@ -116,13 +116,15 @@ Map<String, dynamic> generateDefaultProperties(
             text: "",
             size: RubricEditorStyle.minimumFontSize.toDouble(),
             isBold: false,
+            isItalic: false,
+            isUnderline: false,
             color: Colors.black)
         .toJson(),
     // ElementTypes.richtext => RichTextElementModel(
     //     document: Document(),
     //   ).toJson(),
     ElementTypes.image => ImageElementModel(
-            aspectRatio: AspectRatios.fourThree.value,
+            aspectRatio: AspectRatios.fourThree,
             borderRadius: 0,
             imageUrl: "https://t0pc4t.github.io/public/default_image.webp",
             fit: "cover")

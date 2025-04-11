@@ -6,7 +6,7 @@ class CancelSelectionWidget extends LeafRenderObjectWidget {
   const CancelSelectionWidget({
     super.key,
     required this.cancels,
-    this.amount = 40,
+    this.amount = 20,
   });
 
   @override
@@ -44,15 +44,13 @@ class RenderCancelSelectionWidget extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     Paint paint = Paint();
     if (cancels) {
-      paint =
-          Paint()
-            ..color = Color.fromARGB(amount, 0, 0, 0)
-            ..blendMode = BlendMode.srcOver;
+      paint = Paint()
+        ..color = Color.fromARGB(amount, 0, 0, 0)
+        ..blendMode = BlendMode.srcOver;
     } else {
-      paint =
-          Paint()
-            ..color = Color.fromARGB(100, 255, 255, 255)
-            ..blendMode = BlendMode.plus;
+      paint = Paint()
+        ..color = Color.fromARGB(amount ~/ 2, 255, 255, 255)
+        ..blendMode = BlendMode.plus;
     }
 
     context.canvas.drawRect(offset & size, paint);

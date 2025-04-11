@@ -37,21 +37,12 @@ class RubricPositioned extends ParentDataWidget<RubricPositionParentData> {
     required Widget child,
     bool? fix,
     bool handler = false,
-    double multiplier = 1,
   }) {
     return RubricPositioned(
-      x: viewMode == ViewModes.desktop
-          ? element.x
-          : (element.mobileX * multiplier),
-      y: viewMode == ViewModes.desktop
-          ? element.y
-          : (element.mobileY * multiplier),
-      width: viewMode == ViewModes.desktop
-          ? element.width
-          : (element.mobileWidth * multiplier),
-      height: viewMode == ViewModes.desktop
-          ? element.height
-          : (element.mobileHeight * multiplier),
+      x: element.getX(viewMode),
+      y: element.getY(viewMode),
+      width: element.getWidth(viewMode),
+      height: element.getHeight(viewMode),
       fixed: element.fixed,
       fixedWidth: element.fixedWidth,
       handler: handler,

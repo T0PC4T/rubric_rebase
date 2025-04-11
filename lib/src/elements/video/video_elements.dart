@@ -35,22 +35,28 @@ class VideoEditorElementState extends SelectableState<VideoEditorElement> {
   Widget build(BuildContext context) {
     final properties = widget.element.getProperties<VideoElementModel>();
     if (properties.isYoutube == false) {
-      return Container(
-        color: Colors.black,
-        alignment: Alignment.center,
-        child: FittedBox(
-            child: Icon(
-          Icons.video_file,
-          color: Colors.white,
-          size: 50,
-        )),
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Container(
+          color: Colors.black,
+          alignment: Alignment.center,
+          child: FittedBox(
+              child: Icon(
+            Icons.video_file,
+            color: Colors.white,
+            size: 50,
+          )),
+        ),
       );
     } else {
       // return thumbnail
       final youtubeID = getIdFromUrl(properties.videoUrl) ?? "c21QZnQtGqo";
-      return Image.network(
-        "https://img.youtube.com/vi/$youtubeID/sddefault.jpg",
-        fit: BoxFit.cover,
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Image.network(
+          "https://img.youtube.com/vi/$youtubeID/sddefault.jpg",
+          fit: BoxFit.cover,
+        ),
       );
     }
   }
@@ -88,8 +94,8 @@ class VideoReaderElementState extends State<VideoReaderElement> {
   void _createChewieController() {
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController1,
-      autoPlay: true,
-      looping: true,
+      autoPlay: false,
+      looping: false,
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
       hideControlsTimer: const Duration(seconds: 1),
@@ -134,24 +140,33 @@ class VideoReaderElementState extends State<VideoReaderElement> {
     if (_chewieController case ChewieController controller
         when controller.videoPlayerController.value.isInitialized &&
             properties.isYoutube == false) {
-      return Chewie(
-        controller: controller,
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Chewie(
+          controller: controller,
+        ),
       );
     }
     if (utubeController case YoutubePlayerController utubeController
         when properties.isYoutube == true) {
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          return YoutubePlayer(
-            controller: utubeController,
-            aspectRatio: constraints.maxWidth / constraints.maxHeight,
-          );
-        },
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return YoutubePlayer(
+              controller: utubeController,
+              aspectRatio: constraints.maxWidth / constraints.maxHeight,
+            );
+          },
+        ),
       );
     }
 
-    return SizedBox.expand(
-      child: RubricText("Something went wrong"),
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: SizedBox.expand(
+        child: RubricText("Something went wrong"),
+      ),
     );
   }
 }

@@ -10,9 +10,10 @@ _$ImageElementModelImpl _$$ImageElementModelImplFromJson(
         Map<String, dynamic> json) =>
     _$ImageElementModelImpl(
       imageUrl: json['imageUrl'] as String,
-      borderRadius: (json['borderRadius'] as num).toDouble(),
-      fit: json['fit'] as String,
-      aspectRatio: (json['aspectRatio'] as num).toDouble(),
+      borderRadius: (json['borderRadius'] as num?)?.toDouble() ?? 0,
+      fit: json['fit'] as String? ?? ImageFits.contain,
+      aspectRatio:
+          (json['aspectRatio'] as num?)?.toDouble() ?? AspectRatios.fourThree,
     );
 
 Map<String, dynamic> _$$ImageElementModelImplToJson(

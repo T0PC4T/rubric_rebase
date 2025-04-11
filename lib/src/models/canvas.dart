@@ -46,6 +46,12 @@ class CanvasModel {
     ),
   });
 
+  ElementModel element(String id) {
+    return elements.firstWhere(
+      (element) => element.id == id,
+    );
+  }
+
   // ! DEEP COPY had to be manually implemented.
   CanvasModel copyWith({
     List<ElementModel>? elements,
@@ -61,7 +67,7 @@ class CanvasModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'elements': elements.map((x) => x.toJson()).toList(),
+      'elements': elements.map((x) => x.toMap()).toList(),
       'settings': settings.toJson(),
     };
   }
@@ -81,8 +87,12 @@ class CanvasModel {
 
   String toJson() => json.encode(toMap());
 
-  factory CanvasModel.fromJson(String source) =>
-      CanvasModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CanvasModel.fromJson(String source) {
+    print("DECOING");
+    print(json.decode(source));
+    print(json.decode(source).runtimeType);
+    return CanvasModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  }
 
   @override
   String toString() => 'CanvasModel(elements: $elements, settings: $settings)';
@@ -96,29 +106,6 @@ class CanvasModel {
 
   @override
   int get hashCode => elements.hashCode ^ settings.hashCode;
-
-  double readerPageHeight() {
-    return elements.fold<double>(GridSizes.pageSize, (previousValue, element) {
-      final newHeight =
-          element.y + element.height + GridSizes.medium.pixelsPerLine;
-      if (newHeight > previousValue) {
-        return newHeight;
-      }
-      return previousValue;
-    });
-  }
-
-  double editorPageHeight() {
-    final value =
-        elements.fold<double>(GridSizes.pageSize, (previousValue, element) {
-      final newHeight = element.y + element.height + GridSizes.pageSize * 0.5;
-      if (newHeight > previousValue) {
-        return newHeight;
-      }
-      return previousValue;
-    });
-    return value - value % GridSizes.medium.pixelsPerLine;
-  }
 
   Iterable<ElementModel> get orderedElements {
     final es = List<ElementModel>.from(elements);

@@ -78,7 +78,7 @@ class RubricEditorState extends State<RubricEditor> {
         clearOverlays();
       }
     } else {
-      keyboardFocus.unfocus();
+      // keyboardFocus.unfocus();
     }
   }
 
@@ -131,19 +131,17 @@ class RubricEditorState extends State<RubricEditor> {
     });
   }
 
-  bool previewing = false;
-  ViewModes viewMode = ViewModes.desktop;
   setPreview(bool preview) {
-    previewing = preview;
+    edits.setPreview(preview);
     clearOverlays();
   }
 
   changeViewMode(ViewModes newValue) {
-    if (viewMode == newValue) {
+    if (edits.value.viewMode == newValue) {
       return;
     }
     setState(() {
-      viewMode = newValue;
+      edits.changeViewMode(newValue);
     });
   }
 
@@ -188,15 +186,15 @@ class RubricEditorState extends State<RubricEditor> {
               child: Column(
                 children: [
                   NavbarWidget(),
-                  if (previewing)
+                  if (edits.value.previewing)
                     Expanded(
                       child: Container(
-                          color: viewMode == ViewModes.mobile
+                          color: edits.value.viewMode == ViewModes.mobile
                               ? style.dark
                               : canvas.value.settings.canvasColor,
                           alignment: Alignment.center,
                           child: SizedBox(
-                            width: viewMode == ViewModes.mobile
+                            width: edits.value.viewMode == ViewModes.mobile
                                 ? ViewModes.mobile.width
                                 : double.infinity,
                             child: RubricReader(

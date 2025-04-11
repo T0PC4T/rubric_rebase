@@ -4,6 +4,7 @@ import 'package:rubric/src/components/atoms/divider.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
 import 'package:rubric/src/rubric_editor/navbar/navbar.dart';
 import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
@@ -56,106 +57,110 @@ class ToolbarUniversalIcons extends StatelessWidget {
     final style = editorState.style;
 
     return ValueListenableBuilder(
-        valueListenable: editorState.canvas,
-        builder: (context, value, child) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  // Padding
-                  RubricVerticleDivider(),
-                  RubricToolbarDropdown(
-                    onUpdate: (value) {
-                      if (value case double newValue) {
-                        // quite botchy
-                        element.padding = newValue;
-                        editorState.canvas
-                            .updateElement(element, element.properties);
-                      }
-                    },
-                    items: [
-                      for (var value in ElementPadding.values)
-                        RubricDropdownMenuItem(
-                          value: value.value,
-                          text: value.display,
-                        ),
-                    ],
-                    child: Row(
-                      spacing: RubricEditorStyle.paddingUnit * 0.5,
+        valueListenable: editorState.edits,
+        builder: (context, editsModel, child) {
+          return ValueListenableBuilder(
+              valueListenable: editorState.canvas,
+              builder: (context, canvalModel, child) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
                       children: [
-                        Stack(
-                          children: [
-                            Icon(
-                              Icons.expand,
-                              size: ElementToolbarWidget.iconSize,
-                            ),
-                            Transform.rotate(
-                              angle: 3.1415 / 2,
-                              child: Icon(
-                                Icons.expand,
-                                size: ElementToolbarWidget.iconSize,
+                        // Padding
+                        RubricVerticleDivider(),
+                        RubricToolbarDropdown(
+                          onUpdate: (value) {
+                            if (value case double newValue) {
+                              // quite botchy
+                              element.padding = newValue;
+                              editorState.canvas
+                                  .updateElement(element, element.properties);
+                            }
+                          },
+                          items: [
+                            for (var value in ElementPadding.values)
+                              RubricDropdownMenuItem(
+                                value: value.value,
+                                text: value.display,
                               ),
-                            ),
                           ],
-                        ),
-                        RubricText("Padding"),
-                      ],
-                    ),
-                  ),
-                  if (element.fixed) ...[
-                    RubricVerticleDivider(),
-                    RubricToolbarDropdown(
-                      onUpdate: (value) {
-                        if (value case double newValue) {
-                          // quite botchy
-                          element.fixedWidth = newValue;
-                          editorState.canvas.updateElement(element);
-                        }
-                      },
-                      items: [
-                        for (var value in FixedWidths.values)
-                          RubricDropdownMenuItem(
-                            value: value.value,
-                            text: value.display,
+                          child: Row(
+                            spacing: RubricEditorStyle.paddingUnit * 0.5,
+                            children: [
+                              Stack(
+                                children: [
+                                  Icon(
+                                    Icons.expand,
+                                    size: ElementToolbarWidget.iconSize,
+                                  ),
+                                  Transform.rotate(
+                                    angle: 3.1415 / 2,
+                                    child: Icon(
+                                      Icons.expand,
+                                      size: ElementToolbarWidget.iconSize,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              RubricText("Padding"),
+                            ],
                           ),
-                      ],
-                      child: Row(
-                        spacing: RubricEditorStyle.paddingUnit * 0.5,
-                        children: [
-                          Transform.rotate(
-                            angle: 3.1415 / 2,
-                            child: Icon(
-                              Icons.expand,
-                              size: ElementToolbarWidget.iconSize,
+                        ),
+                        if (element.fixed &&
+                            editsModel.viewMode == ViewModes.desktop) ...[
+                          RubricVerticleDivider(),
+                          RubricToolbarDropdown(
+                            onUpdate: (value) {
+                              if (value case double newValue) {
+                                editorState.canvas.updateElement(
+                                    element..fixedWidth = newValue);
+                              }
+                            },
+                            items: [
+                              for (var value in FixedWidths.values)
+                                RubricDropdownMenuItem(
+                                  value: value.value,
+                                  text: value.display,
+                                ),
+                            ],
+                            child: Row(
+                              spacing: RubricEditorStyle.paddingUnit * 0.5,
+                              children: [
+                                Transform.rotate(
+                                  angle: 3.1415 / 2,
+                                  child: Icon(
+                                    Icons.expand,
+                                    size: ElementToolbarWidget.iconSize,
+                                  ),
+                                ),
+                                RubricText("Width"),
+                              ],
                             ),
                           ),
-                          RubricText("Width"),
                         ],
-                      ),
+                        RubricVerticleDivider(),
+                        RubricIconButton(
+                          iconData: Icons.lock_open_rounded,
+                          size: ElementToolbarWidget.elementToolbarHeight,
+                          isActive: !element.fixed,
+                          onTap: () {
+                            editorState.canvas.fixElement(element, false);
+                          },
+                        ),
+                        RubricIconButton(
+                          iconData: Icons.lock_outline,
+                          size: ElementToolbarWidget.elementToolbarHeight,
+                          isActive: element.fixed,
+                          onTap: () {
+                            editorState.canvas.fixElement(element, true);
+                          },
+                        ),
+                      ],
                     ),
                   ],
-                  RubricVerticleDivider(),
-                  RubricIconButton(
-                    iconData: Icons.lock_open_rounded,
-                    size: ElementToolbarWidget.elementToolbarHeight,
-                    isActive: !element.fixed,
-                    onTap: () {
-                      editorState.canvas.fixElement(element, false);
-                    },
-                  ),
-                  RubricIconButton(
-                    iconData: Icons.lock_outline,
-                    size: ElementToolbarWidget.elementToolbarHeight,
-                    isActive: element.fixed,
-                    onTap: () {
-                      editorState.canvas.fixElement(element, true);
-                    },
-                  ),
-                ],
-              ),
-            ],
-          );
+                );
+              });
         });
   }
 }

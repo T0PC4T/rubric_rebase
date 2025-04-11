@@ -26,6 +26,7 @@ class NavbarWidget extends StatelessWidget {
           Container(
             padding: RubricEditorStyle.padding,
             width: NavbarWidget.navbarHeight * 4,
+            alignment: Alignment.centerLeft,
             child: RubricText(
               isDark: true,
               editorState.canvas.value.settings.name,
@@ -51,7 +52,8 @@ class NavbarWidget extends StatelessWidget {
                 // todo add mobile support.
                 RubricIconButton(
                   isDark: true,
-                  isActive: editorState.viewMode == ViewModes.mobile,
+                  isActive:
+                      editorState.edits.value.viewMode == ViewModes.mobile,
                   iconData: Icons.phone_android,
                   size: NavbarWidget.navbarHeight,
                   onTap: () {
@@ -60,7 +62,8 @@ class NavbarWidget extends StatelessWidget {
                 ),
                 RubricIconButton(
                   isDark: true,
-                  isActive: editorState.viewMode == ViewModes.desktop,
+                  isActive:
+                      editorState.edits.value.viewMode == ViewModes.desktop,
                   iconData: Icons.desktop_mac_rounded,
                   size: NavbarWidget.navbarHeight,
                   onTap: () {
@@ -92,13 +95,13 @@ class NavbarWidget extends StatelessWidget {
           ),
           RubricIconButton(
             isDark: true,
-            iconData: editorState.previewing
+            iconData: editorState.edits.value.previewing
                 ? Icons.edit
                 : Icons.remove_red_eye_rounded,
             size: NavbarWidget.navbarHeight,
             onTap: () {
               editorState.edits.selectElement(null);
-              editorState.setPreview(!editorState.previewing);
+              editorState.setPreview(!editorState.edits.value.previewing);
             },
           ),
           RubricButton.theme(

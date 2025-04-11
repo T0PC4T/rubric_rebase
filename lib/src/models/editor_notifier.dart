@@ -5,6 +5,7 @@ import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/models/focus_notifier.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
 
 class ElementNotifier extends ValueNotifier<ElementModel?> {
   ElementNotifier(super.value);
@@ -37,6 +38,16 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
       focusNotifier.focus = element;
       selectionNotifier.focus = null;
     }
+  }
+
+  setPreview(bool preview) {
+    value = value.copyWith(
+        selected: value.selected, focused: value.focused, previewing: preview);
+  }
+
+  changeViewMode(ViewModes newValue) {
+    value = value.copyWith(
+        selected: value.selected, focused: value.focused, viewMode: newValue);
   }
 
   bool isFocused(ElementModel element) {

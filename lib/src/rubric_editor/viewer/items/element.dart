@@ -15,7 +15,6 @@ class EditorElementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RubricPositioned.fromElement(
-      multiplier: 1,
       viewMode: viewMode,
       element: element,
       child: Padding(
@@ -36,7 +35,6 @@ class ReaderElementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RubricPositioned.fromElement(
-      multiplier: 1,
       viewMode: viewMode,
       element: element,
       child: Padding(

@@ -143,9 +143,9 @@ class __$$ImageElementModelImplCopyWithImpl<$Res>
 class _$ImageElementModelImpl implements _ImageElementModel {
   const _$ImageElementModelImpl(
       {required this.imageUrl,
-      required this.borderRadius,
-      required this.fit,
-      required this.aspectRatio});
+      this.borderRadius = 0,
+      this.fit = ImageFits.contain,
+      this.aspectRatio = AspectRatios.fourThree});
 
   factory _$ImageElementModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ImageElementModelImplFromJson(json);
@@ -153,10 +153,13 @@ class _$ImageElementModelImpl implements _ImageElementModel {
   @override
   final String imageUrl;
   @override
+  @JsonKey()
   final double borderRadius;
   @override
+  @JsonKey()
   final String fit;
   @override
+  @JsonKey()
   final double aspectRatio;
 
   @override
@@ -203,9 +206,9 @@ class _$ImageElementModelImpl implements _ImageElementModel {
 abstract class _ImageElementModel implements ImageElementModel {
   const factory _ImageElementModel(
       {required final String imageUrl,
-      required final double borderRadius,
-      required final String fit,
-      required final double aspectRatio}) = _$ImageElementModelImpl;
+      final double borderRadius,
+      final String fit,
+      final double aspectRatio}) = _$ImageElementModelImpl;
 
   factory _ImageElementModel.fromJson(Map<String, dynamic> json) =
       _$ImageElementModelImpl.fromJson;

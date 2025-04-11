@@ -27,12 +27,9 @@ class RubricPositionParentData extends ContainerBoxParentData<RenderBox> {
     required this.orderIndex,
   });
 
-  BoxConstraints positionedChildConstraints(Size stackSize) {
+  BoxConstraints? positionedChildConstraints() {
     if (width.isInfinite) {
-      return BoxConstraints.tightFor(
-        width: stackSize.width,
-        height: stackSize.height,
-      );
+      return null;
     }
     return BoxConstraints.tightFor(width: width, height: height);
   }

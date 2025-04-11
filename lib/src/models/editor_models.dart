@@ -2,6 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
 
 /*
 These models are dedicated to the editor state. This state does not affect the actual lesson being built but only the current users editing view.
@@ -17,7 +18,7 @@ enum GridSizes {
   }
 
   static const double pageSize = 1000;
-  static const double padding = 40;
+  static const double padding = 25;
   double get pixelsPerLock => 10;
   final double pixelsPerLine;
   final String pretty;
@@ -42,23 +43,32 @@ class CanvasEditingModel {
   final List<CanvasModel> steps;
   final int undoIndex;
   final bool showGrid;
+  final bool previewing;
+  final ViewModes viewMode;
+
   CanvasEditingModel({
     this.selected,
     this.focused,
     required this.steps,
     this.undoIndex = 0,
     this.showGrid = false,
+    this.previewing = false,
+    this.viewMode = ViewModes.desktop,
   });
 
   CanvasEditingModel copyWith({
     required ElementModel? selected,
     required ElementModel? focused,
+    bool? previewing,
+    ViewModes? viewMode,
     List<CanvasModel>? steps,
     int? undoIndex,
     GridSizes? gridSize,
     bool? showGrid,
   }) {
     return CanvasEditingModel(
+      previewing: previewing ?? this.previewing,
+      viewMode: viewMode ?? this.viewMode,
       selected: selected,
       focused: focused,
       steps: steps ?? this.steps,
@@ -69,7 +79,7 @@ class CanvasEditingModel {
 
   @override
   String toString() {
-    return 'CanvasEditingModel(selected: $selected, focused: $focused, steps: $steps, undoIndex: $undoIndex, showGrid: $showGrid)';
+    return 'CanvasEditingModel(selected: $selected, focused: $focused, steps: $steps, undoIndex: $undoIndex, showGrid: $showGrid, previewing: $previewing, viewMode: $viewMode)';
   }
 
   @override
@@ -80,7 +90,9 @@ class CanvasEditingModel {
         other.focused == focused &&
         listEquals(other.steps, steps) &&
         other.undoIndex == undoIndex &&
-        other.showGrid == showGrid;
+        other.showGrid == showGrid &&
+        other.previewing == previewing &&
+        other.viewMode == viewMode;
   }
 
   @override
@@ -89,6 +101,8 @@ class CanvasEditingModel {
         focused.hashCode ^
         steps.hashCode ^
         undoIndex.hashCode ^
-        showGrid.hashCode;
+        showGrid.hashCode ^
+        previewing.hashCode ^
+        viewMode.hashCode;
   }
 }

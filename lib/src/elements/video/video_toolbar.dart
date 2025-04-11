@@ -8,6 +8,7 @@ import 'package:rubric/src/components/atoms/popup.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 
 class VideoTooltipWidget extends StatelessWidget {
   final ElementModel element;
@@ -83,6 +84,7 @@ class VideoTooltipWidget extends StatelessWidget {
           iconData: Icons.image,
           text: "Upload Video File",
         ),
+        ToolbarUniversalIcons(element: element),
       ],
     );
   }

@@ -127,14 +127,12 @@ class RenderRubricElementStack extends RenderBox
   double y = 0;
   double mobileX = 0;
   double mobileY = 0;
-
+  ViewModes viewMode = ViewModes.desktop;
   double maxHeightForLine = 0;
   ({double x, double y, double width, double height}) getNextFixedPosition(
       RenderBox child,
       RubricPositionParentData childParentData,
       ElementModel el) {
-    final canvasWidth = size.width - offset.dx * 2;
-    final viewMode = ViewModes.fromWidth(canvasWidth);
     // final canvasWidth = size.width - offset.dx * 2;
 
     // ? handlers don't affect the layout offsets
@@ -147,11 +145,11 @@ class RenderRubricElementStack extends RenderBox
       );
     }
 
-    // BASICALLY YOU HAVE TO SET THE
+    // BASICALLY YOU HAVE TO SET THE PROJECTED VALUES OF FIXED ITEMS
+
+    // DESKTOP
     double w = ViewModes.desktop.width * el.fixedWidth;
-    double mw = math.min(ViewModes.mobile.width, canvasWidth);
     double h = child.getMaxIntrinsicHeight(w);
-    double mh = child.getMaxIntrinsicHeight(mw);
     // ? if it would overflow, then go to the next line.
     if (x + w > viewMode.width) {
       y += maxHeightForLine;
@@ -159,6 +157,10 @@ class RenderRubricElementStack extends RenderBox
       maxHeightForLine = 0;
     }
     maxHeightForLine = math.max(maxHeightForLine, h);
+
+    // MOBILE
+    double mw = ViewModes.mobile.width;
+    double mh = child.getMaxIntrinsicHeight(mw);
 
     secretSetter?.call(el, x, y, w, h, mobileX, mobileY, mw, mh);
 
@@ -180,13 +182,16 @@ class RenderRubricElementStack extends RenderBox
     maxHeightForLine = 0;
     mobileX = 0;
     mobileY = 0;
+    final canvasWidth = constraints.biggest.width - offset.dx * 2;
+    viewMode = ViewModes.fromWidth(canvasWidth);
+    double maxHeight = 0;
 
     assert(
-      constraints.hasBoundedHeight || constraints.hasBoundedWidth,
+      constraints.hasBoundedWidth,
       "Rubric stack requires max width & max height",
     );
-    size = constraints.biggest;
     final allChildren = <RenderBox>[];
+    final infiniteChildren = <RenderBox>[];
     RenderBox? child = firstChild;
 
     while (child != null) {
@@ -213,20 +218,35 @@ class RenderRubricElementStack extends RenderBox
         childParentData.width = newData.width;
         childParentData.height = newData.height;
       }
-      final BoxConstraints childConstraints =
-          childParentData.positionedChildConstraints(size);
+
+      final BoxConstraints? childConstraints =
+          childParentData.positionedChildConstraints();
+
+      // It had and infinite bound box, these must be processed at the end.
+      if (childConstraints == null) {
+        infiniteChildren.add(child);
+        continue;
+      }
+
+      // normally you would set 'parentUsesSize' to true but i dont really need to.
       child.layout(childConstraints, parentUsesSize: false);
 
-      // If you are given infinite set offset at true zero so it covers the screen.
-      if (childParentData.width.isInfinite) {
-        childParentData.offset = Offset.zero;
-      } else {
-        // otherwise offset it correctly
-        childParentData.offset = Offset(
-          (childParentData.x + offset.dx),
-          (childParentData.y + offset.dy),
-        );
-      }
+      double yValue = childParentData.y + offset.dy;
+      maxHeight = math.max(yValue + childConstraints.maxHeight, maxHeight);
+      // otherwise offset it correctly
+      childParentData.offset = Offset(
+        (childParentData.x + offset.dx),
+        yValue,
+      );
+    }
+    size = Size(constraints.biggest.width, maxHeight + offset.dy * 2);
+
+    for (var infiniteChild in infiniteChildren) {
+      final childParentData =
+          infiniteChild.parentData as RubricPositionParentData;
+      infiniteChild.layout(
+          BoxConstraints.tightFor(width: size.width, height: size.height));
+      childParentData.offset = Offset.zero;
     }
   }
 

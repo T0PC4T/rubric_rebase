@@ -1,13 +1,24 @@
 import 'package:rubric/src/rubric_editor/models/style.dart';
 
-enum AspectRatios {
-  oneToOne("1:1", 1),
-  fourThree("4:3", 4 / 3),
-  twoOne("2:1", 2 / 1);
+abstract class AspectRatios {
+  static const double oneToOne = 1;
+  static const double fourThree = 4 / 3;
+  static const double twoOne = 2 / 1;
 
-  final String display;
-  final double value;
-  const AspectRatios(this.display, this.value);
+  static String doubleToRatio(double ratio) {
+    switch (ratio) {
+      case oneToOne:
+        return "1:1";
+      case fourThree:
+        return "4:3";
+      case twoOne:
+        return "2:1";
+      default:
+        return ratio.toString();
+    }
+  }
+
+  static const values = [oneToOne, fourThree, twoOne];
 }
 
 enum ElementPadding {

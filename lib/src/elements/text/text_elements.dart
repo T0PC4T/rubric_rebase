@@ -47,6 +47,19 @@ class TextEditorElementState
     }
   }
 
+  double _oldHeight = 0;
+  _onChange(String value) {
+    final box = (context.findRenderObject() as RenderBox);
+    if (_oldHeight != box.size.height) {
+      _oldHeight = box.size.height;
+      final properties = widget.element.getProperties<TextElementModel>();
+      editorState.canvas.updateElement(
+        widget.element,
+        properties.copyWith(text: controller.text).toJson(),
+      );
+    }
+  }
+
   @override
   void didUpdateWidget(covariant TextEditorElement oldWidget) {
     // TODO update this widget correctly
@@ -105,17 +118,7 @@ class TextEditorElementState
       // cursorRadius: Radius.circular(2),
       // textInputAction: TextInputAction.newline,
       // textCapitalization: TextCapitalization.sentences,
-      onChanged: (value) {
-        // editorState.canvas.updateElement(
-        //   widget.element,
-        //   TextElementModel(
-        //           text: value,
-        //           color: Colors.black,
-        //           isBold: false,
-        //           size: 12)
-        //       .toJson(),
-        // );
-      },
+      onChanged: _onChange,
       scrollController: _scrollController,
       controller: controller,
       focusNode: focusNode,

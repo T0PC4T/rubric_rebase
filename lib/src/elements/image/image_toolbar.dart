@@ -73,7 +73,7 @@ class ImageTooltipWidget extends StatelessWidget {
             }
           },
           items: [
-            for (var value in ["cover", "fill", "contain"])
+            for (var value in ImageFits.all)
               RubricDropdownMenuItem(
                 value: value,
                 text: value,
@@ -103,10 +103,10 @@ class ImageTooltipWidget extends StatelessWidget {
             }
           },
           items: [
-            for (var value in AspectRatios.values)
+            for (var ratio in AspectRatios.values)
               RubricDropdownMenuItem(
-                value: value.value,
-                text: value.display,
+                value: ratio,
+                text: AspectRatios.doubleToRatio(ratio),
               ),
           ],
           child: Row(

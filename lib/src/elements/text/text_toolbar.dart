@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
+import 'package:rubric/src/components/atoms/divider.dart';
+import 'package:rubric/src/components/atoms/popup.dart';
+import 'package:rubric/src/components/molecules/color_picker.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
@@ -21,53 +24,111 @@ class TextTooltipWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final editorState = RubricEditorState.of(context);
-    final style = editorState.style;
-    final properties = element.getProperties<TextElementModel>();
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        RubricIconButton(
-            size: ElementToolbarWidget.elementToolbarHeight,
-            onTap: () {
-              final newProperties = element.getProperties<TextElementModel>();
-              editorState.canvas.updateElement(
-                  element,
-                  newProperties
-                      .copyWith(isBold: !newProperties.isBold)
-                      .toJson());
-            },
-            iconData: Icons.format_bold),
-        RubricToolbarDropdown(
-          onUpdate: (value) {
-            if (value case double newValue) {
-              final newProperties = element
-                  .getProperties<TextElementModel>()
-                  .copyWith(size: newValue);
-              editorState.canvas.updateElement(element, newProperties.toJson());
-            }
-          },
-          items: [
-            for (var value in FontSizes.values)
-              RubricDropdownMenuItem(
-                value: value.value,
-                text: value.display,
-              ),
-          ],
-          child: Row(
-            spacing: RubricEditorStyle.paddingUnit * 0.5,
+
+    return ValueListenableBuilder(
+        valueListenable: editorState.canvas,
+        builder: (context, canvalModel, child) {
+          final properties =
+              canvalModel.element(element.id).getProperties<TextElementModel>();
+          return Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.text_fields_rounded,
-                size: ElementToolbarWidget.iconSize,
+              RubricIconButton(
+                  isActive: properties.isBold,
+                  size: ElementToolbarWidget.elementToolbarHeight,
+                  onTap: () {
+                    final newProperties =
+                        element.getProperties<TextElementModel>();
+                    editorState.canvas.updateElement(
+                        element,
+                        newProperties
+                            .copyWith(isBold: !newProperties.isBold)
+                            .toJson());
+                  },
+                  iconData: Icons.format_bold),
+              RubricIconButton(
+                  isActive: properties.isItalic,
+                  size: ElementToolbarWidget.elementToolbarHeight,
+                  onTap: () {
+                    final newProperties =
+                        element.getProperties<TextElementModel>();
+                    editorState.canvas.updateElement(
+                        element,
+                        newProperties
+                            .copyWith(isItalic: !newProperties.isItalic)
+                            .toJson());
+                  },
+                  iconData: Icons.format_italic),
+              RubricIconButton(
+                  isActive: properties.isUnderline,
+                  size: ElementToolbarWidget.elementToolbarHeight,
+                  onTap: () {
+                    final newProperties =
+                        element.getProperties<TextElementModel>();
+                    editorState.canvas.updateElement(
+                        element,
+                        newProperties
+                            .copyWith(isUnderline: !newProperties.isUnderline)
+                            .toJson());
+                  },
+                  iconData: Icons.format_underline),
+              RubricVerticleDivider(),
+              Padding(
+                padding: RubricEditorStyle.padding,
+                child: RubricColorButton(
+                  color: properties.color,
+                  onTap: () async {
+                    final newColor =
+                        await PopupWidget.showPopup<Color>(context, (
+                      closeWith,
+                    ) {
+                      return RubricColorPicker(
+                        onComplete: closeWith,
+                        color: properties.color,
+                      );
+                    });
+                    if (newColor != null) {
+                      editorState.canvas.updateElement(
+                        element,
+                        properties.copyWith(color: newColor).toJson(),
+                      );
+                    }
+                  },
+                ),
               ),
-              RubricText("Font Size"),
+              RubricToolbarDropdown(
+                onUpdate: (value) {
+                  if (value case double newValue) {
+                    final newProperties = element
+                        .getProperties<TextElementModel>()
+                        .copyWith(size: newValue);
+                    editorState.canvas
+                        .updateElement(element, newProperties.toJson());
+                  }
+                },
+                items: [
+                  for (var value in FontSizes.values)
+                    RubricDropdownMenuItem(
+                      value: value.value,
+                      text: value.display,
+                    ),
+                ],
+                child: Row(
+                  spacing: RubricEditorStyle.paddingUnit * 0.5,
+                  children: [
+                    Icon(
+                      Icons.text_fields_rounded,
+                      size: ElementToolbarWidget.iconSize,
+                    ),
+                    RubricText("Font Size"),
+                  ],
+                ),
+              ),
+              ToolbarUniversalIcons(
+                element: element,
+              ),
             ],
-          ),
-        ),
-        ToolbarUniversalIcons(
-          element: element,
-        ),
-      ],
-    );
+          );
+        });
   }
 }
