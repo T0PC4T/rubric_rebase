@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
+import 'package:rubric/src/components/molecules/icon_button.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
+import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/element.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/position.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/scalar.dart';
@@ -44,7 +46,7 @@ class ElementHandlerWidget extends StatelessWidget {
                         : Colors.transparent,
                     border: Border.all(
                       width: 2,
-                      color: selected ? style.theme : Colors.transparent,
+                      color: selected ? style.theme : style.theme8,
                     ),
                   ),
                 ),
@@ -66,7 +68,39 @@ class ElementHandlerWidget extends StatelessWidget {
                   alignment: Alignment.bottomRight,
                   child: ScalarWidget(element: element, scalarIndex: 3),
                 ),
-              ]
+              ],
+              if (element.fixed && !selected)
+                Positioned(
+                  right: 2,
+                  top: 2,
+                  height: ElementToolbarWidget.iconSize,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (element.orderIndex > 0)
+                        RubricIconButton(
+                            iconData: Icons.keyboard_arrow_up_rounded,
+                            size: ElementToolbarWidget.iconSize,
+                            isDark: false,
+                            onTap: () {
+                              editorState.canvas.reorderElements(null,
+                                  element.orderIndex, element.orderIndex - 1);
+                              editorState.edits.selectElement(null);
+                            }),
+                      if (element.orderIndex <
+                          editorState.canvas.value.elements.length - 1)
+                        RubricIconButton(
+                            iconData: Icons.keyboard_arrow_down_rounded,
+                            size: ElementToolbarWidget.iconSize,
+                            isDark: false,
+                            onTap: () {
+                              editorState.canvas.reorderElements(null,
+                                  element.orderIndex, element.orderIndex + 2);
+                              editorState.edits.selectElement(null);
+                            }),
+                    ],
+                  ),
+                ),
             ],
           ),
         ),

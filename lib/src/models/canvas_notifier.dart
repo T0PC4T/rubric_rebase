@@ -15,7 +15,6 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
 
   @override
   notifyListeners() {
-    print("CanvasNotifier.notifying");
     super.notifyListeners();
   }
 
@@ -66,7 +65,11 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
 
   fixElement(ElementModel element, bool fixed) {
     element.fixedWidth = fixed ? 1 : 0;
-    commit();
+    if (!fixed) {
+      sendTo(element, front: true);
+    } else {
+      commit();
+    }
   }
 
   updateElement(ElementModel element, [Map<String, dynamic>? properties]) {
@@ -77,20 +80,20 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   }
 
   reorderElements(
-      List<ElementModel> orderedElements, int oldIndex, int newIndex) {
+      List<ElementModel>? cachedElements, int oldIndex, int newIndex) {
     // ? I switched this around because the list is reverse beware.
-
+    cachedElements ??= value.orderedElements.toList();
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    final ElementModel item = orderedElements.removeAt(oldIndex);
-    orderedElements.insert(newIndex, item);
-    for (var i = 0; i < orderedElements.length; i++) {
+    final ElementModel item = cachedElements.removeAt(oldIndex);
+    cachedElements.insert(newIndex, item);
+    for (var i = 0; i < cachedElements.length; i++) {
       value.elements
           .firstWhere(
-            (element) => element.id == orderedElements[i].id,
+            (element) => element.id == cachedElements![i].id,
           )
-          .orderIndex = i * 2;
+          .orderIndex = i;
     }
     commit();
   }

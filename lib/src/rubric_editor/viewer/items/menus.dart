@@ -43,7 +43,7 @@ class DeleteMenu extends StatelessWidget {
                     spacing: RubricEditorStyle.paddingNum,
                     children: [
                       Icon(
-                        Icons.arrow_upward_rounded,
+                        Icons.flip_to_front_rounded,
                         size: rightMenuButtonHeight * 0.45,
                       ),
                       RubricText(
@@ -71,7 +71,7 @@ class DeleteMenu extends StatelessWidget {
                     spacing: RubricEditorStyle.paddingNum,
                     children: [
                       Icon(
-                        Icons.arrow_downward_rounded,
+                        Icons.flip_to_back_rounded,
                         size: rightMenuButtonHeight * 0.45,
                       ),
                       RubricText(

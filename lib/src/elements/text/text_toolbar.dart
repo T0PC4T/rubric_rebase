@@ -73,6 +73,18 @@ class TextTooltipWidget extends StatelessWidget {
                   },
                   iconData: Icons.format_underline),
               RubricVerticleDivider(),
+              for (var align in ElementAlignment.all)
+                RubricIconButton(
+                    isActive: properties.isUnderline,
+                    size: ElementToolbarWidget.elementToolbarHeight,
+                    onTap: () {
+                      final newProperties =
+                          element.getProperties<TextElementModel>();
+                      editorState.canvas.updateElement(element,
+                          newProperties.copyWith(alignment: align).toJson());
+                    },
+                    iconData: ElementAlignment.icon(align)),
+              RubricVerticleDivider(),
               Padding(
                 padding: RubricEditorStyle.padding,
                 child: RubricColorButton(
@@ -113,16 +125,7 @@ class TextTooltipWidget extends StatelessWidget {
                       text: value.display,
                     ),
                 ],
-                child: Row(
-                  spacing: RubricEditorStyle.paddingUnit * 0.5,
-                  children: [
-                    Icon(
-                      Icons.text_fields_rounded,
-                      size: ElementToolbarWidget.iconSize,
-                    ),
-                    RubricText("Font Size"),
-                  ],
-                ),
+                child: RubricText("Font Size"),
               ),
               ToolbarUniversalIcons(
                 element: element,

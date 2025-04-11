@@ -24,6 +24,7 @@ mixin _$TextElementModel {
   bool get isBold => throw _privateConstructorUsedError;
   bool get isItalic => throw _privateConstructorUsedError;
   dynamic get isUnderline => throw _privateConstructorUsedError;
+  String get alignment => throw _privateConstructorUsedError;
   double get size => throw _privateConstructorUsedError;
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   Color get color => throw _privateConstructorUsedError;
@@ -49,6 +50,7 @@ abstract class $TextElementModelCopyWith<$Res> {
       bool isBold,
       bool isItalic,
       dynamic isUnderline,
+      String alignment,
       double size,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color});
 }
@@ -72,6 +74,7 @@ class _$TextElementModelCopyWithImpl<$Res, $Val extends TextElementModel>
     Object? isBold = null,
     Object? isItalic = null,
     Object? isUnderline = freezed,
+    Object? alignment = null,
     Object? size = null,
     Object? color = null,
   }) {
@@ -92,6 +95,10 @@ class _$TextElementModelCopyWithImpl<$Res, $Val extends TextElementModel>
           ? _value.isUnderline
           : isUnderline // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      alignment: null == alignment
+          ? _value.alignment
+          : alignment // ignore: cast_nullable_to_non_nullable
+              as String,
       size: null == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
@@ -117,6 +124,7 @@ abstract class _$$TextElementModelImplCopyWith<$Res>
       bool isBold,
       bool isItalic,
       dynamic isUnderline,
+      String alignment,
       double size,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color});
 }
@@ -138,6 +146,7 @@ class __$$TextElementModelImplCopyWithImpl<$Res>
     Object? isBold = null,
     Object? isItalic = null,
     Object? isUnderline = freezed,
+    Object? alignment = null,
     Object? size = null,
     Object? color = null,
   }) {
@@ -155,6 +164,10 @@ class __$$TextElementModelImplCopyWithImpl<$Res>
           : isItalic // ignore: cast_nullable_to_non_nullable
               as bool,
       isUnderline: freezed == isUnderline ? _value.isUnderline! : isUnderline,
+      alignment: null == alignment
+          ? _value.alignment
+          : alignment // ignore: cast_nullable_to_non_nullable
+              as String,
       size: null == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
@@ -176,6 +189,7 @@ class _$TextElementModelImpl extends _TextElementModel {
       this.isBold = false,
       this.isItalic = false,
       this.isUnderline = false,
+      this.alignment = ElementAlignment.left,
       required this.size,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
       required this.color})
@@ -196,6 +210,9 @@ class _$TextElementModelImpl extends _TextElementModel {
   @JsonKey()
   final dynamic isUnderline;
   @override
+  @JsonKey()
+  final String alignment;
+  @override
   final double size;
   @override
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
@@ -203,7 +220,7 @@ class _$TextElementModelImpl extends _TextElementModel {
 
   @override
   String toString() {
-    return 'TextElementModel(text: $text, isBold: $isBold, isItalic: $isItalic, isUnderline: $isUnderline, size: $size, color: $color)';
+    return 'TextElementModel(text: $text, isBold: $isBold, isItalic: $isItalic, isUnderline: $isUnderline, alignment: $alignment, size: $size, color: $color)';
   }
 
   @override
@@ -217,6 +234,8 @@ class _$TextElementModelImpl extends _TextElementModel {
                 other.isItalic == isItalic) &&
             const DeepCollectionEquality()
                 .equals(other.isUnderline, isUnderline) &&
+            (identical(other.alignment, alignment) ||
+                other.alignment == alignment) &&
             (identical(other.size, size) || other.size == size) &&
             (identical(other.color, color) || other.color == color));
   }
@@ -224,7 +243,7 @@ class _$TextElementModelImpl extends _TextElementModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, text, isBold, isItalic,
-      const DeepCollectionEquality().hash(isUnderline), size, color);
+      const DeepCollectionEquality().hash(isUnderline), alignment, size, color);
 
   /// Create a copy of TextElementModel
   /// with the given fields replaced by the non-null parameter values.
@@ -249,6 +268,7 @@ abstract class _TextElementModel extends TextElementModel {
       final bool isBold,
       final bool isItalic,
       final dynamic isUnderline,
+      final String alignment,
       required final double size,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
       required final Color color}) = _$TextElementModelImpl;
@@ -265,6 +285,8 @@ abstract class _TextElementModel extends TextElementModel {
   bool get isItalic;
   @override
   dynamic get isUnderline;
+  @override
+  String get alignment;
   @override
   double get size;
   @override

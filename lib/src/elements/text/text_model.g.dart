@@ -13,6 +13,7 @@ _$TextElementModelImpl _$$TextElementModelImplFromJson(
       isBold: json['isBold'] as bool? ?? false,
       isItalic: json['isItalic'] as bool? ?? false,
       isUnderline: json['isUnderline'] ?? false,
+      alignment: json['alignment'] as String? ?? ElementAlignment.left,
       size: (json['size'] as num).toDouble(),
       color: colorFromJson((json['color'] as num).toInt()),
     );
@@ -24,6 +25,7 @@ Map<String, dynamic> _$$TextElementModelImplToJson(
       'isBold': instance.isBold,
       'isItalic': instance.isItalic,
       'isUnderline': instance.isUnderline,
+      'alignment': instance.alignment,
       'size': instance.size,
       'color': colorToJson(instance.color),
     };

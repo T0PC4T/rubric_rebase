@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/src/painting/text_style.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/utilities/color.dart';
 
 part 'text_model.freezed.dart';
@@ -16,6 +17,7 @@ abstract class TextElementModel with _$TextElementModel {
     @Default(false) bool isBold,
     @Default(false) bool isItalic,
     @Default(false) isUnderline,
+    @Default(ElementAlignment.left) String alignment,
     required double size,
     @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color color,
   }) = _TextElementModel;

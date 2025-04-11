@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
 
 abstract class AspectRatios {
@@ -19,6 +20,30 @@ abstract class AspectRatios {
   }
 
   static const values = [oneToOne, fourThree, twoOne];
+}
+
+abstract class ElementAlignment {
+  static const left = "left";
+  static const center = "center";
+  static const right = "right";
+  static const all = [left, center, right];
+  static icon(String alignment) {
+    return switch (alignment) {
+      left => Icons.format_align_left_rounded,
+      center => Icons.format_align_center_rounded,
+      right => Icons.format_align_right_rounded,
+      _ => Icons.error,
+    };
+  }
+
+  static TextAlign textAlign(String alignment) {
+    return switch (alignment) {
+      left => TextAlign.left,
+      center => TextAlign.center,
+      right => TextAlign.right,
+      _ => TextAlign.left,
+    };
+  }
 }
 
 enum ElementPadding {

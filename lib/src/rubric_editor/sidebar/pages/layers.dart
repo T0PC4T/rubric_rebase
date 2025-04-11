@@ -45,7 +45,7 @@ class LayersPageWidget extends StatelessWidget {
 class LayerWidget extends StatelessWidget {
   const LayerWidget({super.key, required this.element});
   static const double layerBoundary = 40;
-  static const double layerHeight = 70;
+  static const double layerHeight = 80;
   final ElementModel element;
 
   @override
@@ -65,10 +65,46 @@ class LayerWidget extends StatelessWidget {
           top: 10,
           bottom: 10,
         ),
-        color: editorState.style.light,
+        color: Colors.transparent,
         height: layerHeight,
         width: double.infinity,
-        child: element.type.layerBuilder(element: element),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(right: RubricEditorStyle.paddingNum),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      editorState.canvas.fixElement(element, false);
+                    },
+                    child: Icon(
+                      Icons.lock_open_outlined,
+                      size: 20,
+                      color: !element.fixed
+                          ? editorState.style.theme
+                          : editorState.style.dark,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      editorState.canvas.fixElement(element, true);
+                    },
+                    child: Icon(
+                      Icons.lock_outline,
+                      size: 20,
+                      color: element.fixed
+                          ? editorState.style.theme
+                          : editorState.style.dark,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: element.type.layerBuilder(element: element)),
+          ],
+        ),
       ),
     );
   }

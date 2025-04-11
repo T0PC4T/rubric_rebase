@@ -88,9 +88,6 @@ class CanvasModel {
   String toJson() => json.encode(toMap());
 
   factory CanvasModel.fromJson(String source) {
-    print("DECOING");
-    print(json.decode(source));
-    print(json.decode(source).runtimeType);
     return CanvasModel.fromMap(json.decode(source) as Map<String, dynamic>);
   }
 

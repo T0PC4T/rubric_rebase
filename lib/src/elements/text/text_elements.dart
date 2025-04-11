@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
+import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/text/text_toolbar.dart';
@@ -62,7 +63,11 @@ class TextEditorElementState
 
   @override
   void didUpdateWidget(covariant TextEditorElement oldWidget) {
-    // TODO update this widget correctly
+    final properties = widget.element.getProperties<TextElementModel>();
+    final oldProperties = oldWidget.element.getProperties<TextElementModel>();
+    if (properties.text != oldProperties.text) {
+      controller.text = properties.text;
+    }
 
     super.didUpdateWidget(oldWidget);
   }
@@ -90,11 +95,15 @@ class TextEditorElementState
 
   @override
   Widget build(BuildContext context) {
-    final textElement = widget.element.getProperties<TextElementModel>();
-    final textStyle = textElement.textStyle();
+    final properties = widget.element.getProperties<TextElementModel>();
+    final textStyle = properties.textStyle();
     editorState = RubricEditorState.of(context);
-    if (textElement.text.isEmpty && !editorState.edits.isFocused(element)) {
-      return Text("[Enter you text in here]", style: textStyle);
+    if (properties.text.isEmpty && !editorState.edits.isFocused(element)) {
+      return Text(
+        "[Enter you text in here]",
+        style: textStyle,
+        textAlign: ElementAlignment.textAlign(properties.alignment),
+      );
     }
     return EditableText(
       undoController: undoController,
@@ -103,7 +112,7 @@ class TextEditorElementState
       backgroundCursorColor: Colors.black,
       keyboardType: TextInputType.multiline,
       maxLines: null,
-      textAlign: TextAlign.start,
+      textAlign: ElementAlignment.textAlign(properties.alignment),
       selectionColor: Colors.blue.withAlpha(50),
       selectionControls: materialTextSelectionControls,
       rendererIgnoresPointer: false,
@@ -152,6 +161,7 @@ class TextReaderWidget extends StatelessWidget {
     final properties = element.getProperties<TextElementModel>();
     return Text(
       properties.text,
+      textAlign: ElementAlignment.textAlign(properties.alignment),
       style: properties.textStyle(),
     );
   }

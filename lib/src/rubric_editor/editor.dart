@@ -20,12 +20,14 @@ class RubricEditor extends StatefulWidget {
   final RubricEditorStyle style;
   final CanvasModel? canvas;
   final Function([CanvasModel? canvas]) onSave;
+  final Function() onDiscard;
   final Future<String> Function(Uint8List bytes, {String? name, String? type})
       bytesToURL;
   const RubricEditor({
     super.key,
     required this.style,
     required this.onSave,
+    required this.onDiscard,
     required this.bytesToURL,
     this.canvas,
   });
@@ -84,6 +86,10 @@ class RubricEditorState extends State<RubricEditor> {
 
   save() {
     widget.onSave(canvas.value);
+  }
+
+  discard() {
+    widget.onDiscard();
   }
 
   undo() {

@@ -16,6 +16,7 @@ class RubricEditorStyle {
   final Color theme;
   final Color dark;
   final Color light;
+  final Color danger;
   final Color borderColor;
   final List<Color> brandColors;
 
@@ -38,9 +39,11 @@ class RubricEditorStyle {
     ), // color picker text should be black
     this.dark = const Color.fromARGB(255, 0, 0, 0),
     this.light = const Color.fromARGB(255, 255, 255, 255),
+    this.danger = Colors.red,
     this.borderColor = const Color.fromARGB(255, 212, 212, 212),
   });
 
+  Color get theme8 => Color.lerp(theme, light, 0.8)!;
   Color get theme7 => Color.lerp(theme, light, 0.7)!;
   Color get theme4 => Color.lerp(theme, light, 0.4)!; // for theme hover
   Color get theme2 => Color.lerp(theme, light, 0.2)!; // for theme hover

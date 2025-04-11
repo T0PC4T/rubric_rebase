@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
+import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 
 class NavbarWidget extends StatelessWidget {
   static const double navbarHeight = 56;
@@ -25,7 +26,7 @@ class NavbarWidget extends StatelessWidget {
               child: Image.network(style.logoUrl)),
           Container(
             padding: RubricEditorStyle.padding,
-            width: NavbarWidget.navbarHeight * 4,
+            width: NavbarWidget.navbarHeight * 5,
             alignment: Alignment.centerLeft,
             child: RubricText(
               isDark: true,
@@ -34,16 +35,6 @@ class NavbarWidget extends StatelessWidget {
             ),
           ),
 
-          // ! Removed Functionality
-          // RubricTextField(
-          //   width: NavbarWidget.navbarHeight * 4,
-          //   initialValue: editorState.canvas.value.settings.name,
-          //   onChanged: (value) {
-          //     editorState.canvas.updateSettings(
-          //       editorState.canvas.value.settings.copyWith(name: value),
-          //     );
-          //   },
-          // ),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -117,6 +108,22 @@ class NavbarWidget extends StatelessWidget {
               editorState.edits.selectElement(null);
               editorState.save();
             },
+          ),
+          // Dropdown that will show exit without saving.
+          RubricButton(
+            width: NavbarWidget.navbarHeight,
+            height: NavbarWidget.navbarHeight,
+            backgroundColor: Color.lerp(style.dark, style.danger, 0.4)!,
+            hoverColor: Color.lerp(style.dark, style.danger, 0.8)!,
+            onTap: () {
+              editorState.edits.selectElement(null);
+              editorState.discard();
+            },
+            child: Icon(
+              Icons.close,
+              color: style.light,
+              size: ElementToolbarWidget.iconSize,
+            ),
           ),
         ],
       ),
