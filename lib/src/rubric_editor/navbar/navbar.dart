@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
+import 'package:rubric/src/rubric_editor/navbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 
 class NavbarWidget extends StatelessWidget {
@@ -110,17 +111,33 @@ class NavbarWidget extends StatelessWidget {
             },
           ),
           // Dropdown that will show exit without saving.
-          RubricButton(
+          Container(
+            width: 1,
+            height: NavbarWidget.navbarHeight,
+            color: style.theme,
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              width: 1,
+              height: NavbarWidget.navbarHeight - 10,
+              color: style.light,
+            ),
+          ),
+          RubricButton.theme(
+            style,
             width: NavbarWidget.navbarHeight,
             height: NavbarWidget.navbarHeight,
-            backgroundColor: Color.lerp(style.dark, style.danger, 0.4)!,
-            hoverColor: Color.lerp(style.dark, style.danger, 0.8)!,
             onTap: () {
               editorState.edits.selectElement(null);
-              editorState.discard();
+              if (editorState.overlays.any(
+                (element) => element.runtimeType == SaveDropDownWidget,
+              )) {
+                editorState.popOverlay();
+                return;
+              }
+              editorState.pushOverlay(SaveDropDownWidget(), removeToLength: 0);
             },
             child: Icon(
-              Icons.close,
+              Icons.keyboard_arrow_down_rounded,
               color: style.light,
               size: ElementToolbarWidget.iconSize,
             ),

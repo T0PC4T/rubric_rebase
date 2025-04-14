@@ -98,39 +98,27 @@ class TextEditorElementState
     final properties = widget.element.getProperties<TextElementModel>();
     final textStyle = properties.textStyle();
     editorState = RubricEditorState.of(context);
-    if (properties.text.isEmpty && !editorState.edits.isFocused(element)) {
-      return Text(
-        "[Enter you text in here]",
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: properties.size * 0.5),
+      child: TextField(
+        decoration:
+            InputDecoration.collapsed(hintText: "Enter you text in here"),
+        undoController: undoController,
         style: textStyle,
+        cursorColor: Colors.black,
+        keyboardType: TextInputType.multiline,
         textAlign: ElementAlignment.textAlign(properties.alignment),
-      );
-    }
-    return EditableText(
-      undoController: undoController,
-      style: textStyle,
-      cursorColor: Colors.black,
-      backgroundCursorColor: Colors.black,
-      keyboardType: TextInputType.multiline,
-      maxLines: null,
-      textAlign: ElementAlignment.textAlign(properties.alignment),
-      selectionColor: Colors.blue.withAlpha(50),
-      selectionControls: materialTextSelectionControls,
-      rendererIgnoresPointer: false,
-      readOnly: false,
-      // autocorrect: true,
-      // enableSuggestions: true,
-      // expands: true,
-      minLines: null,
-      // obscureText: false,
-      // showCursor: true,
-      // cursorWidth: 2,
-      // cursorRadius: Radius.circular(2),
-      // textInputAction: TextInputAction.newline,
-      // textCapitalization: TextCapitalization.sentences,
-      onChanged: _onChange,
-      scrollController: _scrollController,
-      controller: controller,
-      focusNode: focusNode,
+        selectionControls: DesktopTextSelectionControls(),
+        maxLines: null,
+        enableInteractiveSelection: true,
+        readOnly: false,
+        minLines: null,
+        onChanged: _onChange,
+        scrollController: _scrollController,
+        controller: controller,
+        focusNode: focusNode,
+      ),
     );
   }
 }
@@ -146,7 +134,7 @@ class TextLayerWidget extends StatelessWidget {
     return Text(
       maxLines: 1,
       textElement.text,
-      style: textElement.textStyle(),
+      style: textElement.textStyle().copyWith(fontSize: 14),
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -159,10 +147,13 @@ class TextReaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final properties = element.getProperties<TextElementModel>();
-    return Text(
-      properties.text,
-      textAlign: ElementAlignment.textAlign(properties.alignment),
-      style: properties.textStyle(),
+    return Padding(
+      padding: EdgeInsets.only(bottom: properties.size * 0.5),
+      child: Text(
+        properties.text,
+        textAlign: ElementAlignment.textAlign(properties.alignment),
+        style: properties.textStyle(),
+      ),
     );
   }
 }

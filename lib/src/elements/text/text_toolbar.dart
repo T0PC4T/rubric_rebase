@@ -75,7 +75,7 @@ class TextTooltipWidget extends StatelessWidget {
               RubricVerticleDivider(),
               for (var align in ElementAlignment.all)
                 RubricIconButton(
-                    isActive: properties.isUnderline,
+                    isActive: properties.alignment == align,
                     size: ElementToolbarWidget.elementToolbarHeight,
                     onTap: () {
                       final newProperties =
