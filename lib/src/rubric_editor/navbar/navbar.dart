@@ -119,12 +119,12 @@ class NavbarWidget extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 5),
               width: 1,
               height: NavbarWidget.navbarHeight - 10,
-              color: style.light,
+              color: style.light.withAlpha(100),
             ),
           ),
           RubricButton.theme(
             style,
-            width: NavbarWidget.navbarHeight,
+            width: NavbarWidget.navbarHeight * .66,
             height: NavbarWidget.navbarHeight,
             onTap: () {
               editorState.edits.selectElement(null);

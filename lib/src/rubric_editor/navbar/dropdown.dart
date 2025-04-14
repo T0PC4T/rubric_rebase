@@ -13,7 +13,7 @@ class SaveDropDownWidget extends StatelessWidget {
     return Positioned(
         top: NavbarWidget.navbarHeight,
         right: 0,
-        width: NavbarWidget.navbarHeight * 3 + 1,
+        width: NavbarWidget.navbarHeight * 2.66 + 1,
         child: RubricButton(
           backgroundColor: Color.lerp(style.dark, style.danger, 0.4)!,
           hoverColor: Color.lerp(style.dark, style.danger, 0.8)!,

@@ -40,7 +40,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
       Item(
         title: "Details",
         icon: Icons.edit_document,
-        isExpanded: false,
+        isExpanded: true,
         bodyBuilder: (context) {
           final style = editorState!.style;
           return Column(
