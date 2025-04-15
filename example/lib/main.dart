@@ -35,19 +35,12 @@ class MyApp extends StatelessWidget {
         body:
             b
                 ? RubricLessonEditorWidget(
-                  moduleID: "4fvNvIN5wYjiJPoAsCH3",
+                  moduleID: "1B1kaC7rxjAfgNKoJl4n",
                   onSaved: () async {},
                 )
-                : Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(color: Colors.black, height: 52),
-                    Expanded(
-                      child: RubricLessonReaderWidget(
-                        moduleID: "4fvNvIN5wYjiJPoAsCH3",
-                      ),
-                    ),
-                  ],
+                : RubricLessonReaderWidget(
+                  moduleID: "1B1kaC7rxjAfgNKoJl4n",
+                  onComplete: () async {},
                 ),
       ),
     );

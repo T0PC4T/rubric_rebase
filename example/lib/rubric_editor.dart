@@ -46,8 +46,12 @@ class _RubricLessonEditorWidgetState extends State<RubricLessonEditorWidget> {
           data: DocumentSnapshot<Map<String, dynamic>> data,
         )) {
           final map = data.data();
+          final canvas =
+              map?["lesson_data"] == null
+                  ? CanvasModel()
+                  : CanvasModel.fromJson(map!["lesson_data"]);
           return RubricEditor(
-            canvas: CanvasModel.fromJson(map!["lesson_data"]),
+            canvas: canvas,
             // canvas: CanvasModel(),
             onDiscard: () {
               widget.onSaved();

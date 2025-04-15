@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
 import 'package:rubric/src/rubric_editor/models/stack.dart';
@@ -239,7 +240,8 @@ class RenderRubricElementStack extends RenderBox
         yValue,
       );
     }
-    size = Size(constraints.biggest.width, maxHeight + offset.dy * 2);
+    size = Size(constraints.biggest.width,
+        math.max(maxHeight + offset.dy * 2, GridSizes.pageSize));
 
     for (var infiniteChild in infiniteChildren) {
       final childParentData =
