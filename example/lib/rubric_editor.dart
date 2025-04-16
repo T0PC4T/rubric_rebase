@@ -46,13 +46,21 @@ class _RubricLessonEditorWidgetState extends State<RubricLessonEditorWidget> {
           data: DocumentSnapshot<Map<String, dynamic>> data,
         )) {
           final map = data.data();
-          final canvas =
-              map?["lesson_data"] == null
-                  ? CanvasModel()
-                  : CanvasModel.fromJson(map!["lesson_data"]);
+          CanvasModel canvasModel;
+          if (map?["lesson_data"] == null) {
+            canvasModel = CanvasModel();
+            canvasModel = canvasModel.copyWith(
+              settings: canvasModel.settings.copyWith(
+                name: map?["name"] ?? "Untitled",
+                icon: map?["icon"] ?? "doc",
+              ),
+            );
+          } else {
+            canvasModel = CanvasModel.fromJson(map!["lesson_data"]);
+          }
+
           return RubricEditor(
-            canvas: canvas,
-            // canvas: CanvasModel(),
+            canvas: canvasModel,
             onDiscard: () {
               widget.onSaved();
             },
@@ -81,7 +89,7 @@ class _RubricLessonEditorWidgetState extends State<RubricLessonEditorWidget> {
             },
             style: RubricEditorStyle(
               logoUrl:
-                  "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Fbleep_logo.webp?alt=media",
+                  "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Flogo.png?alt=media",
             ),
           );
         }

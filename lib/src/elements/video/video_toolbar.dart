@@ -10,14 +10,20 @@ import 'package:rubric/src/elements/video/video_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 
-class VideoTooltipWidget extends StatelessWidget {
+class VideoTooltipWidget extends StatefulWidget {
   final ElementModel element;
   const VideoTooltipWidget({super.key, required this.element});
 
   @override
+  State<VideoTooltipWidget> createState() => _VideoTooltipWidgetState();
+}
+
+class _VideoTooltipWidgetState extends State<VideoTooltipWidget> {
+  String lastValue = "";
+  @override
   Widget build(BuildContext context) {
     final editorState = RubricEditorState.of(context);
-    final properties = element.getProperties<VideoElementModel>();
+    final properties = widget.element.getProperties<VideoElementModel>();
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -34,15 +40,23 @@ class VideoTooltipWidget extends StatelessWidget {
                         "Enter Youtube Link",
                         textType: TextType.title,
                       ),
-                      RubricTextField(
-                        onChanged: closeWith,
-                        helpText: "https://www.youtube.com/watch?v=abcdefgh",
-                        initialValue:
-                            properties.isYoutube ? properties.videoUrl : "",
+                      Padding(
+                        padding: RubricEditorStyle.padding,
+                        child: RubricTextField(
+                          onComplete: closeWith,
+                          onChanged: (value) {
+                            lastValue = value;
+                          },
+                          helpText: "https://www.youtube.com/watch?v=abcdefgh",
+                          initialValue:
+                              properties.isYoutube ? properties.videoUrl : "",
+                        ),
                       ),
-                      RubricText(
-                        "[Press Enter to Continue]",
-                      ),
+                      RubricButton.light(editorState.style,
+                          width: 150,
+                          height: 30,
+                          onTap: () => closeWith(lastValue),
+                          child: Text("Save Link"))
                     ],
                   ),
                 );
@@ -50,7 +64,7 @@ class VideoTooltipWidget extends StatelessWidget {
             );
             if (videoUrl case String newUrl) {
               editorState.canvas.updateElement(
-                element,
+                widget.element,
                 properties.copyWith(videoUrl: newUrl, isYoutube: true).toJson(),
               );
             }
@@ -73,7 +87,7 @@ class VideoTooltipWidget extends StatelessWidget {
                   name: result.files.first.name,
                 );
                 editorState.canvas.updateElement(
-                  element,
+                  widget.element,
                   properties
                       .copyWith(videoUrl: videoUrl, isYoutube: false)
                       .toJson(),
@@ -84,7 +98,7 @@ class VideoTooltipWidget extends StatelessWidget {
           iconData: Icons.image,
           text: "Upload Video File",
         ),
-        ToolbarUniversalIcons(element: element),
+        ToolbarUniversalIcons(element: widget.element),
       ],
     );
   }

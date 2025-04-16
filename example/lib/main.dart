@@ -1,7 +1,8 @@
-import 'package:example/rubric_editor.dart';
-import 'package:example/rubric_viewer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'rubric_editor.dart';
+import 'rubric_viewer.dart';
 
 const FirebaseOptions destination = FirebaseOptions(
   apiKey: "AIzaSyD2h1Xa3aT0b-FuxX1q54cAg6Ps4MnXR-E",
@@ -35,11 +36,11 @@ class MyApp extends StatelessWidget {
         body:
             b
                 ? RubricLessonEditorWidget(
-                  moduleID: "1B1kaC7rxjAfgNKoJl4n",
+                  moduleID: "wVAhBfE9jYt1iQNJXy9u",
                   onSaved: () async {},
                 )
                 : RubricLessonReaderWidget(
-                  moduleID: "1B1kaC7rxjAfgNKoJl4n",
+                  moduleID: "wVAhBfE9jYt1iQNJXy9u",
                   onComplete: () async {},
                 ),
       ),

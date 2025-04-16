@@ -28,8 +28,10 @@ abstract class TextElementModel with _$TextElementModel {
   TextStyle textStyle() => TextStyle(
       color: color,
       fontSize: size,
+      fontFamily: "Roboto",
+      letterSpacing: 0.1,
       fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
       fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
       decoration: isUnderline ? TextDecoration.underline : TextDecoration.none,
-      height: 1.5);
+      height: 1.6);
 }

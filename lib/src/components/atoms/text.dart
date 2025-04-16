@@ -46,6 +46,7 @@ class RubricText extends StatelessWidget {
 class RubricTextField extends StatefulWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onComplete;
   final double? width;
   final String? helpText;
   final String? labelText;
@@ -53,6 +54,7 @@ class RubricTextField extends StatefulWidget {
   const RubricTextField({
     super.key,
     required this.initialValue,
+    this.onComplete,
     required this.onChanged,
     this.width,
     this.helpText,
@@ -71,19 +73,11 @@ class _RubricTextFieldState extends State<RubricTextField> {
   void initState() {
     value = widget.initialValue;
     focusNode = FocusNode();
-    focusNode.addListener(_l);
     super.initState();
-  }
-
-  _l() {
-    if (!focusNode.hasFocus) {
-      widget.onChanged(value);
-    }
   }
 
   @override
   void dispose() {
-    focusNode.removeListener(_l);
     focusNode.dispose();
 
     super.dispose();
@@ -129,10 +123,11 @@ class _RubricTextFieldState extends State<RubricTextField> {
         style: TextStyle(color: style.dark),
         initialValue: widget.initialValue,
         onChanged: (nvalue) {
+          widget.onChanged(nvalue);
           value = nvalue;
         },
         onEditingComplete: () {
-          widget.onChanged(value);
+          widget.onComplete?.call(value);
         },
       ),
     );

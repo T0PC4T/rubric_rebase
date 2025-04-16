@@ -16,6 +16,15 @@ class LayersPageWidget extends StatelessWidget {
       valueListenable: editorState.canvas,
       builder: (context, canvas, child) {
         final orderedElements = canvas.orderedElements.toList();
+        if (orderedElements.isEmpty) {
+          return Padding(
+            padding: RubricEditorStyle.padding,
+            child: Text(
+              "You do not have any elements yet. Create an element using the elements tab.",
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
         return Padding(
           padding: EdgeInsets.all(RubricEditorStyle.paddingUnit),
           child: ReorderableListView(

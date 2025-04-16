@@ -99,26 +99,23 @@ class TextEditorElementState
     final textStyle = properties.textStyle();
     editorState = RubricEditorState.of(context);
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: properties.size * 0.5),
-      child: TextField(
-        decoration:
-            InputDecoration.collapsed(hintText: "Enter you text in here"),
-        undoController: undoController,
-        style: textStyle,
-        cursorColor: Colors.black,
-        keyboardType: TextInputType.multiline,
-        textAlign: ElementAlignment.textAlign(properties.alignment),
-        selectionControls: DesktopTextSelectionControls(),
-        maxLines: null,
-        enableInteractiveSelection: true,
-        readOnly: false,
-        minLines: null,
-        onChanged: _onChange,
-        scrollController: _scrollController,
-        controller: controller,
-        focusNode: focusNode,
-      ),
+    return TextField(
+      decoration: InputDecoration.collapsed(hintText: "Enter you text in here"),
+      undoController: undoController,
+      style: textStyle,
+      cursorColor: Colors.black,
+      keyboardType: TextInputType.multiline,
+      scrollPadding: EdgeInsets.zero,
+      textAlign: ElementAlignment.textAlign(properties.alignment),
+      selectionControls: DesktopTextSelectionControls(),
+      maxLines: null,
+      enableInteractiveSelection: true,
+      readOnly: false,
+      minLines: null,
+      onChanged: _onChange,
+      scrollController: _scrollController,
+      controller: controller,
+      focusNode: focusNode,
     );
   }
 }
@@ -147,13 +144,11 @@ class TextReaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final properties = element.getProperties<TextElementModel>();
-    return Padding(
-      padding: EdgeInsets.only(bottom: properties.size * 0.5),
-      child: Text(
-        properties.text,
-        textAlign: ElementAlignment.textAlign(properties.alignment),
-        style: properties.textStyle(),
-      ),
+    return Text(
+      overflow: TextOverflow.visible,
+      properties.text,
+      textAlign: ElementAlignment.textAlign(properties.alignment),
+      style: properties.textStyle(),
     );
   }
 }

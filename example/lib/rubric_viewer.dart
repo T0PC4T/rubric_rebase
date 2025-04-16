@@ -66,7 +66,7 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Image.network(
-                            "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Fbleep_logo.webp?alt=media",
+                            "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Flogo.png?alt=media",
                           ),
                         ),
 
@@ -114,11 +114,23 @@ class _CompleteButtonWidgetState extends State<CompleteButtonWidget> {
     final size = MediaQuery.sizeOf(context);
 
     return MouseRegion(
-      onEnter: (_) => setState(() => hovered = true),
-      onExit: (_) => setState(() => hovered = false),
+      onEnter: (_) {
+        if (!hovered) {
+          setState(() => hovered = true);
+        }
+      },
+      onExit: (_) {
+        if (hovered) {
+          setState(() => hovered = false);
+        }
+      },
       cursor: SystemMouseCursors.click,
       opaque: true,
-      onHover: (_) => setState(() => hovered = true),
+      onHover: (_) {
+        if (!hovered) {
+          setState(() => hovered = true);
+        }
+      },
 
       child: GestureDetector(
         onTap: widget.onComplete,
