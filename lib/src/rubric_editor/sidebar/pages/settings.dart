@@ -54,7 +54,8 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
               RubricTextField(
                 maxLength: 30,
                 initialValue: editorState!.canvas.value.settings.name,
-                onChanged: (value) {
+                onChanged: (value) {},
+                onComplete: (value) {
                   editorState!.canvas.updateSettings(
                     editorState!.canvas.value.settings.copyWith(
                       name: value,
