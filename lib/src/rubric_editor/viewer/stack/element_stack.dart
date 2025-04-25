@@ -149,7 +149,19 @@ class RenderRubricElementStack extends RenderBox
     // BASICALLY YOU HAVE TO SET THE PROJECTED VALUES OF FIXED ITEMS
 
     // DESKTOP
-    double w = ViewModes.desktop.width * el.fixedWidth;
+
+    double fixedWidth = el.fixedWidth;
+    double w;
+    if (fixedWidth.isInfinite) {
+      if (x < viewMode.width) {
+        w = viewMode.width - x;
+      } else {
+        w = ViewModes.desktop.width;
+      }
+    } else {
+      w = ViewModes.desktop.width * el.fixedWidth;
+    }
+
     double h = child.getMaxIntrinsicHeight(w);
     // ? if it would overflow, then go to the next line.
     if (x + w > viewMode.width) {

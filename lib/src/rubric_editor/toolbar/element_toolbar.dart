@@ -90,14 +90,10 @@ class ToolbarUniversalIcons extends StatelessWidget {
                             children: [
                               Stack(
                                 children: [
-                                  Icon(
-                                    Icons.expand,
-                                    size: ElementToolbarWidget.iconSize,
-                                  ),
-                                  Transform.rotate(
-                                    angle: 3.1415 / 2,
+                                  Transform.scale(
+                                    scaleY: 1.2,
                                     child: Icon(
-                                      Icons.expand,
+                                      Icons.settings_overscan_outlined,
                                       size: ElementToolbarWidget.iconSize,
                                     ),
                                   ),
@@ -134,7 +130,7 @@ class ToolbarUniversalIcons extends StatelessWidget {
                                     size: ElementToolbarWidget.iconSize,
                                   ),
                                 ),
-                                RubricText("Width"),
+                                RubricText("Element Width"),
                               ],
                             ),
                           ),

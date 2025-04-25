@@ -58,10 +58,11 @@ enum ElementPadding {
 }
 
 enum FixedWidths {
-  full("Full", 1),
-  half("1/2", .5),
-  third("1/3", .333),
-  quarter("1/4", .25);
+  full("Full Width", 1),
+  fill("Fill Remaining", double.infinity),
+  half("Half Width", .5),
+  third("Third Width", .333),
+  quarter("Quarter Width", .25);
 
   final String display;
   final double value;
