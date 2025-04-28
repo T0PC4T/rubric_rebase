@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final b = 1 + 1 == 2;
+    final b = 1 + 2 == 2;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -36,11 +36,11 @@ class MyApp extends StatelessWidget {
         body:
             b
                 ? RubricLessonEditorWidget(
-                  moduleID: "wVAhBfE9jYt1iQNJXy9u",
+                  moduleID: "XSdDktPMQ6rzUua8ztPw",
                   onSaved: () async {},
                 )
                 : RubricLessonReaderWidget(
-                  moduleID: "wVAhBfE9jYt1iQNJXy9u",
+                  moduleID: "XSdDktPMQ6rzUua8ztPw",
                   onComplete: () async {},
                 ),
       ),

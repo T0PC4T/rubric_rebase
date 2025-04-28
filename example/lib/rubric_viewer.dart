@@ -44,57 +44,60 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: future,
-      builder: (context, snapshot) {
-        if (snapshot case AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>(
-          data: DocumentSnapshot<Map<String, dynamic>> data,
-        )) {
-          final map = data.data();
+    return SizedBox.expand(
+      child: StreamBuilder(
+        stream: future,
+        builder: (context, snapshot) {
+          if (snapshot
+              case AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>(
+                data: DocumentSnapshot<Map<String, dynamic>> data,
+              )) {
+            final map = data.data();
 
-          return Column(
-            children: [
-              Container(
-                color: primaryDark,
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.network(
-                            "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Flogo.png?alt=media",
+            return Column(
+              children: [
+                Container(
+                  color: primaryDark,
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.network(
+                              "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Flogo.png?alt=media",
+                            ),
                           ),
-                        ),
 
-                        Text(
-                          map?["name"] ?? "Untitled",
-                          style: _textStyle,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
+                          Text(
+                            map?["name"] ?? "Untitled",
+                            style: _textStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
 
-                    CompleteButtonWidget(onComplete: widget.onComplete),
-                  ],
+                      CompleteButtonWidget(onComplete: widget.onComplete),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: RubricReader(
-                  canvasModel:
-                      map?["lesson_data"] == null
-                          ? CanvasModel()
-                          : CanvasModel.fromJson(map!["lesson_data"]),
+                Expanded(
+                  child: RubricReader(
+                    canvasModel:
+                        map?["lesson_data"] == null
+                            ? CanvasModel()
+                            : CanvasModel.fromJson(map!["lesson_data"]),
+                  ),
                 ),
-              ),
-            ],
-          );
-        }
-        return Center(child: CircularProgressIndicator());
-      },
+              ],
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }
