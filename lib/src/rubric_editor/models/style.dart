@@ -13,45 +13,45 @@ class RubricEditorStyle {
   final double fontSize;
   final FontWeight fontWeight;
   final double elevation;
-  final Color theme;
-  final Color dark;
-  final Color light;
+  // final Color theme;
+  Color get theme => const Color.fromARGB(255, 0, 162, 255);
+  Color get dark => const Color.fromARGB(255, 0, 0, 0);
+  Color get light => Color.fromARGB(255, 255, 255, 255);
+
   final Color danger;
-  final Color borderColor;
+
   final List<Color> brandColors;
 
-  const RubricEditorStyle({
-    this.logoUrl = "assets/logo.png",
-    this.radius = 8,
-    this.fontSize = 14,
-    this.fontWeight = FontWeight.w500,
-    this.elevation = 6,
-    this.brandColors = const [
-      // Grey Shades
-      Color.fromARGB(255, 233, 236, 239), // Light Grey
-      Color.fromARGB(255, 108, 117, 125), // Medium Grey
-      Color.fromARGB(255, 52, 58, 64), // Dark Grey
-      Color.fromARGB(255, 0, 0, 0),
-      // Primary Blue
-      Color.fromARGB(255, 0, 149, 255),
+  const RubricEditorStyle(
+      {this.logoUrl = "assets/logo.png",
+      this.radius = 8,
+      this.fontSize = 14,
+      this.fontWeight = FontWeight.w500,
+      this.elevation = 6,
+      this.brandColors = const [
+        // Grey Shades
+        Color.fromARGB(255, 233, 236, 239), // Light Grey
+        Color.fromARGB(255, 108, 117, 125), // Medium Grey
+        Color.fromARGB(255, 52, 58, 64), // Dark Grey
+        Color.fromARGB(255, 0, 0, 0),
+        // Primary Blue
+        Color.fromARGB(255, 0, 149, 255),
 
-      // Secondary Teal
-      Color.fromARGB(255, 57, 210, 192),
+        // Secondary Teal
+        Color.fromARGB(255, 57, 210, 192),
 
-      // Tertiary Coral
-      Color.fromARGB(255, 238, 139, 96),
-    ],
-    this.theme = const Color.fromARGB(
-      255,
-      0,
-      162,
-      255,
-    ), // color picker text should be black
-    this.dark = const Color.fromARGB(255, 0, 0, 0),
-    this.light = const Color.fromARGB(255, 255, 255, 255),
-    this.danger = Colors.red,
-    this.borderColor = const Color.fromARGB(255, 212, 212, 212),
-  });
+        // Tertiary Coral
+        Color.fromARGB(255, 238, 139, 96),
+      ],
+      // this.theme = const Color.fromARGB(
+      //   255,
+      //   0,
+      //   162,
+      //   255,
+      // ), // color picker text should be black
+      // this.dark = const Color.fromARGB(255, 0, 0, 0),
+      // this.light = const Color.fromARGB(255, 255, 255, 255),
+      this.danger = Colors.red});
 
   Color get theme8 => Color.lerp(theme, light, 0.8)!;
   Color get theme7 => Color.lerp(theme, light, 0.7)!;

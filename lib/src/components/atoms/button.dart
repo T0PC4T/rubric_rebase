@@ -150,7 +150,7 @@ class RubricButtonState extends State<RubricButton> {
             border: widget.borderWidth == null
                 ? null
                 : Border.all(
-                    color: widget.borderColor ?? styles.borderColor,
+                    color: widget.borderColor ?? styles.light7,
                     width: widget.borderWidth!,
                   ),
           ),
