@@ -61,6 +61,10 @@ class RubricColorPickerState extends State<RubricColorPicker> {
                       decoration: BoxDecoration(
                         color: c,
                         shape: BoxShape.circle,
+                        // border: Border.all(
+                        //   color: style.light4,
+                        //   width: 1,
+                        // ),
                       ),
                     ),
                   ),
@@ -88,15 +92,16 @@ class RubricColorPickerState extends State<RubricColorPicker> {
                         // center: Alignment.center,
                         // radius: 0.9,
                         colors: [
-                          const Color.fromARGB(255, 193, 255, 47),
-                          const Color.fromARGB(255, 255, 126, 116),
-                          const Color.fromARGB(255, 89, 92, 255),
+                          const Color.fromARGB(255, 238, 155, 0),
+                          const Color.fromARGB(220, 202, 213, 0),
+                          const Color.fromARGB(198, 0, 255, 145),
+                          const Color.fromARGB(255, 0, 139, 238),
                         ],
                       ),
 
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.add, size: 30, color: Colors.white),
+                    child: Icon(Icons.add, size: 35, color: Colors.white),
                   ),
                 ),
               ],

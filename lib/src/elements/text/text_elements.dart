@@ -99,23 +99,27 @@ class TextEditorElementState
     final textStyle = properties.textStyle();
     editorState = RubricEditorState.of(context);
 
-    return TextField(
-      decoration: InputDecoration.collapsed(hintText: "Enter you text in here"),
-      undoController: undoController,
-      style: textStyle,
-      cursorColor: Colors.black,
-      keyboardType: TextInputType.multiline,
-      scrollPadding: EdgeInsets.zero,
-      textAlign: ElementAlignment.textAlign(properties.alignment),
-      selectionControls: DesktopTextSelectionControls(),
-      maxLines: null,
-      enableInteractiveSelection: true,
-      readOnly: false,
-      minLines: null,
-      onChanged: _onChange,
-      scrollController: _scrollController,
-      controller: controller,
-      focusNode: focusNode,
+    return Transform.translate(
+      offset: Offset(0, -4),
+      child: TextField(
+        decoration:
+            InputDecoration.collapsed(hintText: "Enter you text in here"),
+        undoController: undoController,
+        style: textStyle,
+        cursorColor: Colors.black,
+        keyboardType: TextInputType.multiline,
+        scrollPadding: EdgeInsets.zero,
+        textAlign: ElementAlignment.textAlign(properties.alignment),
+        selectionControls: DesktopTextSelectionControls(),
+        maxLines: null,
+        enableInteractiveSelection: true,
+        readOnly: false,
+        minLines: null,
+        onChanged: _onChange,
+        scrollController: _scrollController,
+        controller: controller,
+        focusNode: focusNode,
+      ),
     );
   }
 }

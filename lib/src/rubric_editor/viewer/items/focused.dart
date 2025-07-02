@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class CancelSelectionWidget extends LeafRenderObjectWidget {
   final bool cancels;
-  final int amount;
+  final int tint;
   const CancelSelectionWidget({
     super.key,
     required this.cancels,
-    this.amount = 20,
+    this.tint = 20,
   });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return RenderCancelSelectionWidget(cancels: cancels, amount: amount);
+    return RenderCancelSelectionWidget(cancels: cancels, amount: tint);
   }
 
   @override
@@ -20,7 +20,7 @@ class CancelSelectionWidget extends LeafRenderObjectWidget {
     RenderCancelSelectionWidget renderObject,
   ) {
     renderObject.cancels = cancels;
-    renderObject.amount = amount;
+    renderObject.amount = tint;
     renderObject.markNeedsPaint();
   }
 }

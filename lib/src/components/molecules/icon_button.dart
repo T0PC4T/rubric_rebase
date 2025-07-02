@@ -10,6 +10,7 @@ class RubricIconButton extends StatelessWidget {
   final bool isActive;
   final bool isDark;
   final bool disabled;
+  final bool hasNotification;
   const RubricIconButton({
     super.key,
     required this.size,
@@ -18,6 +19,7 @@ class RubricIconButton extends StatelessWidget {
     this.isActive = false,
     this.disabled = false,
     this.isDark = false,
+    this.hasNotification = false,
   });
 
   @override
@@ -36,16 +38,33 @@ class RubricIconButton extends StatelessWidget {
         (_, false, false) => style.light95,
       },
       onTap: onTap,
-      child: Icon(
-        iconData,
-        color: switch ((disabled, isActive, isDark)) {
-          (true, _, _) => style.light4,
-          (_, true, true) => style.theme,
-          (_, true, false) => style.theme,
-          (_, false, true) => style.light,
-          (_, false, false) => style.dark,
-        },
-        size: ElementToolbarWidget.iconSize,
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Icon(
+              iconData,
+              color: switch ((disabled, isActive, isDark)) {
+                (true, _, _) => style.light4,
+                (_, true, true) => style.theme,
+                (_, true, false) => style.theme,
+                (_, false, true) => style.light,
+                (_, false, false) => style.dark,
+              },
+              size: ElementToolbarWidget.iconSize,
+            ),
+          ),
+          if (hasNotification)
+            Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: style.danger,
+              ),
+            )
+        ],
       ),
     );
   }

@@ -13,46 +13,49 @@ class LayersPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final editorState = RubricEditorState.of(context);
     return ValueListenableBuilder(
-      valueListenable: editorState.canvas,
-      builder: (context, canvas, child) {
-        final orderedElements = canvas.orderedElements.toList();
-        if (orderedElements.isEmpty) {
+      valueListenable: editorState.edits,
+      builder: (context, edits, child) => ValueListenableBuilder(
+        valueListenable: editorState.canvas,
+        builder: (context, canvas, child) {
+          final orderedElements = canvas.orderedElements.toList();
+          if (orderedElements.isEmpty) {
+            return Padding(
+              padding: RubricEditorStyle.padding,
+              child: Text(
+                "You do not have any elements yet. Create an element using the elements tab.",
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
           return Padding(
-            padding: RubricEditorStyle.padding,
-            child: Text(
-              "You do not have any elements yet. Create an element using the elements tab.",
-              textAlign: TextAlign.center,
+            padding: EdgeInsets.all(RubricEditorStyle.paddingUnit),
+            child: ReorderableListView(
+              proxyDecorator: (child, index, animation) => ClipPath(
+                clipper: EdgeClipper(editorState.style.radius),
+                child: Material(
+                  color: editorState.style.light,
+                  child: child,
+                ),
+              ),
+              onReorder: (oldIndex, newIndex) {
+                editorState.canvas.reorderElements(
+                  orderedElements,
+                  oldIndex,
+                  newIndex,
+                );
+              },
+              padding: EdgeInsets.symmetric(
+                vertical: RubricEditorStyle.paddingUnit * 0.5,
+              ),
+              itemExtent: LayerWidget.layerHeight,
+              children: [
+                for (var element in orderedElements)
+                  LayerWidget(key: ValueKey(element.id), element: element),
+              ],
             ),
           );
-        }
-        return Padding(
-          padding: EdgeInsets.all(RubricEditorStyle.paddingUnit),
-          child: ReorderableListView(
-            proxyDecorator: (child, index, animation) => ClipPath(
-              clipper: EdgeClipper(editorState.style.radius),
-              child: Material(
-                color: editorState.style.light,
-                child: child,
-              ),
-            ),
-            onReorder: (oldIndex, newIndex) {
-              editorState.canvas.reorderElements(
-                orderedElements,
-                oldIndex,
-                newIndex,
-              );
-            },
-            padding: EdgeInsets.symmetric(
-              vertical: RubricEditorStyle.paddingUnit * 0.5,
-            ),
-            itemExtent: LayerWidget.layerHeight,
-            children: [
-              for (var element in orderedElements)
-                LayerWidget(key: ValueKey(element.id), element: element),
-            ],
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 }
@@ -82,7 +85,11 @@ class LayerWidget extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           borderRadius: editorState.style.borderRadius,
-          border: Border.all(color: editorState.style.light4, width: 1),
+          border: Border.all(
+              color: editorState.edits.isSelected(element)
+                  ? editorState.style.theme4
+                  : editorState.style.light4,
+              width: 1),
           color: editorState.style.light,
         ),
         height: layerHeight,

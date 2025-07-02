@@ -45,6 +45,20 @@ class RubricEditorState extends State<RubricEditor> {
   List<Widget> overlays = [];
   BuildContext? innerContext;
 
+  // focusWatch() async {
+  //   await Future.delayed(Duration(milliseconds: 1));
+
+  //   if (!context.mounted) {
+  //     return;
+  //   }
+  //   print(FocusScope.of(context).focusedChild);
+  //   Future.delayed(Duration(milliseconds: 500)).then(
+  //     (value) {
+  //       focusWatch();
+  //     },
+  //   );
+  // }
+
   @override
   void initState() {
     web.document.oncontextmenu = (JSAny e) {
@@ -61,6 +75,15 @@ class RubricEditorState extends State<RubricEditor> {
 
     keyboardFocus = FocusNode();
     style = widget.style;
+  }
+
+  ScrollController? _scrollController;
+  registerScrollController(ScrollController controller) {
+    _scrollController = controller;
+  }
+
+  ScrollController? get scrollController {
+    return _scrollController?.hasClients ?? false ? _scrollController : null;
   }
 
   @override
@@ -107,6 +130,7 @@ class RubricEditorState extends State<RubricEditor> {
   _canvasListener() {
     // ? if this is false, the the last change was from an undo.
     if (edits.currentUndo != canvas.value) {
+      markAsDirty();
       edits.saveStep(canvas.clone());
     }
   }
@@ -137,12 +161,28 @@ class RubricEditorState extends State<RubricEditor> {
     });
   }
 
+  // ? VIEW MODES
   setPreview(bool preview) {
     edits.setPreview(preview);
     clearOverlays();
   }
 
+  bool mobileDirty = false;
+  bool desktopDirty = false;
+  markAsDirty() {
+    if (edits.value.viewMode == ViewModes.mobile) {
+      desktopDirty = true;
+    } else {
+      mobileDirty = true;
+    }
+  }
+
   changeViewMode(ViewModes newValue) {
+    if (newValue == ViewModes.mobile) {
+      mobileDirty = false;
+    } else {
+      desktopDirty = false;
+    }
     if (edits.value.viewMode == newValue) {
       return;
     }

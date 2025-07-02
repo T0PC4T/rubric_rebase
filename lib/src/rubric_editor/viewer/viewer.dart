@@ -36,6 +36,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
       });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final editorState = RubricEditorState.of(context);
+      editorState.registerScrollController(_scrollController);
       editorState.canvas.addListener(_refreshHandler);
       editorState.edits.addListener(_refreshHandler);
     });
@@ -215,13 +216,14 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
 
   _handlePointerUp(PointerUpEvent event, StackEventResult result) async {
     if (_wasRightClick) {
-      await Future.delayed(Duration(milliseconds: 200));
-      if (result.element case ElementModel element) {
+      await Future.delayed(Duration(milliseconds: 10));
+      if (result.element case ElementModel el) {
+        editorState.edits.selectElement(el);
         editorState.pushOverlay(
           Positioned(
               top: event.position.dy + 5,
               left: event.position.dx + 5,
-              child: DeleteMenu(editorState: editorState, element: element)),
+              child: RightClickMenu(editorState: editorState, element: el)),
           removeToLength: 1,
         );
       }
@@ -340,7 +342,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
                     CancelSelectionWidget(
                       key: ValueKey("canceller"),
                       cancels: true,
-                      amount: 0,
+                      tint: 0,
                     ),
                   for (var element in canvas.elements)
                     if (!editorState.edits.isFocused(element)) ...[
@@ -349,13 +351,24 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
                         key: ValueKey(element.id),
                         element: element,
                       ),
-                      ElementHandlerWidget(
-                        viewMode: viewMode,
-                        key: ValueKey("${element.id} handler"),
-                        element: element,
-                        hovered: hoveringOver == element,
-                      ),
+                      if (editorState.edits.value.selected != element)
+                        ElementHandlerWidget(
+                          viewMode: viewMode,
+                          key: ValueKey("${element.id} handler"),
+                          element: element,
+                          hovered: hoveringOver == element,
+                        ),
                     ],
+                  if (editorState.edits.value.selected
+                      case ElementModel element) ...[
+                    // ! Just the hanlder is moved to top
+                    ElementHandlerWidget(
+                      viewMode: viewMode,
+                      key: ValueKey("${element.id} handler"),
+                      element: element,
+                      hovered: hoveringOver == element,
+                    ),
+                  ],
                   if (editorState.edits.value.focused
                       case ElementModel element) ...[
                     CancelSelectionWidget(

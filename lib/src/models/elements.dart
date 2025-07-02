@@ -3,9 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:rubric/src/elements/box/box_model.dart';
+import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
+import 'package:rubric/src/elements/text_list/text_list_model.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
 
@@ -70,9 +72,12 @@ class ElementModel {
   T getProperties<T>() {
     return switch (type) {
       ElementTypes.text => TextElementModel.fromJson(properties),
+      ElementTypes.textList => TextListElementModel.fromJson(properties),
       ElementTypes.box => BoxElementModel.fromJson(properties),
       ElementTypes.image => ImageElementModel.fromJson(properties),
       ElementTypes.video => VideoElementModel.fromJson(properties),
+      ElementTypes.divider => DividerElementModel.fromJson(properties),
+
       // ElementTypes.richtext => RichTextElementModel.fromJson(properties),
     } as T;
   }

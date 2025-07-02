@@ -126,6 +126,9 @@ class _RubricTextFieldState extends State<RubricTextField> {
           widget.onChanged(nvalue);
           value = nvalue;
         },
+        onTapOutside: (event) {
+          widget.onComplete?.call(value);
+        },
         onEditingComplete: () {
           widget.onComplete?.call(value);
         },

@@ -27,9 +27,19 @@ class RubricEditorStyle {
     this.fontWeight = FontWeight.w500,
     this.elevation = 6,
     this.brandColors = const [
-      Color.fromARGB(255, 0, 162, 255),
-      Color.fromARGB(255, 255, 178, 10),
-      Color.fromARGB(255, 255, 23, 119),
+      // Grey Shades
+      Color.fromARGB(255, 233, 236, 239), // Light Grey
+      Color.fromARGB(255, 108, 117, 125), // Medium Grey
+      Color.fromARGB(255, 52, 58, 64), // Dark Grey
+      Color.fromARGB(255, 0, 0, 0),
+      // Primary Blue
+      Color.fromARGB(255, 0, 149, 255),
+
+      // Secondary Teal
+      Color.fromARGB(255, 57, 210, 192),
+
+      // Tertiary Coral
+      Color.fromARGB(255, 238, 139, 96),
     ],
     this.theme = const Color.fromARGB(
       255,

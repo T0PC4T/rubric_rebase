@@ -33,6 +33,15 @@ class ElementPageWidget extends StatelessWidget {
               hoverColor: editorState.style.light9,
               onTap: () {
                 final editorState = RubricEditorState.of(context);
+                Future.delayed(Duration(milliseconds: 20)).then(
+                  (value) {
+                    editorState.scrollController?.animateTo(
+                        editorState.scrollController!.position.maxScrollExtent -
+                            sidebarButtonHeight,
+                        duration: Duration(milliseconds: 450),
+                        curve: Curves.easeInOut);
+                  },
+                );
 
                 editorState.canvas.addElement(
                   ElementModel(

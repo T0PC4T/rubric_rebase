@@ -1,8 +1,6 @@
+import 'package:example/rubric_editor.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'rubric_editor.dart';
-import 'rubric_viewer.dart';
 
 const FirebaseOptions destination = FirebaseOptions(
   apiKey: "AIzaSyD2h1Xa3aT0b-FuxX1q54cAg6Ps4MnXR-E",
@@ -25,7 +23,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final b = 1 + 2 == 2;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -33,16 +30,22 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: Scaffold(
-        body:
-            b
-                ? RubricLessonEditorWidget(
-                  moduleID: "XSdDktPMQ6rzUua8ztPw",
-                  onSaved: () async {},
-                )
-                : RubricLessonReaderWidget(
-                  moduleID: "XSdDktPMQ6rzUua8ztPw",
-                  onComplete: () async {},
-                ),
+        body: RubricLessonEditorWidget(
+          moduleID: "n9OQvN72csbuJnDA3HZB",
+          onSaved: () async {
+            print("hello");
+          },
+        ),
+        // body: RubricLessonReaderWidget(moduleID: "n9OQvN72csbuJnDA3HZB"),
+        // body: Column(
+        //   crossAxisAlignment: CrossAxisAlignment.stretch,
+        //   children: [
+        //     Container(color: Colors.black, height: 52),
+        //     Expanded(
+        //       child: RubricLessonReaderWidget(moduleID: "n9OQvN72csbuJnDA3HZB"),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }

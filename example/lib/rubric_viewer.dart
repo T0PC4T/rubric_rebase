@@ -71,7 +71,6 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
                               "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Flogo.png?alt=media",
                             ),
                           ),
-
                           Text(
                             map?["name"] ?? "Untitled",
                             style: _textStyle,
@@ -79,17 +78,15 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
                           ),
                         ],
                       ),
-
                       CompleteButtonWidget(onComplete: widget.onComplete),
                     ],
                   ),
                 ),
                 Expanded(
                   child: RubricReader(
-                    canvasModel:
-                        map?["lesson_data"] == null
-                            ? CanvasModel()
-                            : CanvasModel.fromJson(map!["lesson_data"]),
+                    canvasModel: map?["lesson_data"] == null
+                        ? CanvasModel()
+                        : CanvasModel.fromJson(map!["lesson_data"]),
                   ),
                 ),
               ],
@@ -134,7 +131,6 @@ class _CompleteButtonWidgetState extends State<CompleteButtonWidget> {
           setState(() => hovered = true);
         }
       },
-
       child: GestureDetector(
         onTap: widget.onComplete,
         child: Container(
@@ -142,10 +138,9 @@ class _CompleteButtonWidgetState extends State<CompleteButtonWidget> {
           color: hovered ? primaryLight : primary,
           height: double.infinity,
           width: size.width > 600 ? 240 : 60,
-          child:
-              size.width > 600
-                  ? Text("Complete Lesson", style: _textStyle)
-                  : Icon(Icons.done, color: Colors.white, size: 25),
+          child: size.width > 600
+              ? Text("Complete Lesson", style: _textStyle)
+              : Icon(Icons.done, color: Colors.white, size: 25),
         ),
       ),
     );

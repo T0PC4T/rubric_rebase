@@ -5,8 +5,8 @@ import 'package:rubric/src/models/elements.dart';
 
 const double rightMenuButtonHeight = 40;
 
-class DeleteMenu extends StatelessWidget {
-  const DeleteMenu({
+class RightClickMenu extends StatelessWidget {
+  const RightClickMenu({
     super.key,
     required this.editorState,
     required this.element,
@@ -19,7 +19,7 @@ class DeleteMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         width: 150,
-        height: rightMenuButtonHeight * 3 + 2,
+        height: rightMenuButtonHeight * 4 + 3,
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -33,6 +33,34 @@ class DeleteMenu extends StatelessWidget {
             borderRadius: editorState.style.borderRadius,
             child: Column(
               children: [
+                RubricButton(
+                  backgroundColor: Colors.transparent,
+                  hoverColor: editorState.style.light95,
+                  height: rightMenuButtonHeight,
+                  padding: RubricEditorStyle.padding,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: RubricEditorStyle.paddingNum,
+                    children: [
+                      Icon(
+                        Icons.copy,
+                        size: rightMenuButtonHeight * 0.45,
+                      ),
+                      RubricText(
+                        "Duplicate",
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    editorState.edits.selectElement(null);
+                    editorState.canvas.duplicateElement(element);
+                  },
+                ),
+                Divider(
+                  color: editorState.style.light4,
+                  thickness: 1,
+                  height: 1,
+                ),
                 RubricButton(
                   backgroundColor: Colors.transparent,
                   hoverColor: editorState.style.light95,

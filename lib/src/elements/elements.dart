@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/box/box_elements.dart';
 import 'package:rubric/src/elements/box/box_model.dart';
+import 'package:rubric/src/elements/divider/divider_elements.dart';
+import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/image/image_elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/text/text_elements.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
+import 'package:rubric/src/elements/text_list/text_list_elements.dart';
+import 'package:rubric/src/elements/text_list/text_list_model.dart';
 import 'package:rubric/src/elements/video/video_elements.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
 import 'package:rubric/src/models/elements.dart';
@@ -22,6 +26,14 @@ enum ElementTypes {
     editorBuilder: TextEditorElement.new,
     layerBuilder: TextLayerWidget.new,
     readerBuilder: TextReaderWidget.new,
+    focusable: true,
+  ),
+  textList(
+    "List",
+    Icons.list,
+    editorBuilder: TextListEditorElement.new,
+    layerBuilder: TextListLayerWidget.new,
+    readerBuilder: TextListReaderWidget.new,
     focusable: true,
   ),
 
@@ -49,6 +61,15 @@ enum ElementTypes {
     editorBuilder: BoxEditorElement.new,
     layerBuilder: BoxEditorElement.new,
     readerBuilder: BoxReaderElement.new,
+    focusable: false,
+  ),
+
+  divider(
+    "Divider",
+    Icons.vertical_align_center_sharp,
+    editorBuilder: DividerEditorElement.new,
+    layerBuilder: DividerEditorElement.new,
+    readerBuilder: DividerReaderElement.new,
     focusable: false,
   );
 
@@ -106,6 +127,9 @@ Map<String, dynamic> generateDefaultProperties(
             borderRadius: 0,
             aspectRatio: AspectRatios.fourThree)
         .toJson(),
+    ElementTypes.divider =>
+      const DividerElementModel(color: Colors.black, weight: 1).toJson(),
+
     // ElementTypes.heading => TextElementModel(
     //         text: "",
     //         size: RubricEditorStyle.minimumFontSize.toDouble(),
@@ -120,6 +144,15 @@ Map<String, dynamic> generateDefaultProperties(
             isUnderline: false,
             color: Colors.black)
         .toJson(),
+    ElementTypes.textList => TextListElementModel(
+            textList: ["Insert your first entry here"],
+            size: RubricEditorStyle.minimumFontSize.toDouble(),
+            isBold: false,
+            isItalic: false,
+            isUnderline: false,
+            color: Colors.black)
+        .toJson(),
+
     // ElementTypes.richtext => RichTextElementModel(
     //     document: Document(),
     //   ).toJson(),

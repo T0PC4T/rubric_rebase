@@ -20,14 +20,10 @@ class NavbarWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-              padding: RubricEditorStyle.halfPadding,
-              width: navbarHeight,
-              height: navbarHeight,
-              child: Image.network(style.logoUrl)),
+          SizedBox(width: navbarHeight * 0.15, height: navbarHeight),
           Container(
             padding: RubricEditorStyle.padding,
-            width: NavbarWidget.navbarHeight * 5,
+            width: NavbarWidget.navbarHeight * 5.85,
             alignment: Alignment.centerLeft,
             child: RubricText(
               isDark: true,
@@ -43,6 +39,7 @@ class NavbarWidget extends StatelessWidget {
               children: [
                 // todo add mobile support.
                 RubricIconButton(
+                  hasNotification: editorState.mobileDirty,
                   isDark: true,
                   isActive:
                       editorState.edits.value.viewMode == ViewModes.mobile,
@@ -53,6 +50,7 @@ class NavbarWidget extends StatelessWidget {
                   },
                 ),
                 RubricIconButton(
+                  hasNotification: editorState.desktopDirty,
                   isDark: true,
                   isActive:
                       editorState.edits.value.viewMode == ViewModes.desktop,

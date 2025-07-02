@@ -2,28 +2,32 @@ import 'dart:ui';
 
 import 'package:flutter/src/painting/text_style.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/utilities/color.dart';
 
-part 'text_model.freezed.dart';
-part 'text_model.g.dart';
+part 'text_list_model.freezed.dart';
+part 'text_list_model.g.dart';
+
+enum TextListTypes {
+  bulleted,
+  numbered,
+}
 
 @freezed
-abstract class TextElementModel with _$TextElementModel {
-  const TextElementModel._();
+abstract class TextListElementModel with _$TextListElementModel {
+  const TextListElementModel._();
   @JsonSerializable()
-  const factory TextElementModel({
-    required String text,
+  const factory TextListElementModel({
+    required List<String> textList,
     @Default(false) bool isBold,
     @Default(false) bool isItalic,
     @Default(false) isUnderline,
-    @Default(ElementAlignment.left) String alignment,
+    @Default(TextListTypes.bulleted) TextListTypes textListType,
     required double size,
     @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color color,
-  }) = _TextElementModel;
+  }) = _TextListElementModel;
 
-  factory TextElementModel.fromJson(Map<String, dynamic> json) =>
-      _$TextElementModelFromJson(json);
+  factory TextListElementModel.fromJson(Map<String, dynamic> json) =>
+      _$TextListElementModelFromJson(json);
 
   TextStyle textStyle() => TextStyle(
         color: color,

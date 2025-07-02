@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
+import 'package:rubric/src/utilities/uuid.dart';
 
 class CanvasNotifier extends ValueNotifier<CanvasModel> {
   CanvasNotifier(super.value);
@@ -107,6 +108,16 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     }
     final ElementModel item = value.elements.removeAt(oldIndex);
     value.elements.insert(newIndex, item);
+    commit();
+  }
+
+  duplicateElement(ElementModel element) {
+    final newElement = element.copyWith(id: newID());
+    value.elements = [
+      // ...value.elements, newElement,
+      for (var e in value.elements)
+        if (e == element) ...[e, newElement] else e
+    ];
     commit();
   }
 

@@ -49,15 +49,15 @@ class _RubricLessonEditorWidgetState extends State<RubricLessonEditorWidget> {
           CanvasModel canvasModel;
           if (map?["lesson_data"] == null) {
             canvasModel = CanvasModel();
-            canvasModel = canvasModel.copyWith(
-              settings: canvasModel.settings.copyWith(
-                name: map?["name"] ?? "Untitled",
-                icon: map?["icon"] ?? "doc",
-              ),
-            );
           } else {
             canvasModel = CanvasModel.fromJson(map!["lesson_data"]);
           }
+          canvasModel = canvasModel.copyWith(
+            settings: canvasModel.settings.copyWith(
+              name: map?["name"] ?? "Untitled",
+              icon: map?["icon"] ?? "doc",
+            ),
+          );
 
           return RubricEditor(
             canvas: canvasModel,
@@ -74,7 +74,6 @@ class _RubricLessonEditorWidgetState extends State<RubricLessonEditorWidget> {
               }
               widget.onSaved();
             },
-
             bytesToURL: (Uint8List bytes, {String? name, String? type}) async {
               final storage = FirebaseStorage.instance;
               // upload file to storage
