@@ -28,7 +28,7 @@ class RubricLessonReaderWidget extends StatefulWidget {
 
 final _textStyle = TextStyle(
   color: light,
-  fontSize: 20,
+  fontSize: 18,
   fontWeight: FontWeight.bold,
 );
 
@@ -62,21 +62,16 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.network(
-                              "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Flogo.png?alt=media",
-                            ),
-                          ),
-                          Text(
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
                             map?["name"] ?? "Untitled",
                             style: _textStyle,
                             overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
-                        ],
+                        ),
                       ),
                       CompleteButtonWidget(onComplete: widget.onComplete),
                     ],
@@ -137,7 +132,7 @@ class _CompleteButtonWidgetState extends State<CompleteButtonWidget> {
           alignment: Alignment.center,
           color: hovered ? primaryLight : primary,
           height: double.infinity,
-          width: size.width > 600 ? 240 : 60,
+          width: size.width > 600 ? 200 : 60,
           child: size.width > 600
               ? Text("Complete Lesson", style: _textStyle)
               : Icon(Icons.done, color: Colors.white, size: 25),

@@ -84,6 +84,7 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
       List<ElementModel>? cachedElements, int oldIndex, int newIndex) {
     // ? I switched this around because the list is reverse beware.
     cachedElements ??= value.orderedElements.toList();
+
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }

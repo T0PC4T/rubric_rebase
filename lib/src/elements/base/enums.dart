@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
 
 abstract class AspectRatios {
-  static const double oneToOne = 1;
-  static const double fourThree = 4 / 3;
-  static const double twoOne = 2 / 1;
+  static const double square = 1;
+  static const double widescreen = 16 / 9;
+  static const double ultraWide = 21 / 9;
+  static const double portrait = 2 / 3;
 
   static String doubleToRatio(double ratio) {
     switch (ratio) {
-      case oneToOne:
-        return "1:1";
-      case fourThree:
-        return "4:3";
-      case twoOne:
-        return "2:1";
+      case square:
+        return "Square (1:1)";
+      case widescreen:
+        return "Widescreen (16:9)";
+      case ultraWide:
+        return "Ultra Wide (21:9)";
+      case portrait:
+        return "Portrait (2:3)";
       default:
         return ratio.toString();
     }
   }
 
-  static const values = [oneToOne, fourThree, twoOne];
+  static const values = [square, widescreen, ultraWide, portrait];
 }
 
 abstract class ElementAlignment {
@@ -58,24 +61,33 @@ enum ElementPadding {
 }
 
 enum FixedWidths {
-  full("Full Width", 1),
-  fill("Fill Remaining", double.infinity),
-  half("Half Width", .5),
-  third("Third Width", .333),
-  quarter("Quarter Width", .25);
+  full("Full Width", "⅟", 1),
+  threequarters("Three Quarters", "¾", .75),
+  half("Half Width", "½", .5),
+  quarter("Quarter Width", "¼", .25);
 
   final String display;
+  final String icon;
   final double value;
-  const FixedWidths(this.display, this.value);
+  const FixedWidths(this.display, this.icon, this.value);
 }
 
 enum FontSizes {
   small("Small", RubricEditorStyle.minimumFontSize - 5),
   medium("Medium", RubricEditorStyle.minimumFontSize),
-  large("Large", RubricEditorStyle.minimumFontSize + 5),
-  extraLarge("Extra Large", RubricEditorStyle.minimumFontSize + 15);
+  large("Large", RubricEditorStyle.minimumFontSize + 5);
 
   final String display;
   final int value;
   const FontSizes(this.display, this.value);
+}
+
+enum HeadingFontSizes {
+  h1("Heading 1", RubricEditorStyle.minimumFontSize + 25),
+  h2("Heading 2", RubricEditorStyle.minimumFontSize + 15),
+  h3("Heading 3", RubricEditorStyle.minimumFontSize + 10);
+
+  final String display;
+  final int value;
+  const HeadingFontSizes(this.display, this.value);
 }

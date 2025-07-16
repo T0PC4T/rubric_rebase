@@ -6,7 +6,7 @@ import 'package:rubric/src/rubric_editor/navbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 
 class NavbarWidget extends StatelessWidget {
-  static const double navbarHeight = 56;
+  static const double navbarHeight = 60;
   const NavbarWidget({super.key});
 
   @override
@@ -29,6 +29,8 @@ class NavbarWidget extends StatelessWidget {
               isDark: true,
               editorState.canvas.value.settings.name,
               textType: TextType.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
 
@@ -40,7 +42,7 @@ class NavbarWidget extends StatelessWidget {
                 // todo add mobile support.
                 RubricIconButton(
                   hasNotification: editorState.mobileDirty,
-                  isDark: true,
+                  style: RBStyles.dark,
                   isActive:
                       editorState.edits.value.viewMode == ViewModes.mobile,
                   iconData: Icons.phone_android,
@@ -50,8 +52,8 @@ class NavbarWidget extends StatelessWidget {
                   },
                 ),
                 RubricIconButton(
-                  hasNotification: editorState.desktopDirty,
-                  isDark: true,
+                  hasNotification: false,
+                  style: RBStyles.dark,
                   isActive:
                       editorState.edits.value.viewMode == ViewModes.desktop,
                   iconData: Icons.desktop_mac_rounded,
@@ -65,7 +67,7 @@ class NavbarWidget extends StatelessWidget {
           ),
 
           RubricIconButton(
-            isDark: true,
+            style: RBStyles.dark,
             iconData: Icons.undo,
             size: NavbarWidget.navbarHeight,
             disabled: !editorState.edits.canUndo,
@@ -75,7 +77,7 @@ class NavbarWidget extends StatelessWidget {
           ),
 
           RubricIconButton(
-            isDark: true,
+            style: RBStyles.dark,
             iconData: Icons.redo,
             size: NavbarWidget.navbarHeight,
             disabled: !editorState.edits.canRedo,
@@ -84,7 +86,7 @@ class NavbarWidget extends StatelessWidget {
             },
           ),
           RubricIconButton(
-            isDark: true,
+            style: RBStyles.dark,
             iconData: editorState.edits.value.previewing
                 ? Icons.edit
                 : Icons.remove_red_eye_rounded,

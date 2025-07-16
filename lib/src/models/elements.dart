@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:rubric/src/elements/box/box_model.dart';
+import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
@@ -72,7 +73,9 @@ class ElementModel {
   T getProperties<T>() {
     return switch (type) {
       ElementTypes.text => TextElementModel.fromJson(properties),
+      ElementTypes.heading => TextElementModel.fromJson(properties),
       ElementTypes.textList => TextListElementModel.fromJson(properties),
+      ElementTypes.button => ButtonElementModel.fromJson(properties),
       ElementTypes.box => BoxElementModel.fromJson(properties),
       ElementTypes.image => ImageElementModel.fromJson(properties),
       ElementTypes.video => VideoElementModel.fromJson(properties),

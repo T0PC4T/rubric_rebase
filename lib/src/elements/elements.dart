@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/box/box_elements.dart';
 import 'package:rubric/src/elements/box/box_model.dart';
+import 'package:rubric/src/elements/button/button_elements.dart';
+import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/elements/divider/divider_elements.dart';
 import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/image/image_elements.dart';
@@ -20,9 +22,17 @@ typedef ElementBuilderFunction = Widget Function(
     {Key? key, required ElementModel element});
 
 enum ElementTypes {
-  text(
-    "Text",
+  heading(
+    "Heading",
     Icons.text_fields_rounded,
+    editorBuilder: TextEditorElement.header,
+    layerBuilder: TextLayerWidget.new,
+    readerBuilder: TextReaderWidget.new,
+    focusable: true,
+  ),
+  text(
+    "Body",
+    Icons.text_snippet_outlined,
     editorBuilder: TextEditorElement.new,
     layerBuilder: TextLayerWidget.new,
     readerBuilder: TextReaderWidget.new,
@@ -34,6 +44,14 @@ enum ElementTypes {
     editorBuilder: TextListEditorElement.new,
     layerBuilder: TextListLayerWidget.new,
     readerBuilder: TextListReaderWidget.new,
+    focusable: true,
+  ),
+  button(
+    "Button",
+    Icons.ads_click_rounded,
+    editorBuilder: ButtonEditorElement.new,
+    layerBuilder: ButtonLayerWidget.new,
+    readerBuilder: ButtonReaderWidget.new,
     focusable: true,
   ),
 
@@ -125,39 +143,48 @@ Map<String, dynamic> generateDefaultProperties(
     ElementTypes.box => BoxElementModel(
             color: Colors.green,
             borderRadius: 0,
-            aspectRatio: AspectRatios.fourThree)
+            aspectRatio: AspectRatios.widescreen)
         .toJson(),
     ElementTypes.divider =>
       const DividerElementModel(color: Colors.black, weight: 1).toJson(),
-
-    // ElementTypes.heading => TextElementModel(
-    //         text: "",
-    //         size: RubricEditorStyle.minimumFontSize.toDouble(),
-    //         isBold: false,
-    //         color: Colors.black)
-    //     .toJson(),
+    ElementTypes.heading => TextElementModel(
+            text: "",
+            size: HeadingFontSizes.h3.value.toDouble(),
+            isBold: true,
+            isUnderline: false,
+            alignment: "center",
+            color: Colors.black)
+        .toJson(),
     ElementTypes.text => TextElementModel(
             text: "",
-            size: RubricEditorStyle.minimumFontSize.toDouble(),
+            size: FontSizes.medium.value.toDouble(),
             isBold: false,
             isItalic: false,
             isUnderline: false,
             color: Colors.black)
         .toJson(),
     ElementTypes.textList => TextListElementModel(
-            textList: ["Insert your first entry here"],
+            textList: [""],
             size: RubricEditorStyle.minimumFontSize.toDouble(),
             isBold: false,
             isItalic: false,
             isUnderline: false,
             color: Colors.black)
         .toJson(),
+    ElementTypes.button => ButtonElementModel(
+        text: "Click Me",
+        link: "",
+        style: ButtonStyles.filled.name,
+        color: RubricEditorStyle.of(context).theme,
+        borderRadius: BorderRadiusPresets.rounded.radius,
+        textColor: Colors.white,
+      ).toJson(),
 
     // ElementTypes.richtext => RichTextElementModel(
     //     document: Document(),
     //   ).toJson(),
     ElementTypes.image => ImageElementModel(
-            aspectRatio: AspectRatios.fourThree,
+            aspectRatio: AspectRatios.widescreen,
             borderRadius: 0,
             imageUrl: "https://t0pc4t.github.io/public/default_image.webp",
             fit: "cover")

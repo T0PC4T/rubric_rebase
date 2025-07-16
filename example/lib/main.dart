@@ -31,12 +31,17 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: RubricLessonEditorWidget(
-          moduleID: "n9OQvN72csbuJnDA3HZB",
+          moduleID: "M7cOoCF4uy8rb9zG7ntL",
           onSaved: () async {
             print("hello");
           },
         ),
-        // body: RubricLessonReaderWidget(moduleID: "n9OQvN72csbuJnDA3HZB"),
+        // body: RubricLessonReaderWidget(
+        //   moduleID: "M7cOoCF4uy8rb9zG7ntL",
+        //   onComplete: () async {
+        //     print("test");
+        //   },
+        // ),
         // body: Column(
         //   crossAxisAlignment: CrossAxisAlignment.stretch,
         //   children: [

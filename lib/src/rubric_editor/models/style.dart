@@ -7,6 +7,7 @@ import 'package:rubric/rubric.dart';
 class RubricEditorStyle {
   static const paddingUnit = 10.0;
   static const minimumFontSize = 18;
+  static const headerFontSize = 25;
 
   final String logoUrl;
   final double radius;
@@ -30,12 +31,12 @@ class RubricEditorStyle {
       this.elevation = 6,
       this.brandColors = const [
         // Grey Shades
-        Color.fromARGB(255, 233, 236, 239), // Light Grey
-        Color.fromARGB(255, 108, 117, 125), // Medium Grey
-        Color.fromARGB(255, 52, 58, 64), // Dark Grey
+        Color.fromARGB(255, 255, 255, 255), // Light Grey
+        Color.fromARGB(255, 195, 195, 195), // Medium Grey
+        Color.fromARGB(255, 84, 86, 87), // Dark Grey
         Color.fromARGB(255, 0, 0, 0),
         // Primary Blue
-        Color.fromARGB(255, 0, 149, 255),
+        Color.fromARGB(255, 0, 162, 255),
 
         // Secondary Teal
         Color.fromARGB(255, 57, 210, 192),

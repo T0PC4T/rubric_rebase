@@ -14,11 +14,14 @@ class TextTooltipWidget extends StatelessWidget {
   final ElementModel element;
   final TextEditingController controller;
   final UndoHistoryController undoController;
+  final bool header;
+
   const TextTooltipWidget({
     super.key,
     required this.element,
     required this.controller,
     required this.undoController,
+    required this.header,
   });
 
   @override
@@ -119,11 +122,18 @@ class TextTooltipWidget extends StatelessWidget {
                   }
                 },
                 items: [
-                  for (var value in FontSizes.values)
-                    RubricDropdownMenuItem(
-                      value: value.value,
-                      text: value.display,
-                    ),
+                  if (header)
+                    for (var value in HeadingFontSizes.values)
+                      RubricDropdownMenuItem(
+                        value: value.value,
+                        text: value.display,
+                      )
+                  else
+                    for (var value in FontSizes.values)
+                      RubricDropdownMenuItem(
+                        value: value.value,
+                        text: value.display,
+                      ),
                 ],
                 child: RubricText("Font Size"),
               ),

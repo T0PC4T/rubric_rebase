@@ -61,10 +61,10 @@ class RubricColorPickerState extends State<RubricColorPicker> {
                       decoration: BoxDecoration(
                         color: c,
                         shape: BoxShape.circle,
-                        // border: Border.all(
-                        //   color: style.light4,
-                        //   width: 1,
-                        // ),
+                        border: Border.all(
+                          color: style.light4,
+                          width: 1,
+                        ),
                       ),
                     ),
                   ),
@@ -88,6 +88,11 @@ class RubricColorPickerState extends State<RubricColorPicker> {
                     margin: RubricEditorStyle.padding,
                     decoration: BoxDecoration(
                       // radial gradient
+                      border: Border.all(
+                        color: style.light4,
+                        width: 1,
+                      ),
+
                       gradient: LinearGradient(
                         // center: Alignment.center,
                         // radius: 0.9,

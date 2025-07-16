@@ -13,7 +13,7 @@ _$ImageElementModelImpl _$$ImageElementModelImplFromJson(
       borderRadius: (json['borderRadius'] as num?)?.toDouble() ?? 0,
       fit: json['fit'] as String? ?? ImageFits.contain,
       aspectRatio:
-          (json['aspectRatio'] as num?)?.toDouble() ?? AspectRatios.fourThree,
+          (json['aspectRatio'] as num?)?.toDouble() ?? AspectRatios.widescreen,
     );
 
 Map<String, dynamic> _$$ImageElementModelImplToJson(

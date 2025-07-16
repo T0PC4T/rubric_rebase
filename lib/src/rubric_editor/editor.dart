@@ -168,11 +168,9 @@ class RubricEditorState extends State<RubricEditor> {
   }
 
   bool mobileDirty = false;
-  bool desktopDirty = false;
+
   markAsDirty() {
-    if (edits.value.viewMode == ViewModes.mobile) {
-      desktopDirty = true;
-    } else {
+    if (edits.value.viewMode != ViewModes.mobile) {
       mobileDirty = true;
     }
   }
@@ -180,8 +178,6 @@ class RubricEditorState extends State<RubricEditor> {
   changeViewMode(ViewModes newValue) {
     if (newValue == ViewModes.mobile) {
       mobileDirty = false;
-    } else {
-      desktopDirty = false;
     }
     if (edits.value.viewMode == newValue) {
       return;

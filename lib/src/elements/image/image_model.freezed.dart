@@ -145,7 +145,7 @@ class _$ImageElementModelImpl implements _ImageElementModel {
       {required this.imageUrl,
       this.borderRadius = 0,
       this.fit = ImageFits.contain,
-      this.aspectRatio = AspectRatios.fourThree});
+      this.aspectRatio = AspectRatios.widescreen});
 
   factory _$ImageElementModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ImageElementModelImplFromJson(json);

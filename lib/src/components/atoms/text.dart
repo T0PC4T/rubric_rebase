@@ -19,18 +19,24 @@ class RubricText extends StatelessWidget {
   final TextType textType;
   final bool isDark;
   final bool isCentered;
+  final int? maxLines;
+  final TextOverflow? overflow;
   const RubricText(
     this.text, {
     super.key,
     this.isCentered = false,
     this.textType = TextType.paragraph,
     this.isDark = false,
+    this.maxLines,
+    this.overflow,
   });
 
   @override
   Widget build(BuildContext context) {
     final styles = RubricEditorStyle.of(context);
     return Text(
+      maxLines: maxLines,
+      overflow: overflow,
       textAlign: isCentered ? TextAlign.center : TextAlign.center,
       text,
       style: TextStyle(

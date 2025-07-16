@@ -11,7 +11,7 @@ class ImageElementModel with _$ImageElementModel {
     required String imageUrl,
     @Default(0) double borderRadius,
     @Default(ImageFits.contain) String fit,
-    @Default(AspectRatios.fourThree) double aspectRatio,
+    @Default(AspectRatios.widescreen) double aspectRatio,
   }) = _ImageElementModel;
 
   factory ImageElementModel.fromJson(Map<String, dynamic> json) =>

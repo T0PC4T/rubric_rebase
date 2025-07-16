@@ -8,8 +8,11 @@ import 'package:rubric/src/models/elements.dart';
 
 class TextEditorElement extends StatefulWidget {
   final ElementModel element;
-  const TextEditorElement({super.key, required this.element});
+  final bool header;
+  const TextEditorElement({super.key, required this.element}) : header = false;
 
+  const TextEditorElement.header({super.key, required this.element})
+      : header = true;
   @override
   State<TextEditorElement> createState() => TextEditorElementState();
 }
@@ -78,9 +81,11 @@ class TextEditorElementState
       editorState.showToolbar(
         widget.element,
         TextTooltipWidget(
-            element: widget.element,
-            controller: controller,
-            undoController: undoController),
+          element: widget.element,
+          controller: controller,
+          undoController: undoController,
+          header: widget.header,
+        ),
       );
     }
   }
@@ -102,10 +107,12 @@ class TextEditorElementState
     return Transform.translate(
       offset: Offset(0, -4),
       child: TextField(
-        decoration:
-            InputDecoration.collapsed(hintText: "Enter you text in here"),
+        decoration: InputDecoration.collapsed(
+            hintText: "[Empty Text]",
+            hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
         undoController: undoController,
         style: textStyle,
+        // spellCheckConfiguration: SpellCheckConfiguration(),
         cursorColor: Colors.black,
         keyboardType: TextInputType.multiline,
         scrollPadding: EdgeInsets.zero,

@@ -4,7 +4,6 @@ import 'package:rubric/src/components/atoms/divider.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/models/elements.dart';
-import 'package:rubric/src/rubric_editor/models/preview.dart';
 import 'package:rubric/src/rubric_editor/navbar/navbar.dart';
 import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
@@ -103,38 +102,38 @@ class ToolbarUniversalIcons extends StatelessWidget {
                             ],
                           ),
                         ),
-                        if (element.fixed &&
-                            editsModel.viewMode == ViewModes.desktop) ...[
-                          RubricVerticleDivider(),
-                          RubricToolbarDropdown(
-                            onUpdate: (value) {
-                              if (value case double newValue) {
-                                editorState.canvas.updateElement(
-                                    element..fixedWidth = newValue);
-                              }
-                            },
-                            items: [
-                              for (var value in FixedWidths.values)
-                                RubricDropdownMenuItem(
-                                  value: value.value,
-                                  text: value.display,
-                                ),
-                            ],
-                            child: Row(
-                              spacing: RubricEditorStyle.paddingUnit * 0.5,
-                              children: [
-                                Transform.rotate(
-                                  angle: 3.1415 / 2,
-                                  child: Icon(
-                                    Icons.expand,
-                                    size: ElementToolbarWidget.iconSize,
-                                  ),
-                                ),
-                                RubricText("Element Width"),
-                              ],
-                            ),
-                          ),
-                        ],
+                        // if (element.fixed &&
+                        //     editsModel.viewMode == ViewModes.desktop) ...[
+                        //   RubricVerticleDivider(),
+                        //   RubricToolbarDropdown(
+                        //     onUpdate: (value) {
+                        //       if (value case double newValue) {
+                        //         editorState.canvas.updateElement(
+                        //             element..fixedWidth = newValue);
+                        //       }
+                        //     },
+                        //     items: [
+                        //       for (var value in FixedWidths.values)
+                        //         RubricDropdownMenuItem(
+                        //           value: value.value,
+                        //           text: value.display,
+                        //         ),
+                        //     ],
+                        //     child: Row(
+                        //       spacing: RubricEditorStyle.paddingUnit * 0.5,
+                        //       children: [
+                        //         Transform.rotate(
+                        //           angle: 3.1415 / 2,
+                        //           child: Icon(
+                        //             Icons.expand,
+                        //             size: ElementToolbarWidget.iconSize,
+                        //           ),
+                        //         ),
+                        //         RubricText("Element Width"),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ],
                         RubricVerticleDivider(),
                         RubricIconButton(
                           iconData: Icons.lock_open_rounded,

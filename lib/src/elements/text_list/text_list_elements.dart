@@ -36,7 +36,6 @@ class TextListEditorElementState
 
   @override
   void initState() {
-    print("RESTARTING WIDGET");
     final textProperties = widget.element.getProperties<TextListElementModel>();
     textList.addAll(textProperties.textList);
     controller = TextEditingController();
@@ -62,11 +61,7 @@ class TextListEditorElementState
       focusNode.requestFocus();
     } else {
       editingPoint = -1;
-      final properties = widget.element.getProperties<TextListElementModel>();
-      editorState.canvas.updateElement(
-        widget.element,
-        properties.copyWith(textList: textList).toJson(),
-      );
+      _update();
     }
   }
 
@@ -96,6 +91,23 @@ class TextListEditorElementState
             undoController: undoController),
       );
     }
+  }
+
+  double _oldHeight = 0;
+  _onChange() {
+    final box = (context.findRenderObject() as RenderBox);
+    if (_oldHeight != box.size.height) {
+      _oldHeight = box.size.height;
+      _update();
+    }
+  }
+
+  _update() {
+    final properties = widget.element.getProperties<TextListElementModel>();
+    editorState.canvas.updateElement(
+      widget.element,
+      properties.copyWith(textList: textList).toJson(),
+    );
   }
 
   @override
@@ -147,8 +159,6 @@ class TextListEditorElementState
                     ? GestureDetector(
                         onTap: () {
                           setState(() {
-                            print("setting editing point to $i.");
-
                             if (textList[editingPoint] != controller.text) {
                               final newText = List<String>.from(textList);
                               newText[editingPoint] = controller.text;
@@ -233,6 +243,7 @@ class TextListEditorElementState
                               setState(() {
                                 textList[editingPoint] = value;
                               });
+                              _onChange();
                             },
                             autofocus: true,
                             undoController: undoController,
