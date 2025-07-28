@@ -219,11 +219,13 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
       await Future.delayed(Duration(milliseconds: 10));
       if (result.element case ElementModel el) {
         editorState.edits.selectElement(el);
+
         editorState.pushOverlay(
-          Positioned(
-              top: event.position.dy + 5,
-              left: event.position.dx + 5,
-              child: RightClickMenu(editorState: editorState, element: el)),
+          RightClickMenu(
+            editorState: editorState,
+            element: el,
+            offset: Offset(event.position.dx + 5, event.position.dy + 5),
+          ),
           removeToLength: 1,
         );
       }

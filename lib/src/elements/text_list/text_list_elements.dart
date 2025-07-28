@@ -5,6 +5,7 @@ import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/text_list/text_list_model.dart';
 import 'package:rubric/src/elements/text_list/text_list_toolbar.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 const textListColumnSpacing = 12.0;
 const textListRowSpacing = 4.0;
@@ -368,7 +369,7 @@ class PointInserter extends StatelessWidget {
           ),
           width: 70,
           height: 30,
-          child: Icon(Icons.add, color: theme.light),
+          child: RubricIcon(Icons.add, color: theme.light),
         ),
       ),
     );

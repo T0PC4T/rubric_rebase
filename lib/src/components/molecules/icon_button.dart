@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 enum RBStyles {
   light,
@@ -58,7 +59,7 @@ class RubricIconButton extends StatelessWidget {
         children: [
           Center(
             child: icon ??
-                Icon(
+                RubricIcon(
                   iconData,
                   color: switch ((disabled, isActive, style)) {
                     (true, _, _) => rubricStyle.light4,
@@ -119,7 +120,7 @@ class RubricIconTextButton extends StatelessWidget {
         child: Row(
           spacing: RubricEditorStyle.paddingUnit * 0.5,
           children: [
-            Icon(
+            RubricIcon(
               iconData,
               color: isDark ? style.light : style.dark,
               size: ElementToolbarWidget.iconSize,

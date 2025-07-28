@@ -3,7 +3,7 @@ import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/atoms/container.dart';
 import 'package:rubric/src/components/atoms/popup.dart';
 import 'package:rubric/src/components/molecules/color_picker.dart';
-import 'package:rubric/src/components/shared.dart';
+import 'package:rubric/src/components/shared.dart' hide RubricIcon;
 import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/rubric_icon/icon_grid.dart';
 import 'package:rubric/src/rubric_icon/icon_widget.dart';
@@ -106,7 +106,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                 child: RubricContainer(
                   height: 100,
                   width: double.infinity,
-                  child: RubricIcon(
+                  child: RubricEditorIcon(
                     editorState!.canvas.value.settings.icon,
                     size: 50,
                     color: style.light4,

@@ -5,6 +5,7 @@ import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
 import 'package:rubric/src/elements/video/video_toolbar.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_parser/youtube_parser.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -41,9 +42,9 @@ class VideoEditorElementState extends SelectableState<VideoEditorElement> {
           color: Colors.black,
           alignment: Alignment.center,
           child: FittedBox(
-              child: Icon(
+              child: RubricIcon(
             Icons.video_file,
-            color: Colors.white,
+            color: editorState.style.light,
             size: 50,
           )),
         ),

@@ -15,9 +15,9 @@ class RubricEditorStyle {
   final FontWeight fontWeight;
   final double elevation;
   // final Color theme;
-  Color get theme => const Color.fromARGB(255, 0, 162, 255);
-  Color get dark => const Color.fromARGB(255, 0, 0, 0);
-  Color get light => Color.fromARGB(255, 255, 255, 255);
+  final Color theme;
+  final Color dark;
+  final Color light;
 
   final Color danger;
 
@@ -29,6 +29,9 @@ class RubricEditorStyle {
       this.fontSize = 14,
       this.fontWeight = FontWeight.w500,
       this.elevation = 6,
+      this.theme = const Color.fromARGB(255, 0, 162, 255),
+      this.dark = const Color.fromARGB(255, 0, 0, 0),
+      this.light = const Color.fromARGB(255, 255, 255, 255),
       this.brandColors = const [
         // Grey Shades
         Color.fromARGB(255, 255, 255, 255), // Light Grey
@@ -53,6 +56,10 @@ class RubricEditorStyle {
       // this.dark = const Color.fromARGB(255, 0, 0, 0),
       // this.light = const Color.fromARGB(255, 255, 255, 255),
       this.danger = Colors.red});
+
+  // Danger color lerp
+  Color get danger4 => Color.lerp(danger, light, 0.4)!;
+  Color get danger8 => Color.lerp(danger, light, 0.8)!;
 
   Color get theme8 => Color.lerp(theme, light, 0.8)!;
   Color get theme7 => Color.lerp(theme, light, 0.7)!;

@@ -9,8 +9,16 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
 
   // these actions do not actually change the state of canvas
 
-  addElement(element) {
-    value.elements = [...value.elements, element];
+  addElement(element, {int index = -1}) {
+    if (index >= 0 && index < value.elements.length) {
+      value.elements = [
+        ...value.elements.sublist(0, index),
+        element,
+        ...value.elements.sublist(index),
+      ];
+    } else {
+      value.elements = [...value.elements, element];
+    }
     commit();
   }
 

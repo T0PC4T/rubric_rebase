@@ -5,6 +5,7 @@ import 'package:rubric/src/rubric_editor/models/style.dart';
 import 'package:rubric/src/rubric_editor/sidebar/pages/elements.dart';
 import 'package:rubric/src/rubric_editor/sidebar/pages/layers.dart';
 import 'package:rubric/src/rubric_editor/sidebar/pages/settings.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class RubricSideBar extends StatefulWidget {
   const RubricSideBar({super.key});
@@ -70,7 +71,7 @@ class RubricSideBarState extends State<RubricSideBar> {
                             width: double.infinity,
                           ),
                         ),
-                        Icon(menusIcons[i], size: 25),
+                        RubricIcon(menusIcons[i], size: 25),
                         RubricText(menus[i],
                             textType: TextType.small, isCentered: true),
                       ],

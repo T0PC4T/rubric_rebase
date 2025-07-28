@@ -10,6 +10,7 @@ import 'package:rubric/src/elements/box/box_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class BoxTooltipWidget extends StatelessWidget {
   final ElementModel element;
@@ -85,7 +86,7 @@ class BoxTooltipWidget extends StatelessWidget {
               child: Row(
                 spacing: RubricEditorStyle.paddingUnit * 0.5,
                 children: [
-                  Icon(
+                  RubricIcon(
                     Icons.aspect_ratio,
                     size: ElementToolbarWidget.iconSize,
                   ),

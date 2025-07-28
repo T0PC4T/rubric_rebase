@@ -9,6 +9,7 @@ import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class ButtonTooltipWidget extends StatefulWidget {
   final ElementModel element;
@@ -140,7 +141,7 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                 child: Row(
                   spacing: RubricEditorStyle.paddingUnit * 0.5,
                   children: [
-                    Icon(
+                    RubricIcon(
                       Icons.smart_button_sharp,
                       size: ElementToolbarWidget.iconSize,
                     ),
@@ -194,9 +195,11 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                     right: RubricEditorStyle.paddingNum),
                 child: RubricColorButton(
                   builder: (color) {
-                    return Icon(
+                    return RubricIcon(
                       Icons.text_fields_outlined,
-                      color: color == Colors.white ? Colors.black : color,
+                      color: color.computeLuminance() > 0.95
+                          ? editorState.style.dark
+                          : color,
                       size: ElementToolbarWidget.iconSize,
                     );
                   },

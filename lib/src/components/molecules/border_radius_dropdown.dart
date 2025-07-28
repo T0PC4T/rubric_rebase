@@ -4,6 +4,7 @@ import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class RubricBorderRadiusDropdown extends StatelessWidget {
   final double radius;
@@ -30,7 +31,7 @@ class RubricBorderRadiusDropdown extends StatelessWidget {
       child: Row(
         spacing: RubricEditorStyle.paddingUnit * 0.5,
         children: [
-          Icon(
+          RubricIcon(
             Icons.check_box_outline_blank_outlined,
             size: ElementToolbarWidget.iconSize,
           ),

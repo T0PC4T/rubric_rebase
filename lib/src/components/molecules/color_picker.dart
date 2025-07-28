@@ -3,6 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:rubric/src/components/atoms/popup.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class RubricColorPicker extends StatefulWidget {
   final Function(Color) onComplete;
@@ -106,7 +107,7 @@ class RubricColorPickerState extends State<RubricColorPicker> {
 
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.add, size: 35, color: Colors.white),
+                    child: RubricIcon(Icons.add, size: 35, color: style.light),
                   ),
                 ),
               ],

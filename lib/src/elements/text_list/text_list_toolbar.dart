@@ -9,6 +9,7 @@ import 'package:rubric/src/elements/text_list/text_list_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class TextListTooltipWidget extends StatelessWidget {
   final ElementModel element;
@@ -139,7 +140,7 @@ class TextListTooltipWidget extends StatelessWidget {
                 child: Row(
                   spacing: RubricEditorStyle.paddingUnit * 0.5,
                   children: [
-                    Icon(
+                    RubricIcon(
                       properties.textListType == TextListTypes.bulleted
                           ? Icons.format_list_bulleted_rounded
                           : Icons.format_list_numbered_rounded,

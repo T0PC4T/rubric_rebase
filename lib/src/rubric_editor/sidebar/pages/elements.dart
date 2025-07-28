@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/atoms/button.dart';
+import 'package:rubric/src/components/atoms/text.dart';
 import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/models/elements.dart';
@@ -33,24 +34,34 @@ class ElementPageWidget extends StatelessWidget {
               hoverColor: editorState.style.light9,
               onTap: () {
                 final editorState = RubricEditorState.of(context);
-                Future.delayed(Duration(milliseconds: 20)).then(
-                  (value) {
-                    editorState.scrollController?.animateTo(
-                        editorState.scrollController!.position.maxScrollExtent -
-                            sidebarButtonHeight,
-                        duration: Duration(milliseconds: 450),
-                        curve: Curves.easeInOut);
-                  },
-                );
-
+                int index = -1;
+                if (editorState.edits.value.selected
+                    case ElementModel selectedElement) {
+                  index = editorState.canvas.value.elements
+                      .indexOf(selectedElement);
+                } else {
+                  Future.delayed(Duration(milliseconds: 20)).then(
+                    (value) {
+                      editorState.scrollController?.animateTo(
+                          editorState
+                                  .scrollController!.position.maxScrollExtent -
+                              sidebarButtonHeight,
+                          duration: Duration(milliseconds: 450),
+                          curve: Curves.easeInOut);
+                    },
+                  );
+                }
                 editorState.canvas.addElement(
+                  index: index,
                   ElementModel(
                     id: newID(),
                     type: element,
                     properties: generateDefaultProperties(context, element),
                     fixedWidth: 1,
                     padding: ElementPadding.medium.value,
-                    orderIndex: editorState.canvas.value.elements.length,
+                    orderIndex: index >= 0
+                        ? index
+                        : editorState.canvas.value.elements.length,
                   ),
                 );
               },
@@ -59,8 +70,12 @@ class ElementPageWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 spacing: RubricEditorStyle.paddingUnit * 0.5,
                 children: [
-                  Icon(element.icon, size: buttonSize * 0.4),
-                  Text(element.title),
+                  Icon(
+                    element.icon,
+                    size: buttonSize * 0.4,
+                    color: editorState.style.light1,
+                  ),
+                  RubricText(element.title),
                 ],
               ),
             ),

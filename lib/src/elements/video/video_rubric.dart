@@ -47,6 +47,7 @@ class ControlsOverlay extends StatefulWidget {
 class _ControlsOverlayState extends State<ControlsOverlay> {
   @override
   Widget build(BuildContext context) {
+    final style = RubricEditorStyle.of(context);
     return Stack(
       children: <Widget>[
         AnimatedSwitcher(
@@ -54,12 +55,12 @@ class _ControlsOverlayState extends State<ControlsOverlay> {
           reverseDuration: const Duration(milliseconds: 200),
           child: widget.controller.value.isPlaying
               ? const SizedBox.shrink()
-              : const ColoredBox(
+              : ColoredBox(
                   color: Colors.black26,
                   child: Center(
                     child: Icon(
                       Icons.play_arrow,
-                      color: Colors.white,
+                      color: style.light,
                       size: 60.0,
                       semanticLabel: 'Play',
                     ),
