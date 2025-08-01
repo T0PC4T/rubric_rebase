@@ -7,7 +7,7 @@ import 'package:rubric/src/elements/text_list/text_list_toolbar.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
-const textListColumnSpacing = 12.0;
+const textListColumnSpacing = 14.0;
 const textListRowSpacing = 4.0;
 final GlobalKey textListKey = GlobalKey();
 
