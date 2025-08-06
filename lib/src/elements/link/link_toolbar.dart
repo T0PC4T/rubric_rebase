@@ -5,19 +5,19 @@ import 'package:rubric/src/components/atoms/popup.dart';
 import 'package:rubric/src/components/molecules/color_picker.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/base/enums.dart';
-import 'package:rubric/src/elements/text/text_model.dart';
+import 'package:rubric/src/elements/link/link_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 
 @immutable
-class TextTooltipWidget extends StatelessWidget {
+class LinkTooltipWidget extends StatefulWidget {
   final ElementModel element;
   final TextEditingController controller;
   final UndoHistoryController undoController;
   final bool header;
 
-  const TextTooltipWidget({
+  const LinkTooltipWidget({
     super.key,
     required this.element,
     required this.controller,
@@ -26,25 +26,77 @@ class TextTooltipWidget extends StatelessWidget {
   });
 
   @override
+  State<LinkTooltipWidget> createState() => _LinkTooltipWidgetState();
+}
+
+class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
+  String lastValue = "";
+
+  @override
   Widget build(BuildContext context) {
     final editorState = RubricEditorState.of(context);
 
     return ValueListenableBuilder(
         valueListenable: editorState.canvas,
         builder: (context, canvalModel, child) {
-          final properties =
-              canvalModel.element(element.id).getProperties<TextElementModel>();
+          final properties = canvalModel
+              .element(widget.element.id)
+              .getProperties<LinkElementModel>();
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              RubricIconTextButton(
+                onTap: () async {
+                  final linkUrl = await PopupWidget.showPopup<String>(
+                    context,
+                    (closeWith) {
+                      return SizedBox(
+                        width: PopupWidget.popWidth,
+                        child: Column(
+                          children: [
+                            RubricText(
+                              "Edit Link",
+                              textType: TextType.title,
+                            ),
+                            Padding(
+                              padding: RubricEditorStyle.padding,
+                              child: RubricTextField(
+                                initialValue: properties.link,
+                                onComplete: closeWith,
+                                onChanged: (value) {
+                                  lastValue = value;
+                                },
+                                helpText: "https://www.google.com",
+                              ),
+                            ),
+                            RubricButton.light(editorState.style,
+                                width: 150,
+                                height: 30,
+                                onTap: () => closeWith(lastValue),
+                                child: Text("Save Link"))
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                  if (linkUrl case String newUrl) {
+                    editorState.canvas.updateElement(
+                      widget.element,
+                      properties.copyWith(link: newUrl).toJson(),
+                    );
+                  }
+                },
+                iconData: Icons.link,
+                text: "Edit Link",
+              ),
               RubricIconButton(
                   isActive: properties.isBold,
                   size: ElementToolbarWidget.elementToolbarHeight,
                   onTap: () {
                     final newProperties =
-                        element.getProperties<TextElementModel>();
+                        widget.element.getProperties<LinkElementModel>();
                     editorState.canvas.updateElement(
-                        element,
+                        widget.element,
                         newProperties
                             .copyWith(isBold: !newProperties.isBold)
                             .toJson());
@@ -55,9 +107,9 @@ class TextTooltipWidget extends StatelessWidget {
                   size: ElementToolbarWidget.elementToolbarHeight,
                   onTap: () {
                     final newProperties =
-                        element.getProperties<TextElementModel>();
+                        widget.element.getProperties<LinkElementModel>();
                     editorState.canvas.updateElement(
-                        element,
+                        widget.element,
                         newProperties
                             .copyWith(isItalic: !newProperties.isItalic)
                             .toJson());
@@ -68,9 +120,9 @@ class TextTooltipWidget extends StatelessWidget {
                   size: ElementToolbarWidget.elementToolbarHeight,
                   onTap: () {
                     final newProperties =
-                        element.getProperties<TextElementModel>();
+                        widget.element.getProperties<LinkElementModel>();
                     editorState.canvas.updateElement(
-                        element,
+                        widget.element,
                         newProperties
                             .copyWith(isUnderline: !newProperties.isUnderline)
                             .toJson());
@@ -83,8 +135,8 @@ class TextTooltipWidget extends StatelessWidget {
                     size: ElementToolbarWidget.elementToolbarHeight,
                     onTap: () {
                       final newProperties =
-                          element.getProperties<TextElementModel>();
-                      editorState.canvas.updateElement(element,
+                          widget.element.getProperties<LinkElementModel>();
+                      editorState.canvas.updateElement(widget.element,
                           newProperties.copyWith(alignment: align).toJson());
                     },
                     iconData: ElementAlignment.icon(align)),
@@ -105,7 +157,7 @@ class TextTooltipWidget extends StatelessWidget {
                     });
                     if (newColor != null) {
                       editorState.canvas.updateElement(
-                        element,
+                        widget.element,
                         properties.copyWith(color: newColor).toJson(),
                       );
                     }
@@ -115,15 +167,15 @@ class TextTooltipWidget extends StatelessWidget {
               RubricToolbarDropdown(
                 onUpdate: (value) {
                   if (value case double newValue) {
-                    final newProperties = element
-                        .getProperties<TextElementModel>()
+                    final newProperties = widget.element
+                        .getProperties<LinkElementModel>()
                         .copyWith(size: newValue);
                     editorState.canvas
-                        .updateElement(element, newProperties.toJson());
+                        .updateElement(widget.element, newProperties.toJson());
                   }
                 },
                 items: [
-                  if (header)
+                  if (widget.header)
                     for (var value in HeadingFontSizes.values)
                       RubricDropdownMenuItem(
                         value: value.value,
@@ -139,7 +191,7 @@ class TextTooltipWidget extends StatelessWidget {
                 child: RubricText("Font Size"),
               ),
               ToolbarUniversalIcons(
-                element: element,
+                element: widget.element,
               ),
             ],
           );

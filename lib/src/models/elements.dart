@@ -7,6 +7,7 @@ import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
+import 'package:rubric/src/elements/link/link_model.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/text_list/text_list_model.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
@@ -75,6 +76,7 @@ class ElementModel {
       ElementTypes.text => TextElementModel.fromJson(properties),
       ElementTypes.heading => TextElementModel.fromJson(properties),
       ElementTypes.textList => TextListElementModel.fromJson(properties),
+      ElementTypes.link => LinkElementModel.fromJson(properties),
       ElementTypes.button => ButtonElementModel.fromJson(properties),
       ElementTypes.box => BoxElementModel.fromJson(properties),
       ElementTypes.image => ImageElementModel.fromJson(properties),

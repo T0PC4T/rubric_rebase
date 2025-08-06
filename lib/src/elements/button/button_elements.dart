@@ -21,8 +21,11 @@ class ButtonEditorElement extends StatefulWidget {
   State<ButtonEditorElement> createState() => ButtonEditorElementState();
 }
 
-BoxDecoration buttonDecoration(ButtonElementModel properties,
+BoxDecoration? buttonDecoration(ButtonElementModel properties,
     [bool hovered = false]) {
+  if (properties.style == ButtonStyles.text.value) {
+    return null;
+  }
   switch (ButtonStyles.fromString(properties.style)) {
     case ButtonStyles.outlined:
       return BoxDecoration(
@@ -140,38 +143,41 @@ class ButtonEditorElementState
 
     return Container(
       alignment: Alignment.center,
-      child: Container(
-        decoration: buttonDecoration(properties),
-        padding: buttonPadding,
-        child: Transform.translate(
-          offset: Offset(0, -0),
-          child: TextField(
-            decoration: InputDecoration.collapsed(
-                hintText: "[Empty Text]",
-                hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
-            undoController: undoController,
+      decoration: buttonDecoration(properties),
+      padding: buttonPadding,
+      child: Transform.translate(
+        offset: Offset(0, -0),
+        child: TextField(
+          decoration: InputDecoration.collapsed(
+              hintText: "[Empty Text]",
+              hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
+          undoController: undoController,
 
-            // spellCheckConfiguration: SpellCheckConfiguration(),
-            cursorColor: properties.color,
-            keyboardType: TextInputType.multiline,
-            scrollPadding: EdgeInsets.zero,
-            selectionControls: DesktopTextSelectionControls(),
-            textAlign: TextAlign.center,
+          // spellCheckConfiguration: SpellCheckConfiguration(),
+          cursorColor: properties.color,
+          keyboardType: TextInputType.multiline,
+          scrollPadding: EdgeInsets.zero,
+          selectionControls: DesktopTextSelectionControls(),
+          textAlign: TextAlign.center,
 
-            style: TextStyle(
-                height: 1.8,
-                fontSize: FontSizes.medium.value.toDouble(),
-                color: properties.textColor,
-                fontWeight: FontWeight.bold),
-            maxLines: null,
-            enableInteractiveSelection: true,
-            readOnly: false,
-            minLines: null,
-            onChanged: _onChange,
-            scrollController: _scrollController,
-            controller: controller,
-            focusNode: focusNode,
-          ),
+          style: TextStyle(
+              height: 1.8,
+              fontSize: FontSizes.medium.value.toDouble(),
+              color: properties.textColor,
+              fontWeight: FontWeight.bold,
+              decoration: properties.style == ButtonStyles.text.value
+                  ? TextDecoration.underline
+                  : null,
+              decorationColor: properties.textColor),
+
+          maxLines: null,
+          enableInteractiveSelection: true,
+          readOnly: false,
+          minLines: null,
+          onChanged: _onChange,
+          scrollController: _scrollController,
+          controller: controller,
+          focusNode: focusNode,
         ),
       ),
     );

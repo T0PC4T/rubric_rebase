@@ -235,6 +235,7 @@ class RenderRubricElementStack extends RenderBox
       final BoxConstraints? childConstraints =
           childParentData.positionedChildConstraints();
 
+      // ! This is deprecated but may still be in use somewhere.
       // It had and infinite bound box, these must be processed at the end.
       if (childConstraints == null) {
         infiniteChildren.add(child);

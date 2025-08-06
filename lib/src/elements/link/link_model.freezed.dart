@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'text_model.dart';
+part of 'link_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-TextElementModel _$TextElementModelFromJson(Map<String, dynamic> json) {
-  return _TextElementModel.fromJson(json);
+LinkElementModel _$LinkElementModelFromJson(Map<String, dynamic> json) {
+  return _LinkElementModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$TextElementModel {
+mixin _$LinkElementModel {
   String get text => throw _privateConstructorUsedError;
   bool get isBold => throw _privateConstructorUsedError;
   bool get isItalic => throw _privateConstructorUsedError;
@@ -28,22 +28,23 @@ mixin _$TextElementModel {
   double get size => throw _privateConstructorUsedError;
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   Color get color => throw _privateConstructorUsedError;
+  String get link => throw _privateConstructorUsedError;
 
-  /// Serializes this TextElementModel to a JSON map.
+  /// Serializes this LinkElementModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of TextElementModel
+  /// Create a copy of LinkElementModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $TextElementModelCopyWith<TextElementModel> get copyWith =>
+  $LinkElementModelCopyWith<LinkElementModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TextElementModelCopyWith<$Res> {
-  factory $TextElementModelCopyWith(
-          TextElementModel value, $Res Function(TextElementModel) then) =
-      _$TextElementModelCopyWithImpl<$Res, TextElementModel>;
+abstract class $LinkElementModelCopyWith<$Res> {
+  factory $LinkElementModelCopyWith(
+          LinkElementModel value, $Res Function(LinkElementModel) then) =
+      _$LinkElementModelCopyWithImpl<$Res, LinkElementModel>;
   @useResult
   $Res call(
       {String text,
@@ -52,20 +53,21 @@ abstract class $TextElementModelCopyWith<$Res> {
       bool isUnderline,
       String alignment,
       double size,
-      @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color});
+      @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color,
+      String link});
 }
 
 /// @nodoc
-class _$TextElementModelCopyWithImpl<$Res, $Val extends TextElementModel>
-    implements $TextElementModelCopyWith<$Res> {
-  _$TextElementModelCopyWithImpl(this._value, this._then);
+class _$LinkElementModelCopyWithImpl<$Res, $Val extends LinkElementModel>
+    implements $LinkElementModelCopyWith<$Res> {
+  _$LinkElementModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TextElementModel
+  /// Create a copy of LinkElementModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -77,6 +79,7 @@ class _$TextElementModelCopyWithImpl<$Res, $Val extends TextElementModel>
     Object? alignment = null,
     Object? size = null,
     Object? color = null,
+    Object? link = null,
   }) {
     return _then(_value.copyWith(
       text: null == text
@@ -107,16 +110,20 @@ class _$TextElementModelCopyWithImpl<$Res, $Val extends TextElementModel>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as Color,
+      link: null == link
+          ? _value.link
+          : link // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$TextElementModelImplCopyWith<$Res>
-    implements $TextElementModelCopyWith<$Res> {
-  factory _$$TextElementModelImplCopyWith(_$TextElementModelImpl value,
-          $Res Function(_$TextElementModelImpl) then) =
-      __$$TextElementModelImplCopyWithImpl<$Res>;
+abstract class _$$LinkElementModelImplCopyWith<$Res>
+    implements $LinkElementModelCopyWith<$Res> {
+  factory _$$LinkElementModelImplCopyWith(_$LinkElementModelImpl value,
+          $Res Function(_$LinkElementModelImpl) then) =
+      __$$LinkElementModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -126,18 +133,19 @@ abstract class _$$TextElementModelImplCopyWith<$Res>
       bool isUnderline,
       String alignment,
       double size,
-      @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color});
+      @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color,
+      String link});
 }
 
 /// @nodoc
-class __$$TextElementModelImplCopyWithImpl<$Res>
-    extends _$TextElementModelCopyWithImpl<$Res, _$TextElementModelImpl>
-    implements _$$TextElementModelImplCopyWith<$Res> {
-  __$$TextElementModelImplCopyWithImpl(_$TextElementModelImpl _value,
-      $Res Function(_$TextElementModelImpl) _then)
+class __$$LinkElementModelImplCopyWithImpl<$Res>
+    extends _$LinkElementModelCopyWithImpl<$Res, _$LinkElementModelImpl>
+    implements _$$LinkElementModelImplCopyWith<$Res> {
+  __$$LinkElementModelImplCopyWithImpl(_$LinkElementModelImpl _value,
+      $Res Function(_$LinkElementModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TextElementModel
+  /// Create a copy of LinkElementModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -149,8 +157,9 @@ class __$$TextElementModelImplCopyWithImpl<$Res>
     Object? alignment = null,
     Object? size = null,
     Object? color = null,
+    Object? link = null,
   }) {
-    return _then(_$TextElementModelImpl(
+    return _then(_$LinkElementModelImpl(
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -179,6 +188,10 @@ class __$$TextElementModelImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as Color,
+      link: null == link
+          ? _value.link
+          : link // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -186,8 +199,8 @@ class __$$TextElementModelImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable()
-class _$TextElementModelImpl extends _TextElementModel {
-  const _$TextElementModelImpl(
+class _$LinkElementModelImpl extends _LinkElementModel {
+  const _$LinkElementModelImpl(
       {required this.text,
       this.isBold = false,
       this.isItalic = false,
@@ -195,11 +208,12 @@ class _$TextElementModelImpl extends _TextElementModel {
       this.alignment = ElementAlignment.left,
       required this.size,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-      required this.color})
+      required this.color,
+      required this.link})
       : super._();
 
-  factory _$TextElementModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$TextElementModelImplFromJson(json);
+  factory _$LinkElementModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LinkElementModelImplFromJson(json);
 
   @override
   final String text;
@@ -220,17 +234,19 @@ class _$TextElementModelImpl extends _TextElementModel {
   @override
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   final Color color;
+  @override
+  final String link;
 
   @override
   String toString() {
-    return 'TextElementModel(text: $text, isBold: $isBold, isItalic: $isItalic, isUnderline: $isUnderline, alignment: $alignment, size: $size, color: $color)';
+    return 'LinkElementModel(text: $text, isBold: $isBold, isItalic: $isItalic, isUnderline: $isUnderline, alignment: $alignment, size: $size, color: $color, link: $link)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TextElementModelImpl &&
+            other is _$LinkElementModelImpl &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.isBold, isBold) || other.isBold == isBold) &&
             (identical(other.isItalic, isItalic) ||
@@ -240,33 +256,34 @@ class _$TextElementModelImpl extends _TextElementModel {
             (identical(other.alignment, alignment) ||
                 other.alignment == alignment) &&
             (identical(other.size, size) || other.size == size) &&
-            (identical(other.color, color) || other.color == color));
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.link, link) || other.link == link));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, text, isBold, isItalic, isUnderline, alignment, size, color);
+  int get hashCode => Object.hash(runtimeType, text, isBold, isItalic,
+      isUnderline, alignment, size, color, link);
 
-  /// Create a copy of TextElementModel
+  /// Create a copy of LinkElementModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$TextElementModelImplCopyWith<_$TextElementModelImpl> get copyWith =>
-      __$$TextElementModelImplCopyWithImpl<_$TextElementModelImpl>(
+  _$$LinkElementModelImplCopyWith<_$LinkElementModelImpl> get copyWith =>
+      __$$LinkElementModelImplCopyWithImpl<_$LinkElementModelImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TextElementModelImplToJson(
+    return _$$LinkElementModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _TextElementModel extends TextElementModel {
-  const factory _TextElementModel(
+abstract class _LinkElementModel extends LinkElementModel {
+  const factory _LinkElementModel(
       {required final String text,
       final bool isBold,
       final bool isItalic,
@@ -274,11 +291,12 @@ abstract class _TextElementModel extends TextElementModel {
       final String alignment,
       required final double size,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-      required final Color color}) = _$TextElementModelImpl;
-  const _TextElementModel._() : super._();
+      required final Color color,
+      required final String link}) = _$LinkElementModelImpl;
+  const _LinkElementModel._() : super._();
 
-  factory _TextElementModel.fromJson(Map<String, dynamic> json) =
-      _$TextElementModelImpl.fromJson;
+  factory _LinkElementModel.fromJson(Map<String, dynamic> json) =
+      _$LinkElementModelImpl.fromJson;
 
   @override
   String get text;
@@ -295,11 +313,13 @@ abstract class _TextElementModel extends TextElementModel {
   @override
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   Color get color;
+  @override
+  String get link;
 
-  /// Create a copy of TextElementModel
+  /// Create a copy of LinkElementModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TextElementModelImplCopyWith<_$TextElementModelImpl> get copyWith =>
+  _$$LinkElementModelImplCopyWith<_$LinkElementModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

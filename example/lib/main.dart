@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: RubricLessonEditorWidget(
-          moduleID: "M7cOoCF4uy8rb9zG7ntL",
+          moduleID: "tBovfMjEwwu9TH3jt0Y5",
           onSaved: () async {
             print("hello");
           },

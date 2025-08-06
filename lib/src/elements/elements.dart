@@ -9,6 +9,8 @@ import 'package:rubric/src/elements/divider/divider_elements.dart';
 import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/image/image_elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
+import 'package:rubric/src/elements/link/link_elements.dart';
+import 'package:rubric/src/elements/link/link_model.dart';
 import 'package:rubric/src/elements/text/text_elements.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/text_list/text_list_elements.dart';
@@ -44,6 +46,14 @@ enum ElementTypes {
     editorBuilder: TextListEditorElement.new,
     layerBuilder: TextListLayerWidget.new,
     readerBuilder: TextListReaderWidget.new,
+    focusable: true,
+  ),
+  link(
+    "Link",
+    Icons.link,
+    editorBuilder: LinkEditorElement.new,
+    layerBuilder: TextLayerWidget.new,
+    readerBuilder: LinkReaderWidget.new,
     focusable: true,
   ),
   button(
@@ -170,6 +180,15 @@ Map<String, dynamic> generateDefaultProperties(
             isItalic: false,
             isUnderline: false,
             color: Colors.black)
+        .toJson(),
+    ElementTypes.link => LinkElementModel(
+            text: "",
+            link: "",
+            size: FontSizes.medium.value.toDouble(),
+            isBold: false,
+            isItalic: false,
+            isUnderline: true,
+            color: Colors.blue)
         .toJson(),
     ElementTypes.button => ButtonElementModel(
         text: "Click Me",

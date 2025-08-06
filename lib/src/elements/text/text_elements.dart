@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/base/states.dart';
+import 'package:rubric/src/elements/link/link_model.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/text/text_toolbar.dart';
 import 'package:rubric/src/models/elements.dart';
@@ -13,12 +14,13 @@ class TextEditorElement extends StatefulWidget {
 
   const TextEditorElement.header({super.key, required this.element})
       : header = true;
+
   @override
   State<TextEditorElement> createState() => TextEditorElementState();
 }
 
-class TextEditorElementState
-    extends SelectableAndFocusableState<TextEditorElement> {
+class TextEditorElementState<T extends TextEditorElement>
+    extends SelectableAndFocusableState<T> {
   late TextEditingController controller;
   late ScrollController _scrollController;
   late FocusNode focusNode;
@@ -26,7 +28,7 @@ class TextEditorElementState
 
   @override
   void initState() {
-    final textProperties = widget.element.getProperties<TextElementModel>();
+    final textProperties = widget.element.getProperties<TextElementBaseModel>();
     controller = TextEditingController(text: textProperties.text);
     focusNode = FocusNode(debugLabel: "Text ${widget.element.id}");
     _scrollController = ScrollController();
@@ -43,11 +45,23 @@ class TextEditorElementState
     if (focused) {
       focusNode.requestFocus();
     } else {
-      final properties = widget.element.getProperties<TextElementModel>();
-      editorState.canvas.updateElement(
-        widget.element,
-        properties.copyWith(text: controller.text).toJson(),
-      );
+      final properties = widget.element.getProperties<TextElementBaseModel>();
+      switch (properties) {
+        case TextElementModel textElement:
+          {
+            editorState.canvas.updateElement(
+              widget.element,
+              textElement.copyWith(text: controller.text).toJson(),
+            );
+          }
+        case LinkElementModel linkElement:
+          {
+            editorState.canvas.updateElement(
+              widget.element,
+              linkElement.copyWith(text: controller.text).toJson(),
+            );
+          }
+      }
     }
   }
 
@@ -56,23 +70,36 @@ class TextEditorElementState
     final box = (context.findRenderObject() as RenderBox);
     if (_oldHeight != box.size.height) {
       _oldHeight = box.size.height;
-      final properties = widget.element.getProperties<TextElementModel>();
-      editorState.canvas.updateElement(
-        widget.element,
-        properties.copyWith(text: controller.text).toJson(),
-      );
+      final properties = widget.element.getProperties<TextElementBaseModel>();
+      switch (properties) {
+        case TextElementModel textElement:
+          {
+            editorState.canvas.updateElement(
+              widget.element,
+              textElement.copyWith(text: controller.text).toJson(),
+            );
+          }
+        case LinkElementModel linkElement:
+          {
+            editorState.canvas.updateElement(
+              widget.element,
+              linkElement.copyWith(text: controller.text).toJson(),
+            );
+          }
+      }
     }
   }
 
   @override
   void didUpdateWidget(covariant TextEditorElement oldWidget) {
-    final properties = widget.element.getProperties<TextElementModel>();
-    final oldProperties = oldWidget.element.getProperties<TextElementModel>();
+    final properties = widget.element.getProperties<TextElementBaseModel>();
+    final oldProperties =
+        oldWidget.element.getProperties<TextElementBaseModel>();
     if (properties.text != oldProperties.text) {
       controller.text = properties.text;
     }
 
-    super.didUpdateWidget(oldWidget);
+    super.didUpdateWidget(oldWidget as T);
   }
 
   @override
@@ -100,7 +127,7 @@ class TextEditorElementState
 
   @override
   Widget build(BuildContext context) {
-    final properties = widget.element.getProperties<TextElementModel>();
+    final properties = widget.element.getProperties<TextElementBaseModel>();
     final textStyle = properties.textStyle();
     editorState = RubricEditorState.of(context);
 
@@ -138,7 +165,7 @@ class TextLayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = RubricEditorStyle.of(context);
-    final textElement = element.getProperties<TextElementModel>();
+    final textElement = element.getProperties<TextElementBaseModel>();
     return Text(
       maxLines: 1,
       textElement.text,
@@ -154,7 +181,7 @@ class TextReaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final properties = element.getProperties<TextElementModel>();
+    final properties = element.getProperties<TextElementBaseModel>();
     return Text(
       overflow: TextOverflow.visible,
       properties.text,
