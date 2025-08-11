@@ -11,11 +11,11 @@ import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
-class TextListTooltipWidget extends StatelessWidget {
+class TextListToolbarWidget extends StatelessWidget {
   final ElementModel element;
   final TextEditingController controller;
   final UndoHistoryController undoController;
-  const TextListTooltipWidget({
+  const TextListToolbarWidget({
     super.key,
     required this.element,
     required this.controller,

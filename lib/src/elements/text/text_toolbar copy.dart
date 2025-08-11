@@ -84,37 +84,45 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
   }
 
   // This helper function is now part of the State class.
-  void _toggleWrapSelectionWith(String char, RubricEditorState editorState) {
+  void _wrapSelectionWith(String char, RubricEditorState editorState) {
     TextSelection selection = widget.controller.selection;
     // This check is technically redundant now since the button will be disabled,
     // but it's good practice to keep it as a safeguard.
-
     if (selection.isCollapsed) {
+      // select all
+      int i = 0;
+      while (i < widget.controller.text.length) {
+        for (var marker in _markers) {
+          if (widget.controller.text[i] == marker) {
+            i++;
+            continue;
+          }
+        }
+        break;
+      }
       widget.controller.selection = TextSelection(
-        baseOffset: 0,
-        extentOffset: widget.controller.text.length,
+        baseOffset: i,
+        extentOffset: widget.controller.text.length - i,
       );
       selection = widget.controller.selection;
     }
 
-    String newText = widget.controller.text;
     final selectedText = selection.textInside(widget.controller.text);
+    final newText = widget.controller.text.replaceRange(
+      selection.start,
+      selection.end,
+      '$char$selectedText$char',
+    );
 
-    if (selectedText.contains(char)) {
-      newText = widget.controller.text.replaceRange(
-        selection.start,
-        selection.end,
-        selectedText.replaceAll(char, ""),
-      );
-    } else {
-      newText = widget.controller.text.replaceRange(
-        selection.start,
-        selection.end,
-        '$char$selectedText$char',
-      );
+    for (var marker in _markers) {
+      newText.replaceAll("$marker$marker", "");
     }
 
     widget.controller.text = newText;
+    widget.controller.selection = TextSelection(
+      baseOffset: selection.start,
+      extentOffset: selection.end + 2,
+    );
 
     final newProperties = widget.element
         .getProperties<TextElementModel>()
@@ -135,7 +143,7 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
         RubricIconButton(
           size: ElementToolbarWidget.elementToolbarHeight,
           onTap: _isStylingEnabled
-              ? () => _toggleWrapSelectionWith('ᵇ', editorState)
+              ? () => _wrapSelectionWith('ᵇ', editorState)
               : null,
           iconData: Icons.format_bold,
           disabled: !_isStylingEnabled,
@@ -143,7 +151,7 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
         RubricIconButton(
           size: ElementToolbarWidget.elementToolbarHeight,
           onTap: _isStylingEnabled
-              ? () => _toggleWrapSelectionWith('ⁱ', editorState)
+              ? () => _wrapSelectionWith('ⁱ', editorState)
               : null,
           iconData: Icons.format_italic,
           disabled: !_isStylingEnabled,
@@ -151,7 +159,7 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
         RubricIconButton(
           size: ElementToolbarWidget.elementToolbarHeight,
           onTap: _isStylingEnabled
-              ? () => _toggleWrapSelectionWith('ᵘ', editorState)
+              ? () => _wrapSelectionWith('ᵘ', editorState)
               : null,
           iconData: Icons.format_underline,
           disabled: !_isStylingEnabled,

@@ -41,6 +41,9 @@ abstract class SelectableAndFocusableState<T extends StatefulWidget>
     editorState.edits.focusNotifier.addListener(element.id, onFocus);
   }
 
+  bool get isSelected => editorState.edits.isSelected(element);
+  bool get isFocused => editorState.edits.isFocused(element);
+
   onSelect(bool selected);
   onFocus(bool focused);
 

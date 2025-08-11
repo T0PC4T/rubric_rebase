@@ -85,6 +85,7 @@ abstract class TextElementModel
         letterSpacing: 0.1,
         fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
         fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
+        height: 1.6,
         decoration:
             isUnderline ? TextDecoration.underline : TextDecoration.none,
       );

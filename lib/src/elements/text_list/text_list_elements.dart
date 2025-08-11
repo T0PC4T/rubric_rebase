@@ -86,7 +86,7 @@ class TextListEditorElementState
     if (selected) {
       editorState.showToolbar(
         widget.element,
-        TextListTooltipWidget(
+        TextListToolbarWidget(
             element: widget.element,
             controller: controller,
             undoController: undoController),

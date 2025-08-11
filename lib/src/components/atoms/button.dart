@@ -14,7 +14,7 @@ class RubricButton extends StatefulWidget {
   final double? borderWidth;
   final Alignment alignment;
   // Core
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Widget child;
   const RubricButton({
     super.key,
@@ -129,14 +129,18 @@ class RubricButtonState extends State<RubricButton> {
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         onEnter: (event) {
-          setState(() {
-            hovered = true;
-          });
+          if (widget.onTap != null) {
+            setState(() {
+              hovered = true;
+            });
+          }
         },
         onExit: (event) {
-          setState(() {
-            hovered = false;
-          });
+          if (widget.onTap != null) {
+            setState(() {
+              hovered = false;
+            });
+          }
         },
         child: Container(
           margin: widget.margin,

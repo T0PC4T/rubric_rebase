@@ -12,7 +12,7 @@ enum RBStyles {
 
 class RubricIconButton extends StatelessWidget {
   final double size;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final IconData iconData;
   final Widget? icon;
   final bool isActive;

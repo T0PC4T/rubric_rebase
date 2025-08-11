@@ -19,6 +19,10 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     } else {
       value.elements = [...value.elements, element];
     }
+    for (var i = 0; i < value.elements.length; i++) {
+      value.elements[i].orderIndex = i;
+    }
+
     commit();
   }
 
@@ -121,13 +125,16 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   }
 
   duplicateElement(ElementModel element) {
-    final newElement = element.copyWith(id: newID());
-    value.elements = [
-      // ...value.elements, newElement,
-      for (var e in value.elements)
-        if (e == element) ...[e, newElement] else e
-    ];
-    commit();
+    addElement(
+        ElementModel(
+          id: newID(),
+          type: element.type,
+          properties: Map<String, dynamic>.from(element.properties),
+          fixedWidth: element.fixedWidth,
+          padding: element.padding,
+          orderIndex: -1,
+        ),
+        index: element.orderIndex);
   }
 
   changeProperties(ElementModel element, Map<String, dynamic> newPropeties) {
