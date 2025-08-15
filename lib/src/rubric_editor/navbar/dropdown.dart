@@ -25,7 +25,7 @@ class SaveDropDownWidget extends StatelessWidget {
             isDark: true,
           ),
           onTap: () {
-            editorState.edits.selectElement(null);
+            editorState.edits.selectElements(null);
             editorState.discard();
           },
         ));

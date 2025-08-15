@@ -15,7 +15,7 @@ import 'package:rubric/src/rubric_editor/models/preview.dart';
 
 class ElementModel {
   final String id;
-  ElementTypes type;
+  ElementType type;
   double x;
   double y;
   double width;
@@ -73,15 +73,15 @@ class ElementModel {
 
   T getProperties<T>() {
     return switch (type) {
-      ElementTypes.text => TextElementModel.fromJson(properties),
-      ElementTypes.heading => TextElementModel.fromJson(properties),
-      ElementTypes.textList => TextListElementModel.fromJson(properties),
-      ElementTypes.link => LinkElementModel.fromJson(properties),
-      ElementTypes.button => ButtonElementModel.fromJson(properties),
-      ElementTypes.box => BoxElementModel.fromJson(properties),
-      ElementTypes.image => ImageElementModel.fromJson(properties),
-      ElementTypes.video => VideoElementModel.fromJson(properties),
-      ElementTypes.divider => DividerElementModel.fromJson(properties),
+      ElementType.text => TextElementModel.fromJson(properties),
+      ElementType.heading => TextElementModel.fromJson(properties),
+      ElementType.textList => TextListElementModel.fromJson(properties),
+      ElementType.link => LinkElementModel.fromJson(properties),
+      ElementType.button => ButtonElementModel.fromJson(properties),
+      ElementType.box => BoxElementModel.fromJson(properties),
+      ElementType.image => ImageElementModel.fromJson(properties),
+      ElementType.video => VideoElementModel.fromJson(properties),
+      ElementType.divider => DividerElementModel.fromJson(properties),
 
       // ElementTypes.richtext => RichTextElementModel.fromJson(properties),
     } as T;
@@ -89,7 +89,7 @@ class ElementModel {
 
   ElementModel copyWith({
     String? id,
-    ElementTypes? type,
+    ElementType? type,
     double? x,
     double? y,
     double? width,
@@ -143,7 +143,7 @@ class ElementModel {
   factory ElementModel.fromMap(Map<String, dynamic> map) {
     return ElementModel(
       id: map['id'] as String,
-      type: ElementTypes.fromName(map['type']),
+      type: ElementType.fromName(map['type']),
       x: map['x'] as double,
       y: map['y'] as double,
       width: map['width'] as double,

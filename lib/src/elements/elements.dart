@@ -23,7 +23,7 @@ import 'package:rubric/src/rubric_editor/models/style.dart';
 typedef ElementBuilderFunction = Widget Function(
     {Key? key, required ElementModel element});
 
-enum ElementTypes {
+enum ElementType {
   heading(
     "Heading",
     Icons.text_fields_rounded,
@@ -116,7 +116,7 @@ enum ElementTypes {
   final ElementBuilderFunction layerBuilder;
   final ElementBuilderFunction readerBuilder;
   final bool focusable;
-  const ElementTypes(
+  const ElementType(
     this.title,
     this.icon, {
     required this.editorBuilder,
@@ -126,8 +126,8 @@ enum ElementTypes {
   });
 
   // from name function
-  static ElementTypes fromName(String name) {
-    for (var el in ElementTypes.values) {
+  static ElementType fromName(String name) {
+    for (var el in ElementType.values) {
       if (el.name == name) {
         return el;
       }
@@ -147,17 +147,17 @@ enum BorderRadiusPresets {
 
 Map<String, dynamic> generateDefaultProperties(
   BuildContext context,
-  ElementTypes elementType,
+  ElementType elementType,
 ) {
   return switch (elementType) {
-    ElementTypes.box => BoxElementModel(
+    ElementType.box => BoxElementModel(
             color: Colors.green,
             borderRadius: 0,
             aspectRatio: AspectRatios.widescreen)
         .toJson(),
-    ElementTypes.divider =>
+    ElementType.divider =>
       const DividerElementModel(color: Colors.black, weight: 1).toJson(),
-    ElementTypes.heading => TextElementModel(
+    ElementType.heading => TextElementModel(
             text: "",
             size: HeadingFontSizes.h3.value.toDouble(),
             isBold: true,
@@ -165,7 +165,7 @@ Map<String, dynamic> generateDefaultProperties(
             alignment: "center",
             color: Colors.black)
         .toJson(),
-    ElementTypes.text => TextElementModel(
+    ElementType.text => TextElementModel(
             text: "",
             size: FontSizes.medium.value.toDouble(),
             isBold: false,
@@ -173,7 +173,7 @@ Map<String, dynamic> generateDefaultProperties(
             isUnderline: false,
             color: Colors.black)
         .toJson(),
-    ElementTypes.textList => TextListElementModel(
+    ElementType.textList => TextListElementModel(
             textList: [""],
             size: RubricEditorStyle.minimumFontSize.toDouble(),
             isBold: false,
@@ -181,7 +181,7 @@ Map<String, dynamic> generateDefaultProperties(
             isUnderline: false,
             color: Colors.black)
         .toJson(),
-    ElementTypes.link => LinkElementModel(
+    ElementType.link => LinkElementModel(
             text: "",
             link: "",
             size: FontSizes.medium.value.toDouble(),
@@ -190,7 +190,7 @@ Map<String, dynamic> generateDefaultProperties(
             isUnderline: true,
             color: Colors.blue)
         .toJson(),
-    ElementTypes.button => ButtonElementModel(
+    ElementType.button => ButtonElementModel(
         text: "Click Me",
         link: "",
         style: ButtonStyles.filled.name,
@@ -202,13 +202,13 @@ Map<String, dynamic> generateDefaultProperties(
     // ElementTypes.richtext => RichTextElementModel(
     //     document: Document(),
     //   ).toJson(),
-    ElementTypes.image => ImageElementModel(
+    ElementType.image => ImageElementModel(
             aspectRatio: AspectRatios.widescreen,
             borderRadius: 0,
             imageUrl: "https://t0pc4t.github.io/public/default_image.webp",
             fit: "cover")
         .toJson(),
-    ElementTypes.video => VideoElementModel(
+    ElementType.video => VideoElementModel(
         isYoutube: false,
         videoUrl: "https://t0pc4t.github.io/public/default_video.mp4",
       ).toJson(),

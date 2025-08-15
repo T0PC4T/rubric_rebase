@@ -132,29 +132,26 @@ class TextEditorElementState<T extends TextEditorElement>
     editorState = RubricEditorState.of(context);
 
     return isFocused
-        ? Transform.translate(
-            offset: Offset(0, -4),
-            child: TextField(
-              decoration: InputDecoration.collapsed(
-                  hintText: "[Empty Text]",
-                  hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
-              undoController: undoController,
-              style: textStyle,
-              // spellCheckConfiguration: SpellCheckConfiguration(),
-              cursorColor: Colors.black,
-              keyboardType: TextInputType.multiline,
-              scrollPadding: EdgeInsets.zero,
-              textAlign: ElementAlignment.textAlign(properties.alignment),
-              selectionControls: DesktopTextSelectionControls(),
-              maxLines: null,
-              enableInteractiveSelection: true,
-              readOnly: false,
-              minLines: null,
-              onChanged: _onChange,
-              scrollController: _scrollController,
-              controller: controller,
-              focusNode: focusNode,
-            ),
+        ? TextField(
+            decoration: InputDecoration.collapsed(
+                hintText: "[Empty Text]",
+                hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
+            undoController: undoController,
+            style: textStyle,
+            // spellCheckConfiguration: SpellCheckConfiguration(),
+            cursorColor: Colors.black,
+            keyboardType: TextInputType.multiline,
+            scrollPadding: EdgeInsets.zero,
+            textAlign: ElementAlignment.textAlign(properties.alignment),
+            selectionControls: DesktopTextSelectionControls(),
+            maxLines: null,
+            enableInteractiveSelection: true,
+            readOnly: false,
+            minLines: null,
+            onChanged: _onChange,
+            scrollController: _scrollController,
+            controller: controller,
+            focusNode: focusNode,
           )
         : TextReaderWidget(element: element);
   }

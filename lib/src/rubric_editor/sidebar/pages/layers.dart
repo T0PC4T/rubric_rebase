@@ -71,7 +71,7 @@ class LayerWidget extends StatelessWidget {
     final editorState = RubricEditorState.of(context);
     return GestureDetector(
       onTap: () {
-        editorState.edits.selectElement(element);
+        editorState.edits.selectElements(element);
       },
       child: Container(
         margin: EdgeInsets.symmetric(

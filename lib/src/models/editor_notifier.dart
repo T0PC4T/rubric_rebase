@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
-import 'package:rubric/src/models/focus_notifier.dart';
+import 'package:rubric/src/models/selection_notifiers.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
 
 class ElementNotifier extends ValueNotifier<ElementModel?> {
@@ -13,7 +13,7 @@ class ElementNotifier extends ValueNotifier<ElementModel?> {
 
 class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   final focusNotifier = FocusNotifier();
-  final selectionNotifier = FocusNotifier();
+  final selectionNotifier = SelectionNotifier();
   EditorNotifier(super.value);
 
   @override
@@ -23,20 +23,22 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   }
 
   clear() {
-    selectElement(null);
+    selectElements(null);
   }
 
-  selectElement(ElementModel? element) {
-    value = value.copyWith(selected: element, focused: null);
-    selectionNotifier.focus = element;
+  selectElements(dynamic element) {
+    selectionNotifier.selection = element;
+    value =
+        value.copyWith(selected: selectionNotifier.selection, focused: null);
+
     focusNotifier.focus = null;
   }
 
   focusElement(ElementModel element) {
     if (element.type.focusable) {
-      value = value.copyWith(selected: null, focused: element);
+      value = value.copyWith(selected: [], focused: element);
       focusNotifier.focus = element;
-      selectionNotifier.focus = null;
+      selectionNotifier.selection = null;
     }
   }
 
@@ -55,7 +57,7 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   }
 
   bool isSelected(ElementModel element) {
-    return value.selected?.id == element.id;
+    return value.selected.any((e) => e.id == element.id);
   }
 
   double scrollOffset = 0;
@@ -93,7 +95,7 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   CanvasModel redo() {
     value = value.copyWith(
       focused: null,
-      selected: null,
+      selected: [],
       undoIndex: value.undoIndex + 1,
     );
 
@@ -103,7 +105,7 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   CanvasModel undo() {
     value = value.copyWith(
       focused: null,
-      selected: null,
+      selected: [],
       undoIndex: value.undoIndex - 1,
     );
 

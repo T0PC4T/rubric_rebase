@@ -9,6 +9,12 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
 
   // these actions do not actually change the state of canvas
 
+  _runReorderingAlgo() {
+    for (var i = 0; i < value.elements.length; i++) {
+      value.elements[i].orderIndex = i;
+    }
+  }
+
   addElement(element, {int index = -1}) {
     if (index >= 0 && index < value.elements.length) {
       value.elements = [
@@ -19,9 +25,7 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     } else {
       value.elements = [...value.elements, element];
     }
-    for (var i = 0; i < value.elements.length; i++) {
-      value.elements[i].orderIndex = i;
-    }
+    _runReorderingAlgo();
 
     commit();
   }
@@ -124,6 +128,13 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     commit();
   }
 
+  mergeTextElements(List<ElementModel> elements) {
+    final properties = elements.first.properties;
+    properties["text"] = elements.map((e) => e.properties["text"]).join("\n\n");
+
+    deleteElements(elements.sublist(1));
+  }
+
   duplicateElement(ElementModel element) {
     addElement(
         ElementModel(
@@ -144,6 +155,14 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   deleteElement(ElementModel deleteElement) {
     value.elements = value.elements
         .where((element) => deleteElement.id != element.id)
+        .toList();
+    _runReorderingAlgo();
+    notifyListeners();
+  }
+
+  deleteElements(List<ElementModel> deleteElements) {
+    value.elements = value.elements
+        .where((element) => !deleteElements.contains(element))
         .toList();
     notifyListeners();
   }

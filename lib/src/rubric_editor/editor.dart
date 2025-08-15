@@ -208,7 +208,7 @@ class RubricEditorState extends State<RubricEditor> {
       onKeyEvent: (value) {
         if (value.logicalKey == LogicalKeyboardKey.delete) {
           if (edits.value.selected case ElementModel element) {
-            edits.selectElement(null);
+            edits.selectElements(null);
             canvas.deleteElement(element);
           }
         }

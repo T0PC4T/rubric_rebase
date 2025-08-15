@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
+import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
@@ -38,8 +39,9 @@ enum GridSizes {
 }
 
 class CanvasEditingModel {
-  final ElementModel? selected;
+  final List<ElementModel> selected;
   final ElementModel? focused;
+  final ElementType? dragging;
   final List<CanvasModel> steps;
   final int undoIndex;
   final bool showGrid;
@@ -47,8 +49,9 @@ class CanvasEditingModel {
   final ViewModes viewMode;
 
   CanvasEditingModel({
-    this.selected,
+    this.selected = const [],
     this.focused,
+    this.dragging,
     required this.steps,
     this.undoIndex = 0,
     this.showGrid = false,
@@ -57,8 +60,9 @@ class CanvasEditingModel {
   });
 
   CanvasEditingModel copyWith({
-    required ElementModel? selected,
+    required List<ElementModel> selected,
     required ElementModel? focused,
+    ElementType? dragging,
     bool? previewing,
     ViewModes? viewMode,
     List<CanvasModel>? steps,
@@ -71,15 +75,11 @@ class CanvasEditingModel {
       viewMode: viewMode ?? this.viewMode,
       selected: selected,
       focused: focused,
+      dragging: dragging,
       steps: steps ?? this.steps,
       undoIndex: undoIndex ?? this.undoIndex,
       showGrid: showGrid ?? this.showGrid,
     );
-  }
-
-  @override
-  String toString() {
-    return 'CanvasEditingModel(selected: $selected, focused: $focused, steps: $steps, undoIndex: $undoIndex, showGrid: $showGrid, previewing: $previewing, viewMode: $viewMode)';
   }
 
   @override
@@ -88,6 +88,7 @@ class CanvasEditingModel {
 
     return other.selected == selected &&
         other.focused == focused &&
+        other.dragging == dragging &&
         listEquals(other.steps, steps) &&
         other.undoIndex == undoIndex &&
         other.showGrid == showGrid &&
@@ -99,6 +100,7 @@ class CanvasEditingModel {
   int get hashCode {
     return selected.hashCode ^
         focused.hashCode ^
+        dragging.hashCode ^
         steps.hashCode ^
         undoIndex.hashCode ^
         showGrid.hashCode ^

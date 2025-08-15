@@ -4,24 +4,21 @@ A drag and drop editor built in flutter for creatings simple interactive lessons
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+* Drag and drop interface for creating lessons.
+* Export lessons as JSON.
+* Import lessons from JSON.
+* Preview lessons.
+* Save lessons locally.
 
-## Getting started
+## Getting Started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+This project is a starting point for a Flutter application.
 
-## Usage
+A few resources to get you started if this is your first Flutter project:
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+* [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+* [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-```dart
-const like = 'sample';
-```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

@@ -97,7 +97,7 @@ class ElementHandlerWidget extends StatelessWidget {
                                   0.25 => 0.25,
                                   _ => 1.0,
                                 });
-                              editorState.edits.selectElement(null);
+                              editorState.edits.selectElements(null);
                             }),
                       ),
                       Transform.rotate(
@@ -117,7 +117,7 @@ class ElementHandlerWidget extends StatelessWidget {
                                   1.0 => 1.0,
                                   _ => 1.0,
                                 });
-                              editorState.edits.selectElement(null);
+                              editorState.edits.selectElements(null);
                             }),
                       ),
                     ],
@@ -143,7 +143,7 @@ class ElementHandlerWidget extends StatelessWidget {
                                   .indexOf(element);
                               editorState.canvas
                                   .reorderElements(null, index, index - 1);
-                              editorState.edits.selectElement(null);
+                              editorState.edits.selectElements(null);
                             }),
                       if (element.orderIndex <
                           editorState.canvas.value.elements.length - 1)
@@ -159,7 +159,7 @@ class ElementHandlerWidget extends StatelessWidget {
                                   .indexOf(element);
                               editorState.canvas
                                   .reorderElements(null, index, index + 2);
-                              editorState.edits.selectElement(null);
+                              editorState.edits.selectElements(null);
                             }),
                     ],
                   ),

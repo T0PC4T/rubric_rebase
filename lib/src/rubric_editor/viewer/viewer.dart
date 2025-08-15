@@ -175,6 +175,20 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     }
   }
 
+  void _selectElementsInSelectionRect(Rect rect) {
+    final elements = editorState.canvas.value.elements.where((element) {
+      final elementRect = Rect.fromLTWH(
+        element.getX(viewMode),
+        element.getY(viewMode),
+        element.getWidth(viewMode),
+        element.getHeight(viewMode),
+      );
+      return elementRect.overlaps(rect);
+    }).toList();
+
+    editorState.edits.selectElements(elements);
+  }
+
   // This is used to give fixed elements the same size and location by the renderstack class.
   void _secretSetElementTransform(
       ElementModel element,
@@ -195,35 +209,42 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
         ViewModes.mobile, element, Offset(mobileWidth, mobileHeight));
   }
 
+  // ? BASIC OPERATIONS
+
   bool _wasRightClick = false;
-  _handlePointerDown(PointerDownEvent event, StackEventResult result) async {
+  __handlePointerDown(PointerDownEvent event, StackEventResult result) async {
     // ? Right click check
-    _wasRightClick = false;
     if (event.kind == PointerDeviceKind.mouse &&
         event.buttons == kSecondaryMouseButton) {
       _wasRightClick = true;
-
       return;
+    } else {
+      _wasRightClick = false;
     }
 
     switch (result) {
       case StackEventResult(cancel: true):
         {
-          editorState.edits.selectElement(null);
+          setState(() {
+            editorState.edits.selectElements(null);
+            _selectionOrigin = result.stackHitOffset;
+          });
         }
     }
   }
 
-  _handlePointerUp(PointerUpEvent event, StackEventResult result) async {
+  __handlePointerUp(PointerUpEvent event, StackEventResult result) async {
     if (_wasRightClick) {
+      // means that you can right click something even if it was not selected
+      if (!editorState.edits.value.selected.contains(result.element)) {
+        editorState.edits.selectElements(result.element);
+      }
       await Future.delayed(Duration(milliseconds: 10));
-      if (result.element case ElementModel el) {
-        editorState.edits.selectElement(el);
-
+      if (editorState.edits.selectionNotifier.selection.isNotEmpty) {
         editorState.pushOverlay(
           RightClickMenu(
             editorState: editorState,
-            element: el,
+            elements: editorState.edits.selectionNotifier.selection,
             offset: Offset(event.position.dx + 5, event.position.dy + 5),
           ),
           removeToLength: 1,
@@ -231,13 +252,19 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
       }
       return;
     }
+    if (_selectionRect != null) {
+      setState(() {
+        _selectElementsInSelectionRect(_selectionRect!);
+        _selectionOrigin = null;
+        _selectionRect = null;
+      });
+      return;
+    }
     switch (result) {
       case StackEventResult(cancel: true):
         {
           if (editorState.edits.value.focused != null) {
-            if (result.cancel) {
-              editorState.edits.selectElement(null);
-            }
+            editorState.edits.selectElements(null);
           }
         }
       case StackEventResult(element: ElementModel el):
@@ -245,7 +272,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
           if (editorState.edits.isSelected(el) && _dragged == false) {
             editorState.edits.focusElement(el);
           } else {
-            editorState.edits.selectElement(el);
+            editorState.edits.selectElements(el);
           }
         }
     }
@@ -253,8 +280,18 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     editorState.canvas.commitIfChange(editorState.edits.lastStep);
   }
 
-  _handlePointerMove(PointerMoveEvent event, StackEventResult result) {
+  Offset? _selectionOrigin;
+  Rect? _selectionRect;
+
+  __handlePointerMove(PointerMoveEvent event, StackEventResult result) {
     _dragged = true;
+    if (_selectionOrigin != null) {
+      _selectionRect =
+          Rect.fromPoints(_selectionOrigin!, result.stackHitOffset);
+
+      setState(() {});
+      return;
+    }
     switch (result) {
       case StackEventResult(cancel: true):
         {
@@ -280,7 +317,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
   }
 
   ElementModel? hoveringOver;
-  _handlePointerHover(PointerHoverEvent event, StackEventResult result) {
+  __handlePointerHover(PointerHoverEvent event, StackEventResult result) {
     if (result.element != hoveringOver) {
       setState(() {
         hoveringOver = result.element;
@@ -324,10 +361,10 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
                   }
                 },
                 secretSetter: _secretSetElementTransform,
-                onPointerDown: _handlePointerDown,
-                onPointerMove: _handlePointerMove,
-                onPointerUp: _handlePointerUp,
-                onPointerHover: _handlePointerHover,
+                onPointerDown: __handlePointerDown,
+                onPointerMove: __handlePointerMove,
+                onPointerUp: __handlePointerUp,
+                onPointerHover: __handlePointerHover,
                 key: ValueKey("ViewerStack"),
                 children: [
                   CustomPaint(
@@ -395,6 +432,26 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
                       element: element,
                     ),
                   ],
+                  // Selection Rect
+                  if (_selectionRect != null)
+                    RubricPositioned(
+                      x: _selectionRect!.left,
+                      y: _selectionRect!.top,
+                      width: _selectionRect!.width,
+                      height: _selectionRect!.height,
+                      orderIndex: PaintIndexes.front,
+                      fixed: false,
+                      fixedWidth: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: editorState.style.theme.withAlpha(25),
+                          border: Border.all(
+                            color: editorState.style.theme,
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             );

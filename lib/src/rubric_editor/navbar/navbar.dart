@@ -92,7 +92,7 @@ class NavbarWidget extends StatelessWidget {
                 : Icons.remove_red_eye_rounded,
             size: NavbarWidget.navbarHeight,
             onTap: () {
-              editorState.edits.selectElement(null);
+              editorState.edits.selectElements(null);
               editorState.setPreview(!editorState.edits.value.previewing);
             },
           ),
@@ -106,7 +106,7 @@ class NavbarWidget extends StatelessWidget {
               isDark: true,
             ),
             onTap: () {
-              editorState.edits.selectElement(null);
+              editorState.edits.selectElements(null);
               editorState.save();
             },
           ),
@@ -127,7 +127,7 @@ class NavbarWidget extends StatelessWidget {
             width: NavbarWidget.navbarHeight * .66,
             height: NavbarWidget.navbarHeight,
             onTap: () {
-              editorState.edits.selectElement(null);
+              editorState.edits.selectElements(null);
               if (editorState.overlays.any(
                 (element) => element.runtimeType == SaveDropDownWidget,
               )) {
