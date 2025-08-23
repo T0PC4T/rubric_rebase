@@ -2,15 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
-import 'package:rubric/src/rubric_editor/sidebar/pages/elements.dart';
-import 'package:rubric/src/rubric_editor/sidebar/pages/layers.dart';
-import 'package:rubric/src/rubric_editor/sidebar/pages/settings.dart';
+import 'package:rubric/src/rubric_editor/sidebar/pages/menu_elements.dart';
+import 'package:rubric/src/rubric_editor/sidebar/pages/menu_settings.dart';
+import 'package:rubric/src/rubric_editor/sidebar/pages/menu_structure.dart';
 import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class RubricSideBar extends StatefulWidget {
   const RubricSideBar({super.key});
 
-  static const double sideBarSize = 260;
+  static const double sideBarSize = 240;
 
   static const pages = [
     ElementPageWidget(),
@@ -38,7 +38,7 @@ class RubricSideBarState extends State<RubricSideBar> {
   Widget build(BuildContext context) {
     final style = RubricEditorStyle.of(context);
     return Container(
-      decoration: BoxDecoration(color: style.light95),
+      decoration: BoxDecoration(color: style.fore95),
       width: RubricSideBar.sideBarSize,
       height: double.infinity,
       child: Column(
@@ -49,9 +49,8 @@ class RubricSideBarState extends State<RubricSideBar> {
               for (var i = 0; i < menus.length; i++)
                 Expanded(
                   child: RubricButton(
-                    hoverColor: style.light9,
-                    backgroundColor:
-                        i == pageIndex ? style.light95 : style.light,
+                    hoverColor: style.fore9,
+                    backgroundColor: i == pageIndex ? style.fore95 : style.back,
                     height: sidebarButtonHeight,
                     onTap: () {
                       setState(() {

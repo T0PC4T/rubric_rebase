@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rubric/src/elements/elements.dart';
+import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/elements.dart';
-import 'package:rubric/src/rubric_editor/models/preview.dart';
 import 'package:rubric/src/utilities/uuid.dart';
 
 class CanvasNotifier extends ValueNotifier<CanvasModel> {
@@ -9,25 +10,69 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
 
   // these actions do not actually change the state of canvas
 
-  _runReorderingAlgo() {
-    for (var i = 0; i < value.elements.length; i++) {
-      value.elements[i].orderIndex = i;
-    }
+  addElement(element, {int index = 0}) {
+    List<ElementModel> newElements = List.from(value.elements);
+    newElements.insert(index, element);
+    value = value.copyWith(elements: newElements);
+    commit();
   }
 
-  addElement(element, {int index = -1}) {
-    if (index >= 0 && index < value.elements.length) {
-      value.elements = [
-        ...value.elements.sublist(0, index),
-        element,
-        ...value.elements.sublist(index),
-      ];
-    } else {
-      value.elements = [...value.elements, element];
-    }
-    _runReorderingAlgo();
+  dragInElement(
+      {required ElementModel insert,
+      required ElementModel exiting,
+      required bool above,
+      ElementModel? parent}) {
+    if (parent != null) {
+      if (parent.type == ElementType.row) {
+        final rowModel = parent.getProperties<RowElementModel>();
 
-    commit();
+        // Find the column and index of the exiting element
+        int columnIndex = -1;
+        int elementIndexInColumn = -1;
+
+        for (int i = 0; i < rowModel.elements.length; i++) {
+          final column = rowModel.elements[i];
+          if (column.isEmpty && i.toString() == exiting.id) {
+            columnIndex = i;
+            elementIndexInColumn = 0;
+            break;
+          }
+          for (int j = 0; j < column.length; j++) {
+            if (ElementModel.fromMap(column[j]).id == exiting.id) {
+              columnIndex = i;
+              elementIndexInColumn = j;
+              break;
+            }
+          }
+          if (columnIndex != -1) break;
+        }
+
+        if (columnIndex != -1) {
+          final newColumns = List<List<Map<String, dynamic>>>.from(rowModel
+              .elements
+              .map((col) => List<Map<String, dynamic>>.from(col)));
+
+          if (above) {
+            newColumns[columnIndex]
+                .insert(elementIndexInColumn, insert.toMap());
+          } else {
+            newColumns[columnIndex]
+                .insert(elementIndexInColumn + 1, insert.toMap());
+          }
+
+          updateProperties(
+              parent, rowModel.copyWith(elements: newColumns).toJson());
+        } else {
+          print("Unable to find id ${exiting.id} in row");
+        }
+      }
+    } else {
+      int index = value.elements.indexOf(exiting);
+      if (index == -1) {
+        index = 0;
+      }
+      addElement(insert, index: index + (above ? 0 : 1));
+    }
   }
 
   @override
@@ -55,64 +100,46 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     commit();
   }
 
-  getElement(String elementID) {
+  ElementModel getElement(String elementID) {
     return value.elements.firstWhere((element) => element.id == elementID);
   }
 
-  // ? Element are editable, they edit until a fixed point then the entire object is copied
-  scaleElement(ViewModes viewMode, ElementModel element, Offset offset) {
-    if (viewMode == ViewModes.desktop) {
-      element.width = offset.dx / ViewModes.desktop.width;
-      element.height = offset.dy / ViewModes.desktop.width;
-    } else {
-      element.mobileWidth = offset.dx / ViewModes.mobile.width;
-      element.mobileHeight = offset.dy / ViewModes.mobile.width;
-    }
-  }
+  updateProperties(ElementModel element, Map<String, dynamic> properties) {
+    for (var e in value.elements) {
+      if (e.type == ElementType.row) {
+        final rowModel = e.getProperties<RowElementModel>();
+        for (var i = 0; i < rowModel.elements.length; i++) {
+          for (var j = 0; j < rowModel.elements[i].length; j++) {
+            final rowElement = ElementModel.fromMap(rowModel.elements[i][j]);
 
-  moveElement(ViewModes viewMode, ElementModel element, Offset offset) {
-    if (viewMode == ViewModes.desktop) {
-      element.x = offset.dx / ViewModes.desktop.width;
-      element.y = offset.dy / ViewModes.desktop.width;
-    } else {
-      element.mobileX = offset.dx / ViewModes.mobile.width;
-      element.mobileY = offset.dy / ViewModes.mobile.width;
+            if (rowElement.id == element.id) {
+              rowElement.properties = properties;
+              rowModel.elements[i][j] = rowElement.toMap();
+              return updateProperties(e, rowModel.toJson());
+            }
+          }
+        }
+      }
+      if (e.id == element.id) {
+        e.properties = properties;
+        commit();
+        return;
+      }
     }
-  }
-
-  fixElement(ElementModel element, bool fixed) {
-    element.fixedWidth = fixed ? 1 : 0;
-    if (!fixed) {
-      sendTo(element, front: true);
-    } else {
-      commit();
-    }
-  }
-
-  updateElement(ElementModel element, [Map<String, dynamic>? properties]) {
-    if (properties case Map<String, dynamic> properties) {
-      element.properties = properties;
-    }
-    commit();
   }
 
   reorderElements(
       List<ElementModel>? cachedElements, int oldIndex, int newIndex) {
     // ? I switched this around because the list is reverse beware.
-    cachedElements ??= value.orderedElements.toList();
-
+    if (cachedElements != null) {
+      value.elements = cachedElements;
+    }
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    final ElementModel item = cachedElements.removeAt(oldIndex);
-    cachedElements.insert(newIndex, item);
-    for (var i = 0; i < cachedElements.length; i++) {
-      value.elements
-          .firstWhere(
-            (element) => element.id == cachedElements![i].id,
-          )
-          .orderIndex = i;
-    }
+    final ElementModel item = value.elements.removeAt(oldIndex);
+    value.elements.insert(newIndex, item);
+
     commit();
   }
 
@@ -136,27 +163,14 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   }
 
   duplicateElement(ElementModel element) {
-    addElement(
-        ElementModel(
-          id: newID(),
-          type: element.type,
-          properties: Map<String, dynamic>.from(element.properties),
-          fixedWidth: element.fixedWidth,
-          padding: element.padding,
-          orderIndex: -1,
-        ),
-        index: element.orderIndex);
-  }
-
-  changeProperties(ElementModel element, Map<String, dynamic> newPropeties) {
-    element.properties = newPropeties;
+    addElement(element.copyWith(id: uuid.v4()),
+        index: value.elements.indexOf(element));
   }
 
   deleteElement(ElementModel deleteElement) {
     value.elements = value.elements
         .where((element) => deleteElement.id != element.id)
         .toList();
-    _runReorderingAlgo();
     notifyListeners();
   }
 

@@ -12,10 +12,10 @@ class DividerEditorElement extends StatefulWidget {
   State<DividerEditorElement> createState() => DividerEditorElementState();
 }
 
-class DividerEditorElementState extends SelectableState<DividerEditorElement> {
+class DividerEditorElementState extends FocusableState<DividerEditorElement> {
   @override
-  onSelect(bool selected) {
-    if (selected) {
+  onFocus(bool focused) {
+    if (focused) {
       editorState.showToolbar(
         widget.element,
         DividerTooltipWidget(element: widget.element),

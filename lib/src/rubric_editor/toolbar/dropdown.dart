@@ -50,14 +50,14 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
             width: size.width,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
-              color: editorState.style.light,
+              color: editorState.style.back,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(editorState.style.radius),
                 bottomRight: Radius.circular(editorState.style.radius),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: style.dark.withAlpha(50),
+                  color: style.fore.withAlpha(50),
                   blurRadius: style.elevation,
                   offset: Offset(
                     0,
@@ -71,8 +71,8 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
                 for (var item in widget.items)
                   RubricButton(
                     padding: RubricEditorStyle.padding,
-                    backgroundColor: editorState.style.light,
-                    hoverColor: editorState.style.light95,
+                    backgroundColor: editorState.style.back,
+                    hoverColor: editorState.style.fore95,
                     onTap: () {
                       widget.onUpdate(item.value);
                       editorState.popOverlay();
@@ -96,8 +96,8 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
         vertical: RubricEditorStyle.paddingNum * 0.5,
       ),
       onTap: showDropdown,
-      backgroundColor: style.light,
-      hoverColor: style.light95,
+      backgroundColor: style.back,
+      hoverColor: style.fore95,
       child: Row(
         spacing: RubricEditorStyle.paddingNum,
         children: [widget.child, Icon(Icons.keyboard_arrow_down_rounded)],

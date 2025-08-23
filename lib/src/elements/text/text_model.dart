@@ -9,9 +9,12 @@ import 'package:rubric/src/utilities/color.dart';
 part 'text_model.freezed.dart';
 part 'text_model.g.dart';
 
-abstract class TextElementBaseModel {
-  TextStyle textStyle();
+abstract class TextElementType {
   String get text;
+}
+
+abstract class TextElementBaseModel implements TextElementType {
+  TextStyle textStyle();
   double get size;
   bool get isBold;
   bool get isItalic;

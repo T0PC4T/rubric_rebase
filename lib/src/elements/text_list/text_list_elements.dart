@@ -19,8 +19,7 @@ class TextListEditorElement extends StatefulWidget {
   State<TextListEditorElement> createState() => TextListEditorElementState();
 }
 
-class TextListEditorElementState
-    extends SelectableAndFocusableState<TextListEditorElement> {
+class TextListEditorElementState extends FocusableState<TextListEditorElement> {
   late TextEditingController controller;
   List<String> textList = [];
   late ScrollController _scrollController;
@@ -55,35 +54,6 @@ class TextListEditorElementState
   @override
   void onFocus(bool focused) {
     if (focused) {
-      // focusNode.requestFocus();
-      editingPoint = 0;
-      controller.text = textList[editingPoint];
-
-      focusNode.requestFocus();
-    } else {
-      editingPoint = -1;
-      _update();
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant TextListEditorElement oldWidget) {
-    // final properties = widget.element.getProperties<TextListElementModel>();
-    // controller.text = properties.textList[editingPoint];
-    // if (editorState.edits.isFocused(element)) {
-    //   print("IS FOCUSED");
-
-    //   focusNode.requestFocus();
-
-    //   print(FocusScope.of(context).focusedChild);
-    // }
-
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  onSelect(bool selected) {
-    if (selected) {
       editorState.showToolbar(
         widget.element,
         TextListToolbarWidget(
@@ -91,24 +61,19 @@ class TextListEditorElementState
             controller: controller,
             undoController: undoController),
       );
+      // focusNode.requestFocus();
+      editingPoint = 0;
+      controller.text = textList[editingPoint];
+
+      focusNode.requestFocus();
+    } else {
+      editingPoint = -1;
     }
   }
 
-  double _oldHeight = 0;
-  _onChange() {
-    final box = (context.findRenderObject() as RenderBox);
-    if (_oldHeight != box.size.height) {
-      _oldHeight = box.size.height;
-      _update();
-    }
-  }
-
-  _update() {
-    final properties = widget.element.getProperties<TextListElementModel>();
-    editorState.canvas.updateElement(
-      widget.element,
-      properties.copyWith(textList: textList).toJson(),
-    );
+  @override
+  void didUpdateWidget(covariant TextListEditorElement oldWidget) {
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -142,132 +107,134 @@ class TextListEditorElementState
     final textStyle = properties.textStyle();
     editorState = RubricEditorState.of(context);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      spacing: textListColumnSpacing,
-      children: [
-        for (var i = 0; i < textList.length; i++) ...[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: textListRowSpacing,
-            children: [
-              BulletNumberList(
-                properties: properties,
-                index: i,
-              ),
-              Expanded(
-                child: editingPoint != i
-                    ? GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (textList[editingPoint] != controller.text) {
-                              final newText = List<String>.from(textList);
-                              newText[editingPoint] = controller.text;
-
-                              textList = newText;
-                            }
-                            editingPoint = i;
-                            controller.text = textList[i];
-                          });
-                        },
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            overflow: TextOverflow.visible,
-                            textList[i],
-                            style: textStyle,
-                          ),
-                        ),
-                      )
-                    : KeyboardListener(
-                        key: ValueKey("KeyboardListener"),
-                        focusNode: focusNodeTextField,
-                        onKeyEvent: (value) {
-                          // if is key down return
-                          if (value.runtimeType == KeyUpEvent) {
-                            return;
-                          }
-
-                          // if delete key is pressed
-                          if (value.logicalKey ==
-                                  LogicalKeyboardKey.backspace &&
-                              controller.text == "" &&
-                              textList.length > 1) {
+    return Container(
+      constraints: BoxConstraints(minHeight: 50, minWidth: double.infinity),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        spacing: textListColumnSpacing,
+        children: [
+          for (var i = 0; i < textList.length; i++) ...[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: textListRowSpacing,
+              children: [
+                BulletNumberList(
+                  properties: properties,
+                  index: i,
+                ),
+                Expanded(
+                  child: editingPoint != i
+                      ? GestureDetector(
+                          onTap: () {
                             setState(() {
-                              final newIndex =
-                                  editingPoint != 0 ? editingPoint - 1 : 0;
-                              controller.text = textList[newIndex];
-                              final newTextList = List<String>.from(textList);
-                              newTextList.removeAt(i);
-                              textList = newTextList;
+                              if (textList[editingPoint] != controller.text) {
+                                final newText = List<String>.from(textList);
+                                newText[editingPoint] = controller.text;
 
-                              // controller.text = properties.textList[newIndex];
-                              editingPoint = newIndex;
-                            });
-                          } else if (value.logicalKey ==
-                              LogicalKeyboardKey.enter) {
-                            setState(() {
-                              final newTextList = List<String>.from(textList);
-
-                              // update to be only the text before the selected
-                              newTextList[editingPoint] = controller.text
-                                  .substring(0, controller.selection.end);
-
-                              // Create a new point from what is after the selection
-                              final newPoint = editingPoint + 1;
-                              String leftover = _getTextAfterSelection();
-
-                              if (newPoint < newTextList.length) {
-                                newTextList.insert(newPoint, leftover);
-                              } else {
-                                newTextList.add(leftover);
+                                textList = newText;
                               }
-
-                              textList = newTextList;
-                              editingPoint = newPoint;
-
-                              controller.text = leftover;
-                              Future.delayed(Duration(milliseconds: 1)).then(
-                                (value) {
-                                  controller.text = leftover;
-                                },
-                              );
+                              editingPoint = i;
+                              controller.text = textList[i];
                             });
-                          }
-                        },
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: TextField(
-                            key: textListKey,
-                            decoration: null,
-                            onChanged: (value) {
+                          },
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              overflow: TextOverflow.visible,
+                              textList[i],
+                              style: textStyle,
+                            ),
+                          ),
+                        )
+                      : KeyboardListener(
+                          key: ValueKey("KeyboardListener"),
+                          focusNode: focusNodeTextField,
+                          onKeyEvent: (value) {
+                            // if is key down return
+                            if (value.runtimeType == KeyUpEvent) {
+                              return;
+                            }
+
+                            // if delete key is pressed
+                            if (value.logicalKey ==
+                                    LogicalKeyboardKey.backspace &&
+                                controller.text == "" &&
+                                textList.length > 1) {
                               setState(() {
-                                textList[editingPoint] = value;
+                                final newIndex =
+                                    editingPoint != 0 ? editingPoint - 1 : 0;
+                                controller.text = textList[newIndex];
+                                final newTextList = List<String>.from(textList);
+                                newTextList.removeAt(i);
+                                textList = newTextList;
+
+                                // controller.text = properties.textList[newIndex];
+                                editingPoint = newIndex;
                               });
-                              _onChange();
-                            },
-                            autofocus: true,
-                            undoController: undoController,
-                            style: textStyle.copyWith(height: 1.2),
-                            cursorColor: textStyle.color,
-                            keyboardType: TextInputType.multiline,
-                            scrollPadding: EdgeInsets.zero,
-                            selectionControls: DesktopTextSelectionControls(),
-                            maxLines: null,
-                            enableInteractiveSelection: true,
-                            readOnly: false,
-                            minLines: null,
-                            scrollController: _scrollController,
-                            controller: controller,
-                            focusNode: focusNode,
+                            } else if (value.logicalKey ==
+                                LogicalKeyboardKey.enter) {
+                              setState(() {
+                                final newTextList = List<String>.from(textList);
+
+                                // update to be only the text before the selected
+                                newTextList[editingPoint] = controller.text
+                                    .substring(0, controller.selection.end);
+
+                                // Create a new point from what is after the selection
+                                final newPoint = editingPoint + 1;
+                                String leftover = _getTextAfterSelection();
+
+                                if (newPoint < newTextList.length) {
+                                  newTextList.insert(newPoint, leftover);
+                                } else {
+                                  newTextList.add(leftover);
+                                }
+
+                                textList = newTextList;
+                                editingPoint = newPoint;
+
+                                controller.text = leftover;
+                                Future.delayed(Duration(milliseconds: 1)).then(
+                                  (value) {
+                                    controller.text = leftover;
+                                  },
+                                );
+                              });
+                            }
+                          },
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: TextField(
+                              key: textListKey,
+                              decoration: null,
+                              onChanged: (value) {
+                                setState(() {
+                                  textList[editingPoint] = value;
+                                });
+                              },
+                              autofocus: true,
+                              undoController: undoController,
+                              style: textStyle.copyWith(height: 1.2),
+                              cursorColor: textStyle.color,
+                              keyboardType: TextInputType.multiline,
+                              scrollPadding: EdgeInsets.zero,
+                              selectionControls: DesktopTextSelectionControls(),
+                              maxLines: null,
+                              enableInteractiveSelection: true,
+                              readOnly: false,
+                              minLines: null,
+                              scrollController: _scrollController,
+                              controller: controller,
+                              focusNode: focusNode,
+                            ),
                           ),
                         ),
-                      ),
-              ),
-            ],
-          ),
-        ]
-      ],
+                ),
+              ],
+            ),
+          ]
+        ],
+      ),
     );
   }
 }
@@ -369,7 +336,7 @@ class PointInserter extends StatelessWidget {
           ),
           width: 70,
           height: 30,
-          child: RubricIcon(Icons.add, color: theme.light),
+          child: RubricIcon(Icons.add, color: theme.back),
         ),
       ),
     );

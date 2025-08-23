@@ -21,7 +21,7 @@ class RubricVideoPlayer extends StatelessWidget {
           colors: VideoProgressColors(
               playedColor: style.theme,
               bufferedColor: style.theme7,
-              backgroundColor: style.dark),
+              backgroundColor: style.fore),
         ),
       ],
     );
@@ -60,7 +60,7 @@ class _ControlsOverlayState extends State<ControlsOverlay> {
                   child: Center(
                     child: Icon(
                       Icons.play_arrow,
-                      color: style.light,
+                      color: style.back,
                       size: 60.0,
                       semanticLabel: 'Play',
                     ),

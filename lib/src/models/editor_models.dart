@@ -39,7 +39,6 @@ enum GridSizes {
 }
 
 class CanvasEditingModel {
-  final List<ElementModel> selected;
   final ElementModel? focused;
   final ElementType? dragging;
   final List<CanvasModel> steps;
@@ -49,7 +48,6 @@ class CanvasEditingModel {
   final ViewModes viewMode;
 
   CanvasEditingModel({
-    this.selected = const [],
     this.focused,
     this.dragging,
     required this.steps,
@@ -60,7 +58,6 @@ class CanvasEditingModel {
   });
 
   CanvasEditingModel copyWith({
-    required List<ElementModel> selected,
     required ElementModel? focused,
     ElementType? dragging,
     bool? previewing,
@@ -73,7 +70,6 @@ class CanvasEditingModel {
     return CanvasEditingModel(
       previewing: previewing ?? this.previewing,
       viewMode: viewMode ?? this.viewMode,
-      selected: selected,
       focused: focused,
       dragging: dragging,
       steps: steps ?? this.steps,
@@ -86,8 +82,7 @@ class CanvasEditingModel {
   bool operator ==(covariant CanvasEditingModel other) {
     if (identical(this, other)) return true;
 
-    return other.selected == selected &&
-        other.focused == focused &&
+    return other.focused == focused &&
         other.dragging == dragging &&
         listEquals(other.steps, steps) &&
         other.undoIndex == undoIndex &&
@@ -98,8 +93,7 @@ class CanvasEditingModel {
 
   @override
   int get hashCode {
-    return selected.hashCode ^
-        focused.hashCode ^
+    return focused.hashCode ^
         dragging.hashCode ^
         steps.hashCode ^
         undoIndex.hashCode ^

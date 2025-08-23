@@ -119,7 +119,7 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
     final newProperties = widget.element
         .getProperties<TextElementModel>()
         .copyWith(text: widget.controller.text);
-    editorState.canvas.updateElement(widget.element, newProperties.toJson());
+    editorState.canvas.updateProperties(widget.element, newProperties.toJson());
   }
 
   @override
@@ -166,7 +166,7 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
               onTap: () {
                 final newProperties =
                     widget.element.getProperties<TextElementModel>();
-                editorState.canvas.updateElement(widget.element,
+                editorState.canvas.updateProperties(widget.element,
                     newProperties.copyWith(alignment: align).toJson());
               },
               iconData: ElementAlignment.icon(align)),
@@ -185,7 +185,7 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
                 );
               });
               if (newColor != null) {
-                editorState.canvas.updateElement(
+                editorState.canvas.updateProperties(
                   widget.element,
                   properties.copyWith(color: newColor).toJson(),
                 );
@@ -200,7 +200,7 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
                   .getProperties<TextElementModel>()
                   .copyWith(size: newValue);
               editorState.canvas
-                  .updateElement(widget.element, newProperties.toJson());
+                  .updateProperties(widget.element, newProperties.toJson());
             }
           },
           items: [

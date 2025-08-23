@@ -41,7 +41,7 @@ class ImageTooltipWidget extends StatelessWidget {
                 final newProperties = element
                     .getProperties<ImageElementModel>()
                     .copyWith(imageUrl: imageUrl);
-                editorState.canvas.updateElement(
+                editorState.canvas.updateProperties(
                   element,
                   newProperties.toJson(),
                 );
@@ -59,7 +59,8 @@ class ImageTooltipWidget extends StatelessWidget {
               final newProperties = element
                   .getProperties<ImageElementModel>()
                   .copyWith(borderRadius: newValue);
-              editorState.canvas.updateElement(element, newProperties.toJson());
+              editorState.canvas
+                  .updateProperties(element, newProperties.toJson());
             }
           },
         ),
@@ -70,7 +71,8 @@ class ImageTooltipWidget extends StatelessWidget {
               final newProperties = element
                   .getProperties<ImageElementModel>()
                   .copyWith(fit: newValue);
-              editorState.canvas.updateElement(element, newProperties.toJson());
+              editorState.canvas
+                  .updateProperties(element, newProperties.toJson());
             }
           },
           items: [
@@ -100,7 +102,8 @@ class ImageTooltipWidget extends StatelessWidget {
               final newProperties = element
                   .getProperties<ImageElementModel>()
                   .copyWith(aspectRatio: newValue);
-              editorState.canvas.updateElement(element, newProperties.toJson());
+              editorState.canvas
+                  .updateProperties(element, newProperties.toJson());
             }
           },
           items: [

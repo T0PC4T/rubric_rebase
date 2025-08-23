@@ -41,7 +41,7 @@ class TextListToolbarWidget extends StatelessWidget {
                   onTap: () {
                     final newProperties =
                         element.getProperties<TextListElementModel>();
-                    editorState.canvas.updateElement(
+                    editorState.canvas.updateProperties(
                         element,
                         newProperties
                             .copyWith(isBold: !newProperties.isBold)
@@ -54,7 +54,7 @@ class TextListToolbarWidget extends StatelessWidget {
                   onTap: () {
                     final newProperties =
                         element.getProperties<TextListElementModel>();
-                    editorState.canvas.updateElement(
+                    editorState.canvas.updateProperties(
                         element,
                         newProperties
                             .copyWith(isItalic: !newProperties.isItalic)
@@ -67,7 +67,7 @@ class TextListToolbarWidget extends StatelessWidget {
                   onTap: () {
                     final newProperties =
                         element.getProperties<TextListElementModel>();
-                    editorState.canvas.updateElement(
+                    editorState.canvas.updateProperties(
                         element,
                         newProperties
                             .copyWith(isUnderline: !newProperties.isUnderline)
@@ -90,7 +90,7 @@ class TextListToolbarWidget extends StatelessWidget {
                       );
                     });
                     if (newColor != null) {
-                      editorState.canvas.updateElement(
+                      editorState.canvas.updateProperties(
                         element,
                         properties.copyWith(color: newColor).toJson(),
                       );
@@ -105,7 +105,7 @@ class TextListToolbarWidget extends StatelessWidget {
                         .getProperties<TextListElementModel>()
                         .copyWith(size: newValue);
                     editorState.canvas
-                        .updateElement(element, newProperties.toJson());
+                        .updateProperties(element, newProperties.toJson());
                   }
                 },
                 items: [
@@ -127,7 +127,7 @@ class TextListToolbarWidget extends StatelessWidget {
                         .getProperties<TextListElementModel>()
                         .copyWith(textListType: newValue);
                     editorState.canvas
-                        .updateElement(element, newProperties.toJson());
+                        .updateProperties(element, newProperties.toJson());
                   }
                 },
                 items: [

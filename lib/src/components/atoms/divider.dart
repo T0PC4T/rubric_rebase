@@ -9,7 +9,7 @@ class RubricVerticleDivider extends StatelessWidget {
     final style = RubricEditorStyle.of(context);
     return VerticalDivider(
       thickness: 1,
-      color: style.light7,
+      color: style.fore7,
       width: RubricEditorStyle.paddingNum * 0.5,
       indent: RubricEditorStyle.paddingNum * 0.5,
       endIndent: RubricEditorStyle.paddingNum * 0.5,

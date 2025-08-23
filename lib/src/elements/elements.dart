@@ -11,6 +11,8 @@ import 'package:rubric/src/elements/image/image_elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/link/link_elements.dart';
 import 'package:rubric/src/elements/link/link_model.dart';
+import 'package:rubric/src/elements/row/row_elements.dart';
+import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/elements/text/text_elements.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/text_list/text_list_elements.dart';
@@ -19,6 +21,7 @@ import 'package:rubric/src/elements/video/video_elements.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
+import 'package:rubric/src/utilities/uuid.dart';
 
 typedef ElementBuilderFunction = Widget Function(
     {Key? key, required ElementModel element});
@@ -28,77 +31,66 @@ enum ElementType {
     "Heading",
     Icons.text_fields_rounded,
     editorBuilder: TextEditorElement.header,
-    layerBuilder: TextLayerWidget.new,
     readerBuilder: TextReaderWidget.new,
-    focusable: true,
   ),
   text(
     "Body",
     Icons.text_snippet_outlined,
     editorBuilder: TextEditorElement.new,
-    layerBuilder: TextLayerWidget.new,
     readerBuilder: TextReaderWidget.new,
-    focusable: true,
   ),
   textList(
     "List",
     Icons.list,
     editorBuilder: TextListEditorElement.new,
-    layerBuilder: TextListLayerWidget.new,
     readerBuilder: TextListReaderWidget.new,
-    focusable: true,
   ),
   link(
     "Link",
     Icons.link,
     editorBuilder: LinkEditorElement.new,
-    layerBuilder: TextLayerWidget.new,
     readerBuilder: LinkReaderWidget.new,
-    focusable: true,
   ),
   button(
     "Button",
     Icons.ads_click_rounded,
     editorBuilder: ButtonEditorElement.new,
-    layerBuilder: ButtonLayerWidget.new,
     readerBuilder: ButtonReaderWidget.new,
-    focusable: true,
   ),
 
   image(
     "Image",
     Icons.image_outlined,
     editorBuilder: ImageEditorElement.new,
-    layerBuilder: ImageLayerElement.new,
     readerBuilder: ImageReaderElement.new,
-    focusable: false,
   ),
 
   video(
     "Video",
     Icons.ondemand_video_outlined,
     editorBuilder: VideoEditorElement.new,
-    layerBuilder: VideoEditorElement.new,
     readerBuilder: VideoReaderElement.new,
-    focusable: false,
   ),
 
   box(
     "Box",
     Icons.check_box_outline_blank_rounded,
     editorBuilder: BoxEditorElement.new,
-    layerBuilder: BoxEditorElement.new,
     readerBuilder: BoxReaderElement.new,
-    focusable: false,
+  ),
+
+  row(
+    "Row",
+    Icons.view_week_outlined,
+    editorBuilder: RowEditorElement.new,
+    readerBuilder: RowReaderElement.new,
   ),
 
   divider(
     "Divider",
     Icons.vertical_align_center_sharp,
     editorBuilder: DividerEditorElement.new,
-    layerBuilder: DividerEditorElement.new,
     readerBuilder: DividerReaderElement.new,
-    focusable: false,
   );
 
   // richtext(
@@ -113,16 +105,13 @@ enum ElementType {
   final String title;
   final IconData icon;
   final ElementBuilderFunction editorBuilder;
-  final ElementBuilderFunction layerBuilder;
+
   final ElementBuilderFunction readerBuilder;
-  final bool focusable;
   const ElementType(
     this.title,
     this.icon, {
     required this.editorBuilder,
     required this.readerBuilder,
-    required this.layerBuilder,
-    required this.focusable,
   });
 
   // from name function
@@ -133,6 +122,15 @@ enum ElementType {
       }
     }
     throw Exception('Unknown element type: $name');
+  }
+
+  ElementModel generateNewModel([String? id]) {
+    return ElementModel(
+      id: id ?? newID(),
+      type: this,
+      properties: generateDefaultProperties(this),
+      padding: 0,
+    );
   }
 }
 
@@ -146,7 +144,6 @@ enum BorderRadiusPresets {
 }
 
 Map<String, dynamic> generateDefaultProperties(
-  BuildContext context,
   ElementType elementType,
 ) {
   return switch (elementType) {
@@ -194,9 +191,16 @@ Map<String, dynamic> generateDefaultProperties(
         text: "Click Me",
         link: "",
         style: ButtonStyles.filled.name,
-        color: RubricEditorStyle.of(context).theme,
+        color: const Color.fromARGB(255, 0, 162, 255),
         borderRadius: BorderRadiusPresets.rounded.radius,
         textColor: Colors.white,
+      ).toJson(),
+    ElementType.row => RowElementModel(
+        elements: [
+          [],
+          [],
+        ],
+        columns: 2,
       ).toJson(),
 
     // ElementTypes.richtext => RichTextElementModel(

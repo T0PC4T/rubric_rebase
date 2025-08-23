@@ -12,7 +12,7 @@ _$LinkElementModelImpl _$$LinkElementModelImplFromJson(
       text: json['text'] as String,
       isBold: json['isBold'] as bool? ?? false,
       isItalic: json['isItalic'] as bool? ?? false,
-      isUnderline: json['isUnderline'] as bool? ?? false,
+      isUnderline: json['isUnderline'] as bool? ?? true,
       alignment: json['alignment'] as String? ?? ElementAlignment.left,
       size: (json['size'] as num).toDouble(),
       color: colorFromJson((json['color'] as num).toInt()),

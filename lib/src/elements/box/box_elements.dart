@@ -12,10 +12,10 @@ class BoxEditorElement extends StatefulWidget {
   State<BoxEditorElement> createState() => BoxEditorElementState();
 }
 
-class BoxEditorElementState extends SelectableState<BoxEditorElement> {
+class BoxEditorElementState extends FocusableState<BoxEditorElement> {
   @override
-  onSelect(bool selected) {
-    if (selected) {
+  onFocus(bool focused) {
+    if (focused) {
       editorState.showToolbar(
         widget.element,
         BoxTooltipWidget(element: widget.element),

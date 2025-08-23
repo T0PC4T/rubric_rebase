@@ -15,7 +15,7 @@ class NavbarWidget extends StatelessWidget {
     final style = RubricEditorStyle.of(context);
 
     return ColoredBox(
-      color: style.dark,
+      color: style.altBack,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -26,7 +26,7 @@ class NavbarWidget extends StatelessWidget {
             width: NavbarWidget.navbarHeight * 5.85,
             alignment: Alignment.centerLeft,
             child: RubricText(
-              isDark: true,
+              color: style.altFore,
               editorState.canvas.value.settings.name,
               textType: TextType.title,
               maxLines: 1,
@@ -42,7 +42,7 @@ class NavbarWidget extends StatelessWidget {
                 // todo add mobile support.
                 RubricIconButton(
                   hasNotification: editorState.mobileDirty,
-                  style: RBStyles.dark,
+                  style: RBStyles.alt,
                   isActive:
                       editorState.edits.value.viewMode == ViewModes.mobile,
                   iconData: Icons.phone_android,
@@ -53,7 +53,7 @@ class NavbarWidget extends StatelessWidget {
                 ),
                 RubricIconButton(
                   hasNotification: false,
-                  style: RBStyles.dark,
+                  style: RBStyles.alt,
                   isActive:
                       editorState.edits.value.viewMode == ViewModes.desktop,
                   iconData: Icons.desktop_mac_rounded,
@@ -67,7 +67,7 @@ class NavbarWidget extends StatelessWidget {
           ),
 
           RubricIconButton(
-            style: RBStyles.dark,
+            style: RBStyles.alt,
             iconData: Icons.undo,
             size: NavbarWidget.navbarHeight,
             disabled: !editorState.edits.canUndo,
@@ -77,7 +77,7 @@ class NavbarWidget extends StatelessWidget {
           ),
 
           RubricIconButton(
-            style: RBStyles.dark,
+            style: RBStyles.alt,
             iconData: Icons.redo,
             size: NavbarWidget.navbarHeight,
             disabled: !editorState.edits.canRedo,
@@ -86,13 +86,13 @@ class NavbarWidget extends StatelessWidget {
             },
           ),
           RubricIconButton(
-            style: RBStyles.dark,
+            style: RBStyles.alt,
             iconData: editorState.edits.value.previewing
                 ? Icons.edit
                 : Icons.remove_red_eye_rounded,
             size: NavbarWidget.navbarHeight,
             onTap: () {
-              editorState.edits.selectElements(null);
+              editorState.edits.focusElement();
               editorState.setPreview(!editorState.edits.value.previewing);
             },
           ),
@@ -103,10 +103,10 @@ class NavbarWidget extends StatelessWidget {
             child: RubricText(
               "Save & Exit",
               textType: TextType.thick,
-              isDark: true,
+              color: style.back,
             ),
             onTap: () {
-              editorState.edits.selectElements(null);
+              editorState.edits.focusElement();
               editorState.save();
             },
           ),
@@ -119,7 +119,7 @@ class NavbarWidget extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 5),
               width: 1,
               height: NavbarWidget.navbarHeight - 10,
-              color: style.light.withAlpha(100),
+              color: style.back.withAlpha(100),
             ),
           ),
           RubricButton.theme(
@@ -127,7 +127,7 @@ class NavbarWidget extends StatelessWidget {
             width: NavbarWidget.navbarHeight * .66,
             height: NavbarWidget.navbarHeight,
             onTap: () {
-              editorState.edits.selectElements(null);
+              editorState.edits.focusElement();
               if (editorState.overlays.any(
                 (element) => element.runtimeType == SaveDropDownWidget,
               )) {
@@ -138,7 +138,7 @@ class NavbarWidget extends StatelessWidget {
             },
             child: Icon(
               Icons.keyboard_arrow_down_rounded,
-              color: style.light,
+              color: style.back,
               size: ElementToolbarWidget.iconSize,
             ),
           ),

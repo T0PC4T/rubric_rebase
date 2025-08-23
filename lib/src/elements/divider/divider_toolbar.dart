@@ -40,7 +40,7 @@ class DividerTooltipWidget extends StatelessWidget {
                     );
                   });
                   if (newColor != null) {
-                    editorState.canvas.updateElement(
+                    editorState.canvas.updateProperties(
                       element,
                       properties.copyWith(color: newColor).toJson(),
                     );
@@ -56,7 +56,7 @@ class DividerTooltipWidget extends StatelessWidget {
                       .getProperties<DividerElementModel>()
                       .copyWith(weight: newValue);
                   editorState.canvas
-                      .updateElement(element, newProperties.toJson());
+                      .updateProperties(element, newProperties.toJson());
                 }
               },
               items: [

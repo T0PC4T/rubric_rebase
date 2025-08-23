@@ -15,17 +15,17 @@ class SaveDropDownWidget extends StatelessWidget {
         right: 0,
         width: NavbarWidget.navbarHeight * 2.66 + 1,
         child: RubricButton(
-          backgroundColor: Color.lerp(style.dark, style.danger, 0.4)!,
-          hoverColor: Color.lerp(style.dark, style.danger, 0.8)!,
+          backgroundColor: Color.lerp(style.fore, style.danger, 0.4)!,
+          hoverColor: Color.lerp(style.fore, style.danger, 0.8)!,
           width: NavbarWidget.navbarHeight * 2,
           height: NavbarWidget.navbarHeight,
           child: RubricText(
             "Discard Changes",
             textType: TextType.thick,
-            isDark: true,
+            color: style.back,
           ),
           onTap: () {
-            editorState.edits.selectElements(null);
+            editorState.edits.focusElement();
             editorState.discard();
           },
         ));

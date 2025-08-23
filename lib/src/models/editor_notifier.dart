@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
+import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
@@ -13,7 +14,7 @@ class ElementNotifier extends ValueNotifier<ElementModel?> {
 
 class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   final focusNotifier = FocusNotifier();
-  final selectionNotifier = SelectionNotifier();
+
   EditorNotifier(super.value);
 
   @override
@@ -22,42 +23,26 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
     super.dispose();
   }
 
-  clear() {
-    selectElements(null);
-  }
-
-  selectElements(dynamic element) {
-    selectionNotifier.selection = element;
-    value =
-        value.copyWith(selected: selectionNotifier.selection, focused: null);
-
-    focusNotifier.focus = null;
-  }
-
-  focusElement(ElementModel element) {
-    if (element.type.focusable) {
-      value = value.copyWith(selected: [], focused: element);
-      focusNotifier.focus = element;
-      selectionNotifier.selection = null;
-    }
+  focusElement([ElementModel? element]) {
+    value = value.copyWith(focused: element);
+    focusNotifier.focus = element;
+    notifyListeners();
   }
 
   setPreview(bool preview) {
-    value = value.copyWith(
-        selected: value.selected, focused: value.focused, previewing: preview);
+    value = value.copyWith(focused: value.focused, previewing: preview);
   }
 
   changeViewMode(ViewModes newValue) {
-    value = value.copyWith(
-        selected: value.selected, focused: value.focused, viewMode: newValue);
+    value = value.copyWith(focused: value.focused, viewMode: newValue);
   }
 
   bool isFocused(ElementModel element) {
     return value.focused?.id == element.id;
   }
 
-  bool isSelected(ElementModel element) {
-    return value.selected.any((e) => e.id == element.id);
+  setDrag(ElementType type) {
+    value = value.copyWith(focused: value.focused, dragging: type);
   }
 
   double scrollOffset = 0;
@@ -81,7 +66,6 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
       steps = steps.sublist(steps.length - maxSteps);
     }
     value = value.copyWith(
-      selected: value.selected,
       focused: value.focused,
       steps: steps,
       undoIndex: steps.length - 1,
@@ -95,7 +79,6 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   CanvasModel redo() {
     value = value.copyWith(
       focused: null,
-      selected: [],
       undoIndex: value.undoIndex + 1,
     );
 
@@ -105,7 +88,6 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   CanvasModel undo() {
     value = value.copyWith(
       focused: null,
-      selected: [],
       undoIndex: value.undoIndex - 1,
     );
 

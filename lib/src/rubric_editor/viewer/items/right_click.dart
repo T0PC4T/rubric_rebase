@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/shared.dart';
-import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
@@ -10,70 +9,34 @@ class RightClickMenu extends StatelessWidget {
   const RightClickMenu({
     super.key,
     required this.editorState,
-    required this.elements,
+    required this.element,
     required this.offset,
   });
 
   final RubricEditorState editorState;
-  final List<ElementModel> elements;
+  final ElementModel element;
   final Offset offset;
 
   @override
   Widget build(BuildContext context) {
     final List<({Widget icon, String text, Function() onTap})> buttons = [];
-    if (elements.length == 1) {
-      buttons.add((
-        icon: RubricIcon(Icons.copy),
-        text: "Duplicate",
-        onTap: () {
-          final element = elements.first;
-          editorState.edits.selectElements(null);
-          editorState.canvas.duplicateElement(element);
-          editorState.popToLength(1);
-        }
-      ));
-      buttons.add((
-        icon: RubricIcon(Icons.flip_to_front_rounded),
-        text: "Bring to front",
-        onTap: () {
-          editorState.edits.selectElements(null);
-          editorState.canvas.sendTo(elements.first, front: true);
-          editorState.popToLength(1);
-        },
-      ));
-      buttons.add((
-        icon: RubricIcon(Icons.flip_to_back_rounded),
-        text: "Send to back",
-        onTap: () {
-          editorState.edits.selectElements(null);
-          editorState.canvas.sendTo(elements.first, front: false);
-          editorState.popToLength(1);
-        },
-      ));
-    } else {
-      buttons.add((
-        icon: RubricIcon(Icons.account_tree_outlined),
-        text: "Group",
-        onTap: () {
-          editorState.popToLength(1);
-        },
-      ));
-
-      if (elements.every((element) {
-        return element.type == ElementType.text;
-      })) {
-        // merge text elements
-        buttons.add((
-          icon: RubricIcon(Icons.merge),
-          text: "Merge text",
-          onTap: () {
-            editorState.canvas.mergeTextElements(elements);
-            editorState.edits.selectElements(null);
-            editorState.popToLength(1);
-          },
-        ));
+    buttons.add((
+      icon: RubricIcon(Icons.copy),
+      text: "New Element",
+      onTap: () {
+        final element = this.element;
+        // editorState.edits.add();
       }
-    }
+    ));
+    buttons.add((
+      icon: RubricIcon(Icons.copy),
+      text: "Copy",
+      onTap: () {
+        final element = this.element;
+        editorState.edits.focusElement();
+        editorState.canvas.duplicateElement(element);
+      }
+    ));
 
     const double rightMenuButtonHeight = 40;
     double rightMenuHeight =
@@ -101,12 +64,6 @@ class RightClickMenu extends StatelessWidget {
             },
             onPointerUp: (event) {
               editorState.popOverlay();
-              // print(event.buttons);
-              // print(kPrimaryButton);
-              // if (event.buttons == kPrimaryButton) {
-              //   print("HAPPENING");
-
-              // }
             },
           ),
         ),
@@ -125,7 +82,7 @@ class RightClickMenu extends StatelessWidget {
                   offset: Offset(0, 2),
                 ),
               ],
-              color: editorState.style.light9,
+              color: editorState.style.fore9,
               // borderRadius: editorState.style.borderRadius,
             ),
             child: ClipRRect(
@@ -137,7 +94,7 @@ class RightClickMenu extends StatelessWidget {
                   children: [
                     for (var button in buttons)
                       RubricButton(
-                        backgroundColor: editorState.style.light98,
+                        backgroundColor: editorState.style.fore98,
                         hoverColor: editorState.style.theme8,
                         height: rightMenuButtonHeight,
                         padding: RubricEditorStyle.padding,
@@ -154,7 +111,7 @@ class RightClickMenu extends StatelessWidget {
                         ),
                       ),
                     RubricButton(
-                      backgroundColor: editorState.style.light98,
+                      backgroundColor: editorState.style.fore98,
                       hoverColor: editorState.style.danger4,
                       height: rightMenuButtonHeight,
                       padding: RubricEditorStyle.padding,
@@ -172,9 +129,8 @@ class RightClickMenu extends StatelessWidget {
                         ],
                       ),
                       onTap: () {
-                        editorState.canvas.deleteElements(elements);
-                        editorState.edits.selectElements(null);
-                        editorState.popToLength(1);
+                        // editorState.edits.clear();;
+                        editorState.canvas.deleteElement(element);
                       },
                     ),
                   ],

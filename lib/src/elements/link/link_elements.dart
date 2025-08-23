@@ -15,8 +15,8 @@ class LinkEditorElement extends TextEditorElement {
 
 class LinkEditorElementState extends TextEditorElementState<LinkEditorElement> {
   @override
-  onSelect(bool selected) {
-    if (selected) {
+  onFocus(bool focused) {
+    if (focused) {
       editorState.showToolbar(
         widget.element,
         LinkTooltipWidget(
@@ -26,6 +26,9 @@ class LinkEditorElementState extends TextEditorElementState<LinkEditorElement> {
           header: widget.header,
         ),
       );
+      focusNode.requestFocus();
+    } else {
+      super.onFocus(focused);
     }
   }
 }
@@ -39,7 +42,6 @@ class LinkReaderWidget extends StatelessWidget {
     final properties = element.getProperties<LinkElementModel>();
     return GestureDetector(
       onTap: () async {
-        print("Link Pressed");
         if (properties.link.isEmpty) {
           return;
         }

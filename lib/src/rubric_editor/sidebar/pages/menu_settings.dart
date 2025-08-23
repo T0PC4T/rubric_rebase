@@ -83,9 +83,9 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                         child: RubricIconGrid(
                           onSelect: closeWith,
                           currentIcon: settings.icon,
-                          buttonColor: style.light98,
-                          iconColor: style.light4,
-                          hoverColor: style.light9,
+                          buttonColor: style.fore98,
+                          iconColor: style.fore4,
+                          hoverColor: style.fore9,
                           iconSelectedColor: style.theme2,
                           borderRadius: style.radius,
                           marginNum: RubricEditorStyle.paddingNum,
@@ -109,7 +109,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                   child: RubricEditorIcon(
                     editorState!.canvas.value.settings.icon,
                     size: 50,
-                    color: style.light4,
+                    color: style.fore4,
                   ),
                 ),
               ),
@@ -213,22 +213,22 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
             },
             children: _data.map<ExpansionPanel>((Item item) {
               return ExpansionPanel(
-                backgroundColor: style.light,
-                highlightColor: style.light95,
+                backgroundColor: style.back,
+                highlightColor: style.fore95,
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return Padding(
                     padding: RubricEditorStyle.padding,
                     child: Row(
                       spacing: RubricEditorStyle.paddingNum,
                       children: [
-                        Icon(item.icon, size: 20, color: style.light4),
+                        Icon(item.icon, size: 20, color: style.fore4),
                         RubricText(item.title),
                       ],
                     ),
                   );
                 },
                 body: Container(
-                  color: style.light95,
+                  color: style.fore95,
                   padding: RubricEditorStyle.padding,
                   child: item.bodyBuilder(context),
                 ),

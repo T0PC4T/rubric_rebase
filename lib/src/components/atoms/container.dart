@@ -26,8 +26,8 @@ class RubricContainer extends StatelessWidget {
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(
-        color: color ?? style.light,
-        border: Border.all(color: style.light4, width: 1),
+        color: color ?? style.back,
+        border: Border.all(color: style.fore4, width: 1),
         borderRadius: style.borderRadius,
       ),
       height: height,

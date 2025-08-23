@@ -42,7 +42,7 @@ class BoxTooltipWidget extends StatelessWidget {
                     );
                   });
                   if (newColor != null) {
-                    editorState.canvas.updateElement(
+                    editorState.canvas.updateProperties(
                       element,
                       properties.copyWith(color: newColor).toJson(),
                     );
@@ -58,7 +58,7 @@ class BoxTooltipWidget extends StatelessWidget {
                   final newProperties = properties.copyWith(
                     borderRadius: newValue,
                   );
-                  editorState.canvas.updateElement(
+                  editorState.canvas.updateProperties(
                     element,
                     newProperties.toJson(),
                   );
@@ -73,7 +73,7 @@ class BoxTooltipWidget extends StatelessWidget {
                       .getProperties<BoxElementModel>()
                       .copyWith(aspectRatio: newValue);
                   editorState.canvas
-                      .updateElement(element, newProperties.toJson());
+                      .updateProperties(element, newProperties.toJson());
                 }
               },
               items: [

@@ -45,20 +45,6 @@ class RubricEditorState extends State<RubricEditor> {
   List<Widget> overlays = [];
   BuildContext? innerContext;
 
-  // focusWatch() async {
-  //   await Future.delayed(Duration(milliseconds: 1));
-
-  //   if (!context.mounted) {
-  //     return;
-  //   }
-  //   print(FocusScope.of(context).focusedChild);
-  //   Future.delayed(Duration(milliseconds: 500)).then(
-  //     (value) {
-  //       focusWatch();
-  //     },
-  //   );
-  // }
-
   @override
   void initState() {
     web.document.oncontextmenu = (JSAny e) {
@@ -98,12 +84,8 @@ class RubricEditorState extends State<RubricEditor> {
 
   _editorListener() {
     if (edits.value.focused == null) {
+      clearOverlays();
       keyboardFocus.requestFocus();
-      if (edits.value.selected == null) {
-        clearOverlays();
-      }
-    } else {
-      // keyboardFocus.unfocus();
     }
   }
 
@@ -207,8 +189,8 @@ class RubricEditorState extends State<RubricEditor> {
     return KeyboardListener(
       onKeyEvent: (value) {
         if (value.logicalKey == LogicalKeyboardKey.delete) {
-          if (edits.value.selected case ElementModel element) {
-            edits.selectElements(null);
+          if (edits.value.focused case ElementModel element) {
+            edits.focusElement();
             canvas.deleteElement(element);
           }
         }
@@ -221,7 +203,7 @@ class RubricEditorState extends State<RubricEditor> {
           children: [
             DefaultTextStyle(
               style: TextStyle(
-                color: style.dark,
+                color: style.fore,
                 fontSize: style.fontSize,
                 fontWeight: style.fontWeight,
               ),
@@ -232,7 +214,7 @@ class RubricEditorState extends State<RubricEditor> {
                     Expanded(
                       child: Container(
                           color: edits.value.viewMode == ViewModes.mobile
-                              ? style.dark
+                              ? style.fore
                               : canvas.value.settings.canvasColor,
                           alignment: Alignment.center,
                           child: SizedBox(

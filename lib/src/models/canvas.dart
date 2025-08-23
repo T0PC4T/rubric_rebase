@@ -103,10 +103,4 @@ class CanvasModel {
 
   @override
   int get hashCode => elements.hashCode ^ settings.hashCode;
-
-  Iterable<ElementModel> get orderedElements {
-    final es = List<ElementModel>.from(elements);
-    es.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
-    return es;
-  }
 }

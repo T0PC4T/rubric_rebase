@@ -45,8 +45,8 @@ class RubricButton extends StatefulWidget {
     double? borderWidth,
   }) {
     return RubricButton(
-      backgroundColor: style.light,
-      hoverColor: style.light95,
+      backgroundColor: style.back,
+      hoverColor: style.fore95,
       onTap: onTap,
       width: width,
       height: height,
@@ -72,7 +72,7 @@ class RubricButton extends StatefulWidget {
     double? borderWidth,
   }) {
     return RubricButton(
-      backgroundColor: style.dark,
+      backgroundColor: style.fore,
       hoverColor: style.theme,
       onTap: onTap,
       width: width,
@@ -154,7 +154,7 @@ class RubricButtonState extends State<RubricButton> {
             border: widget.borderWidth == null
                 ? null
                 : Border.all(
-                    color: widget.borderColor ?? styles.light7,
+                    color: widget.borderColor ?? styles.fore7,
                     width: widget.borderWidth!,
                   ),
           ),

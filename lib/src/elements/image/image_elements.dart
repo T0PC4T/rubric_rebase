@@ -12,13 +12,13 @@ class ImageEditorElement extends StatefulWidget {
   State<ImageEditorElement> createState() => ImageEditorElementState();
 }
 
-class ImageEditorElementState extends SelectableState<ImageEditorElement> {
+class ImageEditorElementState extends FocusableState<ImageEditorElement> {
   @override
   ElementModel get element => widget.element;
 
   @override
-  onSelect(bool selected) {
-    if (selected) {
+  onFocus(bool focused) {
+    if (focused) {
       editorState.showToolbar(
         widget.element,
         ImageTooltipWidget(element: widget.element),

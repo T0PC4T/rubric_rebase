@@ -54,8 +54,7 @@ BoxDecoration? buttonDecoration(ButtonElementModel properties,
   }
 }
 
-class ButtonEditorElementState
-    extends SelectableAndFocusableState<ButtonEditorElement> {
+class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
   late TextEditingController controller;
   late ScrollController _scrollController;
   late FocusNode focusNode;
@@ -81,7 +80,7 @@ class ButtonEditorElementState
       focusNode.requestFocus();
     } else {
       final properties = widget.element.getProperties<ButtonElementModel>();
-      editorState.canvas.updateElement(
+      editorState.canvas.updateProperties(
         widget.element,
         properties.copyWith(text: controller.text).toJson(),
       );
@@ -94,7 +93,7 @@ class ButtonEditorElementState
     if (_oldHeight != box.size.height) {
       _oldHeight = box.size.height;
       final properties = widget.element.getProperties<ButtonElementModel>();
-      editorState.canvas.updateElement(
+      editorState.canvas.updateProperties(
         widget.element,
         properties.copyWith(text: controller.text).toJson(),
       );

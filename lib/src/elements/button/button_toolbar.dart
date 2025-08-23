@@ -79,7 +79,7 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                     },
                   );
                   if (videoUrl case String newUrl) {
-                    editorState.canvas.updateElement(
+                    editorState.canvas.updateProperties(
                       widget.element,
                       properties.copyWith(link: newUrl).toJson(),
                     );
@@ -97,7 +97,7 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                       style: newValue,
                     );
                     if (newProperties.style == ButtonStyles.outlined.value) {
-                      editorState.canvas.updateElement(
+                      editorState.canvas.updateProperties(
                         widget.element,
                         newProperties
                             .copyWith(
@@ -113,14 +113,14 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                       } else {
                         textColor = Colors.white;
                       }
-                      editorState.canvas.updateElement(
+                      editorState.canvas.updateProperties(
                         widget.element,
                         newProperties
                             .copyWith(style: newValue, textColor: textColor)
                             .toJson(),
                       );
                     } else {
-                      editorState.canvas.updateElement(
+                      editorState.canvas.updateProperties(
                         widget.element,
                         newProperties
                             .copyWith(
@@ -158,7 +158,7 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                     final newProperties = properties.copyWith(
                       borderRadius: newValue,
                     );
-                    editorState.canvas.updateElement(
+                    editorState.canvas.updateProperties(
                       widget.element,
                       newProperties.toJson(),
                     );
@@ -181,7 +181,7 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                       );
                     });
                     if (newColor != null) {
-                      editorState.canvas.updateElement(
+                      editorState.canvas.updateProperties(
                         widget.element,
                         properties.copyWith(color: newColor).toJson(),
                       );
@@ -198,7 +198,7 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                     return RubricIcon(
                       Icons.text_fields_outlined,
                       color: color.computeLuminance() > 0.95
-                          ? editorState.style.dark
+                          ? editorState.style.fore
                           : color,
                       size: ElementToolbarWidget.iconSize,
                     );
@@ -215,7 +215,7 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                       );
                     });
                     if (newColor != null) {
-                      editorState.canvas.updateElement(
+                      editorState.canvas.updateProperties(
                         widget.element,
                         properties.copyWith(textColor: newColor).toJson(),
                       );

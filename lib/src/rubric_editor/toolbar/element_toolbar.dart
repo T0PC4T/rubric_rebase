@@ -34,7 +34,7 @@ class ElementToolbarWidget extends StatelessWidget {
           borderRadius: style.borderRadius,
           boxShadow: [
             BoxShadow(
-              color: style.dark.withAlpha(50),
+              color: style.fore.withAlpha(50),
               blurRadius: style.elevation,
               offset: Offset(0, style.elevation), // changes position of shadow
             ),
@@ -73,8 +73,8 @@ class ToolbarUniversalIcons extends StatelessWidget {
                             if (value case double newValue) {
                               // quite botchy
                               element.padding = newValue;
-                              editorState.canvas
-                                  .updateElement(element, element.properties);
+                              editorState.canvas.updateProperties(
+                                  element, element.properties);
                             }
                           },
                           items: [
@@ -134,23 +134,6 @@ class ToolbarUniversalIcons extends StatelessWidget {
                         //     ),
                         //   ),
                         // ],
-                        RubricVerticleDivider(),
-                        RubricIconButton(
-                          iconData: Icons.lock_open_rounded,
-                          size: ElementToolbarWidget.elementToolbarHeight,
-                          isActive: !element.fixed,
-                          onTap: () {
-                            editorState.canvas.fixElement(element, false);
-                          },
-                        ),
-                        RubricIconButton(
-                          iconData: Icons.lock_outline,
-                          size: ElementToolbarWidget.elementToolbarHeight,
-                          isActive: element.fixed,
-                          onTap: () {
-                            editorState.canvas.fixElement(element, true);
-                          },
-                        ),
                       ],
                     ),
                   ],

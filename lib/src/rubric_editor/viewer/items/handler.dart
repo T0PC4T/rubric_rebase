@@ -1,173 +1,230 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
-import 'package:rubric/src/components/molecules/icon_button.dart';
+import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/models/elements.dart';
-import 'package:rubric/src/rubric_editor/models/preview.dart';
-import 'package:rubric/src/rubric_editor/viewer/items/element.dart';
-import 'package:rubric/src/rubric_editor/viewer/items/position.dart';
-import 'package:rubric/src/rubric_editor/viewer/items/scalar.dart';
+import 'package:rubric/src/rubric_editor/viewer/items/right_click_menu.dart';
 
-const handlerBoxSize = 32.0;
-const handlerIconSize = 28.0;
-
-class ElementHandlerWidget extends StatelessWidget {
-  final ViewModes viewMode;
+// todo this needs to be optimized in a way that the children aren't constantly being disposed.
+class EditorElementWidget extends StatefulWidget {
   final ElementModel element;
-  final bool hovered;
-  const ElementHandlerWidget(
-      {super.key,
-      required this.element,
-      required this.hovered,
-      required this.viewMode});
+  final ElementModel? parent;
+
+  const EditorElementWidget({super.key, required this.element, this.parent});
+
+  @override
+  State<EditorElementWidget> createState() => _EditorElementWidgetState();
+}
+
+class _EditorElementWidgetState extends State<EditorElementWidget> {
+  bool _hovered = false;
+  bool above = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Widget renderWidget() {
+    return Padding(
+        padding: EdgeInsets.all(widget.element.padding),
+        child: widget.element.type.editorBuilder(element: widget.element));
+  }
 
   @override
   Widget build(BuildContext context) {
-    final style = RubricEditorStyle.of(context);
     final editorState = RubricEditorState.of(context);
-    final selected = editorState.edits.isSelected(element);
-    return RubricPositioned.fromElement(
-      viewMode: viewMode,
-      element: element,
-      handler: true,
-      child: ElementHandlerRenderObjectWidget(
-        element: element,
-        child: Visibility(
-          visible: selected || hovered,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Positioned(
-                top: 0,
-                right: 0,
-                left: 0,
-                bottom: 0,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: hovered
-                        ? style.theme.withAlpha(10)
-                        : Colors.transparent,
-                    border: Border.all(
-                      width: 2,
-                      color: selected ? style.theme : style.theme8,
+
+    return ValueListenableBuilder(
+        valueListenable: editorState.edits,
+        builder: (context, value, child) {
+          bool focused = editorState.edits.value.focused == widget.element;
+          return MouseRegion(
+            onEnter: (event) {
+              setState(() {
+                _hovered = true;
+              });
+            },
+            onExit: (event) {
+              setState(() {
+                _hovered = false;
+              });
+            },
+            child: DragTarget<ElementType>(
+              onMove: (details) {
+                final box = context.findRenderObject() as RenderBox;
+                final offset = box.localToGlobal(Offset.zero);
+                if (details.offset.dy < (offset.dy + box.size.height / 2)) {
+                  if (above == false) {
+                    setState(() {
+                      above = true;
+                    });
+                  }
+                } else {
+                  if (above == true) {
+                    setState(() {
+                      above = false;
+                    });
+                  }
+                }
+              },
+              onWillAcceptWithDetails: (details) {
+                // You cannot nest rows
+                if (widget.parent != null && details.data == ElementType.row) {
+                  return false;
+                }
+                return true;
+              },
+              onAcceptWithDetails: (details) {
+                editorState.canvas.dragInElement(
+                    insert: details.data.generateNewModel(),
+                    exiting: widget.element,
+                    above: above,
+                    parent: widget.parent);
+              },
+              builder: (context, candidateData, rejectedData) {
+                if (candidateData.isNotEmpty) {
+                  return Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                            top: above
+                                ? BorderSide(
+                                    width: 5, color: editorState.style.theme)
+                                : BorderSide(
+                                    width: 0, color: Colors.transparent),
+                            bottom: above
+                                ? BorderSide(
+                                    width: 0, color: Colors.transparent)
+                                : BorderSide(
+                                    width: 5, color: editorState.style.theme)),
+                      ),
+                      child: renderWidget());
+                }
+                return GestureDetector(
+                  onTap: () {
+                    editorState.edits.focusElement(widget.element);
+                  },
+                  // on Right click
+                  onSecondaryTapUp: (details) {
+                    editorState.pushOverlay(
+                      RightClickMenu(
+                          offset: details.globalPosition,
+                          editorState: editorState,
+                          element: widget.element),
+                      removeToLength: 1,
+                    );
+                  },
+
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: switch ((focused, _hovered)) {
+                        (_, true) => editorState.style.theme4.withAlpha(25),
+                        (_, false) => Colors.transparent,
+                      },
+                      border: Border.all(
+                          color: switch ((focused, _hovered)) {
+                            (true, true) => editorState.style.theme,
+                            (true, false) => editorState.style.theme2,
+                            (false, true) => editorState.style.theme7,
+                            (false, false) =>
+                              Colors.transparent, // editorState.style.light9,
+                          },
+                          width: 3,
+                          style: BorderStyle.solid),
                     ),
+                    child: renderWidget(),
                   ),
-                ),
-              ),
-              if (!element.fixed) ...[
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: ScalarWidget(element: element, scalarIndex: 0),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: ScalarWidget(element: element, scalarIndex: 1),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: ScalarWidget(element: element, scalarIndex: 2),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: ScalarWidget(element: element, scalarIndex: 3),
-                ),
-              ],
-              if (element.fixed &&
-                  !selected &&
-                  editorState.edits.value.viewMode == ViewModes.desktop)
-                Positioned(
-                  left: 2,
-                  top: 2,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Transform.rotate(
-                        angle: 3.1415 / 2,
-                        child: RubricIconButton(
-                            iconData: Icons.vertical_align_center_rounded,
-                            size: handlerBoxSize,
-                            disabled: element.fixedWidth == 0.25,
-                            iconSize: handlerIconSize - 4,
-                            style: RBStyles.theme,
-                            onTap: () {
-                              editorState.canvas.updateElement(element
-                                ..fixedWidth = switch (element.fixedWidth) {
-                                  1.0 => 0.75,
-                                  0.75 => 0.5,
-                                  0.5 => 0.25,
-                                  0.25 => 0.25,
-                                  _ => 1.0,
-                                });
-                              editorState.edits.selectElements(null);
-                            }),
+                );
+              },
+            ),
+          );
+        });
+  }
+}
+
+class EditorEmptyInserterWidget extends StatefulWidget {
+  final ElementModel? parent;
+  final String id;
+
+  const EditorEmptyInserterWidget({super.key, this.parent, this.id = "0"});
+
+  @override
+  State<EditorEmptyInserterWidget> createState() =>
+      _EditorEmptyInserterWidgetState();
+}
+
+class _EditorEmptyInserterWidgetState extends State<EditorEmptyInserterWidget> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final editorState = RubricEditorState.of(context);
+
+    return ValueListenableBuilder(
+        valueListenable: editorState.edits,
+        builder: (context, value, child) {
+          return MouseRegion(
+            onEnter: (event) {
+              setState(() {
+                _hovered = true;
+              });
+            },
+            onExit: (event) {
+              setState(() {
+                _hovered = false;
+              });
+            },
+            child: DragTarget<ElementType>(
+              onWillAcceptWithDetails: (details) {
+                // You cannot nest rows
+                if (widget.parent != null && details.data == ElementType.row) {
+                  return false;
+                }
+                return true;
+              },
+              onAcceptWithDetails: (details) {
+                editorState.canvas.dragInElement(
+                    insert: details.data.generateNewModel(),
+                    exiting: ElementType.box.generateNewModel(widget.id),
+                    above: true,
+                    parent: widget.parent);
+              },
+              builder: (context, candidateData, rejectedData) {
+                if (candidateData.isNotEmpty) {
+                  return Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: _hovered
+                              ? BorderSide(
+                                  width: 5, color: editorState.style.theme)
+                              : BorderSide(width: 0, color: Colors.transparent),
+                        ),
                       ),
-                      Transform.rotate(
-                        angle: 3.1415 / 2,
-                        child: RubricIconButton(
-                            iconData: Icons.expand,
-                            size: handlerBoxSize,
-                            disabled: element.fixedWidth == 1.0,
-                            iconSize: handlerIconSize - 4,
-                            style: RBStyles.theme,
-                            onTap: () {
-                              editorState.canvas.updateElement(element
-                                ..fixedWidth = switch (element.fixedWidth) {
-                                  0.25 => 0.5,
-                                  0.5 => 0.75,
-                                  0.75 => 1.0,
-                                  1.0 => 1.0,
-                                  _ => 1.0,
-                                });
-                              editorState.edits.selectElements(null);
-                            }),
-                      ),
-                    ],
-                  ),
-                ),
-              if (element.fixed && !selected)
-                Positioned(
-                  right: 2,
-                  top: 2,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (element.orderIndex > 0)
-                        RubricIconButton(
-                            iconData: Icons.keyboard_arrow_up_rounded,
-                            size: handlerBoxSize,
-                            iconSize: handlerIconSize,
-                            style: RBStyles.theme,
-                            onTap: () {
-                              final index = editorState
-                                  .canvas.value.orderedElements
-                                  .toList()
-                                  .indexOf(element);
-                              editorState.canvas
-                                  .reorderElements(null, index, index - 1);
-                              editorState.edits.selectElements(null);
-                            }),
-                      if (element.orderIndex <
-                          editorState.canvas.value.elements.length - 1)
-                        RubricIconButton(
-                            iconData: Icons.keyboard_arrow_down_rounded,
-                            size: handlerBoxSize,
-                            iconSize: handlerIconSize,
-                            style: RBStyles.theme,
-                            onTap: () {
-                              final index = editorState
-                                  .canvas.value.orderedElements
-                                  .toList()
-                                  .indexOf(element);
-                              editorState.canvas
-                                  .reorderElements(null, index, index + 2);
-                              editorState.edits.selectElements(null);
-                            }),
-                    ],
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
+                      child: SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                      ));
+                }
+                return SizedBox(
+                  height: 200,
+                  width: double.infinity,
+                );
+              },
+            ),
+          );
+        });
+  }
+}
+
+class ReaderElementWidget extends StatelessWidget {
+  final ElementModel element;
+
+  const ReaderElementWidget({super.key, required this.element});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(element.padding),
+      child: element.type.readerBuilder(element: element),
     );
   }
 }

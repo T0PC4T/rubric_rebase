@@ -8,6 +8,7 @@ enum RBStyles {
   light,
   theme,
   dark,
+  alt,
 }
 
 class RubricIconButton extends StatelessWidget {
@@ -39,20 +40,24 @@ class RubricIconButton extends StatelessWidget {
       width: size,
       height: size,
       backgroundColor: switch ((style, disabled)) {
-        (RBStyles.light, false) => rubricStyle.light,
+        (RBStyles.light, false) => rubricStyle.back,
         (RBStyles.theme, false) => rubricStyle.theme,
-        (RBStyles.dark, false) => rubricStyle.dark,
-        (RBStyles.light, true) => rubricStyle.light9,
-        (RBStyles.theme, true) => rubricStyle.light7,
-        (RBStyles.dark, true) => rubricStyle.dark,
+        (RBStyles.dark, false) => rubricStyle.fore,
+        (RBStyles.alt, false) => rubricStyle.altBack,
+        (RBStyles.light, true) => rubricStyle.fore9,
+        (RBStyles.theme, true) => rubricStyle.fore7,
+        (RBStyles.dark, true) => rubricStyle.fore,
+        (RBStyles.alt, true) => rubricStyle.altBack,
       },
       hoverColor: switch ((style, disabled)) {
-        (RBStyles.light, true) => rubricStyle.light9,
-        (RBStyles.theme, true) => rubricStyle.light7,
-        (RBStyles.dark, true) => rubricStyle.light1,
-        (RBStyles.dark, false) => rubricStyle.light1,
-        (RBStyles.light, false) => rubricStyle.light95,
+        (RBStyles.light, true) => rubricStyle.fore9,
+        (RBStyles.theme, true) => rubricStyle.fore7,
+        (RBStyles.dark, true) => rubricStyle.fore1,
+        (RBStyles.alt, true) => rubricStyle.altBack,
+        (RBStyles.dark, false) => rubricStyle.fore1,
+        (RBStyles.light, false) => rubricStyle.fore95,
         (RBStyles.theme, false) => rubricStyle.theme2,
+        (RBStyles.alt, false) => rubricStyle.alt5,
       },
       onTap: onTap,
       child: Stack(
@@ -62,13 +67,15 @@ class RubricIconButton extends StatelessWidget {
                 RubricIcon(
                   iconData,
                   color: switch ((disabled, isActive, style)) {
-                    (true, _, _) => rubricStyle.light4,
+                    (true, _, _) => rubricStyle.fore4,
                     (_, true, RBStyles.dark || RBStyles.theme) =>
                       rubricStyle.theme,
+                    (_, true, RBStyles.alt) => rubricStyle.alt5,
                     (_, true, RBStyles.light) => rubricStyle.theme,
                     (_, false, RBStyles.dark || RBStyles.theme) =>
-                      rubricStyle.light,
-                    (_, false, RBStyles.light) => rubricStyle.dark,
+                      rubricStyle.back,
+                    (_, false, RBStyles.alt) => rubricStyle.altFore,
+                    (_, false, RBStyles.light) => rubricStyle.fore,
                   },
                   size: iconSize ?? ElementToolbarWidget.iconSize,
                 ),
@@ -122,7 +129,7 @@ class RubricIconTextButton extends StatelessWidget {
           children: [
             RubricIcon(
               iconData,
-              color: isDark ? style.light : style.dark,
+              color: isDark ? style.back : style.fore,
               size: ElementToolbarWidget.iconSize,
             ),
             RubricText(text),
@@ -156,7 +163,7 @@ class RubricColorButton extends StatelessWidget {
               decoration: BoxDecoration(
                 color: color,
                 shape: BoxShape.circle,
-                border: Border.all(color: style.light7, width: 1),
+                border: Border.all(color: style.fore7, width: 1),
               ),
               width: ElementToolbarWidget.iconSize,
               height: ElementToolbarWidget.iconSize,

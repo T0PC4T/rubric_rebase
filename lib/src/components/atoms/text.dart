@@ -17,7 +17,7 @@ enum TextType {
 class RubricText extends StatelessWidget {
   final String text;
   final TextType textType;
-  final bool isDark;
+  final Color? color;
   final bool isCentered;
   final int? maxLines;
   final TextOverflow? overflow;
@@ -26,7 +26,7 @@ class RubricText extends StatelessWidget {
     super.key,
     this.isCentered = false,
     this.textType = TextType.paragraph,
-    this.isDark = false,
+    this.color,
     this.maxLines,
     this.overflow,
   });
@@ -40,7 +40,7 @@ class RubricText extends StatelessWidget {
       textAlign: isCentered ? TextAlign.center : TextAlign.center,
       text,
       style: TextStyle(
-        color: isDark ? styles.light : styles.dark,
+        color: color ?? styles.fore,
         fontSize: styles.fontSize * textType.sizeMultiplier,
         fontWeight:
             textType == TextType.thick ? FontWeight.w600 : FontWeight.normal,
@@ -98,16 +98,16 @@ class _RubricTextFieldState extends State<RubricTextField> {
       child: TextFormField(
         maxLength: widget.maxLength,
         focusNode: focusNode,
-        cursorColor: style.dark,
+        cursorColor: style.fore,
         decoration: InputDecoration(
           contentPadding:
               EdgeInsets.symmetric(horizontal: RubricEditorStyle.paddingNum),
           filled: true,
-          fillColor: style.light,
+          fillColor: style.back,
           border: OutlineInputBorder(
             borderRadius: style.borderRadius,
             borderSide: BorderSide(
-              color: style.light4,
+              color: style.fore4,
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -119,14 +119,14 @@ class _RubricTextFieldState extends State<RubricTextField> {
           enabledBorder: OutlineInputBorder(
             borderRadius: style.borderRadius,
             borderSide: BorderSide(
-              color: style.light4,
+              color: style.fore4,
             ),
           ),
-          hintStyle: TextStyle(color: style.light4),
+          hintStyle: TextStyle(color: style.fore4),
           hintText: widget.helpText,
           labelText: widget.labelText,
         ),
-        style: TextStyle(color: style.dark),
+        style: TextStyle(color: style.fore),
         initialValue: widget.initialValue,
         onChanged: (nvalue) {
           widget.onChanged(nvalue);
@@ -201,7 +201,7 @@ class _RubricBorderlessTextFieldState extends State<RubricBorderlessTextField> {
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
         ),
-        style: TextStyle(color: style.light, fontSize: 18),
+        style: TextStyle(color: style.back, fontSize: 18),
         initialValue: widget.initialValue,
         onChanged: (nvalue) {
           value = nvalue;

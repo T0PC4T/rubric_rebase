@@ -18,13 +18,13 @@ class VideoEditorElement extends StatefulWidget {
   State<VideoEditorElement> createState() => VideoEditorElementState();
 }
 
-class VideoEditorElementState extends SelectableState<VideoEditorElement> {
+class VideoEditorElementState extends FocusableState<VideoEditorElement> {
   @override
   ElementModel get element => widget.element;
 
   @override
-  onSelect(bool selected) {
-    if (selected) {
+  onFocus(bool focused) {
+    if (focused) {
       editorState.showToolbar(
         widget.element,
         VideoTooltipWidget(element: widget.element),
@@ -44,7 +44,7 @@ class VideoEditorElementState extends SelectableState<VideoEditorElement> {
           child: FittedBox(
               child: RubricIcon(
             Icons.video_file,
-            color: editorState.style.light,
+            color: editorState.style.back,
             size: 50,
           )),
         ),

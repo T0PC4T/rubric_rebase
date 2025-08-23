@@ -16,8 +16,10 @@ class RubricEditorStyle {
   final double elevation;
   // final Color theme;
   final Color theme;
-  final Color dark;
-  final Color light;
+  final Color fore;
+  final Color back;
+  final Color altBack;
+  final Color altFore;
 
   final Color danger;
 
@@ -30,8 +32,10 @@ class RubricEditorStyle {
       this.fontWeight = FontWeight.w500,
       this.elevation = 6,
       this.theme = const Color.fromARGB(255, 0, 162, 255),
-      this.dark = const Color.fromARGB(255, 0, 0, 0),
-      this.light = const Color.fromARGB(255, 255, 255, 255),
+      this.fore = const Color.fromARGB(255, 0, 0, 0),
+      this.back = const Color.fromARGB(255, 255, 255, 255),
+      this.altBack = const Color.fromARGB(255, 0, 0, 0),
+      this.altFore = const Color.fromARGB(255, 255, 255, 255),
       this.brandColors = const [
         // Grey Shades
         Color.fromARGB(255, 255, 255, 255), // Light Grey
@@ -47,39 +51,35 @@ class RubricEditorStyle {
         // Tertiary Coral
         Color.fromARGB(255, 238, 139, 96),
       ],
-      // this.theme = const Color.fromARGB(
-      //   255,
-      //   0,
-      //   162,
-      //   255,
-      // ), // color picker text should be black
-      // this.dark = const Color.fromARGB(255, 0, 0, 0),
-      // this.light = const Color.fromARGB(255, 255, 255, 255),
       this.danger = Colors.red});
 
   // Danger color lerp
-  Color get danger4 => Color.lerp(danger, light, 0.4)!;
-  Color get danger8 => Color.lerp(danger, light, 0.8)!;
+  Color get danger4 => Color.lerp(danger, back, 0.4)!;
+  Color get danger8 => Color.lerp(danger, back, 0.8)!;
 
-  Color get theme8 => Color.lerp(theme, light, 0.8)!;
-  Color get theme7 => Color.lerp(theme, light, 0.7)!;
-  Color get theme4 => Color.lerp(theme, light, 0.4)!; // for theme hover
-  Color get theme2 => Color.lerp(theme, light, 0.2)!; // for theme hover
-  Color get themeDark4 => Color.lerp(theme, dark, 0.4)!; // for theme hover
-  Color get themeDark8 => Color.lerp(theme, dark, 0.8)!; // for theme hover
+  Color get theme8 => Color.lerp(theme, back, 0.8)!;
+  Color get theme7 => Color.lerp(theme, back, 0.7)!;
+  Color get theme4 => Color.lerp(theme, back, 0.4)!; // for theme hover
+  Color get theme2 => Color.lerp(theme, back, 0.2)!; // for theme hover
+  Color get themeDark4 => Color.lerp(theme, fore, 0.4)!; // for theme hover
+  Color get themeDark8 => Color.lerp(theme, fore, 0.8)!; // for theme hover
 
-  Color get light1 => Color.lerp(dark, light, 0.1)!;
-  Color get light2 => Color.lerp(dark, light, 0.2)!;
-  Color get light4 => Color.lerp(dark, light, 0.4)!; // borders darker
-  Color get light7 => Color.lerp(dark, light, 0.7)!; // borders
-  Color get light9 => Color.lerp(dark, light, 0.9)!; // light hoverover
-  Color get light95 => Color.lerp(dark, light, 0.95)!;
-  Color get light98 => Color.lerp(dark, light, 0.98)!;
+  Color get fore1 => Color.lerp(fore, back, 0.1)!;
+  Color get fore2 => Color.lerp(fore, back, 0.2)!;
+  Color get fore4 => Color.lerp(fore, back, 0.4)!; // borders darker
+  Color get fore7 => Color.lerp(fore, back, 0.7)!; // borders
+  Color get fore8 => Color.lerp(fore, back, 0.8)!; // light hoverover
+  Color get fore9 => Color.lerp(fore, back, 0.9)!; // light hoverover
+  Color get fore95 => Color.lerp(fore, back, 0.95)!;
+  Color get fore98 => Color.lerp(fore, back, 0.98)!;
+
+  Color get alt5 => Color.lerp(altBack, altFore, 0.5)!;
 
   static double get paddingNum => paddingUnit;
   static double get halfPaddingNum => paddingUnit * 0.5;
   static EdgeInsets get padding => EdgeInsets.all(paddingUnit);
   static EdgeInsets get halfPadding => EdgeInsets.all(halfPaddingNum);
+  EdgeInsets get paddingInsets => padding;
   BorderRadius get borderRadius => BorderRadius.circular(radius);
 
   static RubricEditorStyle of(BuildContext context) {

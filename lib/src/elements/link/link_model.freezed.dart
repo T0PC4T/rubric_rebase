@@ -204,7 +204,7 @@ class _$LinkElementModelImpl extends _LinkElementModel {
       {required this.text,
       this.isBold = false,
       this.isItalic = false,
-      this.isUnderline = false,
+      this.isUnderline = true,
       this.alignment = ElementAlignment.left,
       required this.size,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)

@@ -63,7 +63,7 @@ class _VideoTooltipWidgetState extends State<VideoTooltipWidget> {
               },
             );
             if (videoUrl case String newUrl) {
-              editorState.canvas.updateElement(
+              editorState.canvas.updateProperties(
                 widget.element,
                 properties.copyWith(videoUrl: newUrl, isYoutube: true).toJson(),
               );
@@ -86,7 +86,7 @@ class _VideoTooltipWidgetState extends State<VideoTooltipWidget> {
                   fileBytes,
                   name: result.files.first.name,
                 );
-                editorState.canvas.updateElement(
+                editorState.canvas.updateProperties(
                   widget.element,
                   properties
                       .copyWith(videoUrl: videoUrl, isYoutube: false)

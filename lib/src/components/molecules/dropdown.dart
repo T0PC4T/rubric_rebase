@@ -46,9 +46,8 @@ class RubricDropdownState<T> extends State<RubricDropdown<T>> {
           value = newValue;
         });
       },
-      dropdownColor: styles.light,
-
-      style: TextStyle(color: styles.dark, fontSize: styles.fontSize),
+      dropdownColor: styles.back,
+      style: TextStyle(color: styles.fore, fontSize: styles.fontSize),
     );
   }
 }

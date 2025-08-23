@@ -30,7 +30,7 @@ class RubricIcon extends StatelessWidget {
     return Icon(
       icon,
       size: size,
-      color: color ?? editorState.style.dark,
+      color: color ?? editorState.style.fore,
     );
   }
 }
