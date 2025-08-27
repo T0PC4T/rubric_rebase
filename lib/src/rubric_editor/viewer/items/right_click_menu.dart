@@ -121,7 +121,7 @@ class RightClickMenu extends StatelessWidget {
                         ],
                       ),
                       onTap: () {
-                        // editorState.edits.clear();;
+                        editorState.edits.focusElement();
                         editorState.canvas.deleteElement(element);
                       },
                     ),

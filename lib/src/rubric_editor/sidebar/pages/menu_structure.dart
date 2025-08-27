@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/elements/link/link_model.dart';
+import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/text_list/text_list_model.dart';
 import 'package:rubric/src/models/elements.dart';
@@ -62,6 +63,10 @@ class LayerWidgetState extends State<LayerWidget> {
       TextElementModel e => e.text,
       LinkElementModel e => e.text,
       ButtonElementModel e => e.text,
+      RowElementModel e => "Row (${e.elements.fold(
+          0,
+          (previousValue, element) => previousValue + element.length,
+        )} items)",
       TextListElementModel e => e.textList.join(" "),
       _ => widget.element.type.title,
     };

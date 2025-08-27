@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
+import 'package:rubric/src/rubric_editor/viewer/items/handler.dart';
 
 class ElementPageWidget extends StatelessWidget {
   const ElementPageWidget({super.key});
@@ -90,9 +91,10 @@ class _SidebarButtonState extends State<SidebarButton> {
     final style = RubricEditorStyle.of(context);
     return Draggable(
         dragAnchorStrategy: pointerDragAnchorStrategy,
-        data: widget.element,
-        feedback: Opacity(opacity: 0.7, child: getButton(style.back)),
-        childWhenDragging: getButton(style.back),
+        data: widget.element.generateNewModel(),
+        feedback:
+            ElementDraggingWidth(elementType: widget.element, style: style),
+        childWhenDragging: Material(child: getButton(style.back)),
         onDragStarted: () {},
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
