@@ -5,10 +5,10 @@ import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/handler.dart';
 
 class RubricReader extends StatefulWidget {
-  final CanvasModel canvas;
+  final CanvasModel canvasModel;
   const RubricReader({
     super.key,
-    required this.canvas,
+    required this.canvasModel,
   });
 
   @override
@@ -24,7 +24,7 @@ class _RubricReaderState extends State<RubricReader> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.canvas.settings.canvasColor,
+      color: widget.canvasModel.settings.canvasColor,
       child: LayoutBuilder(builder: (context, constraints) {
         print(constraints.maxWidth);
         final viewMode = constraints.maxWidth <= ViewModes.mobile.width
@@ -32,7 +32,7 @@ class _RubricReaderState extends State<RubricReader> {
             : ViewModes.desktop;
 
         return ListView.builder(
-          itemCount: widget.canvas.elements.length,
+          itemCount: widget.canvasModel.elements.length,
           shrinkWrap: true,
           addAutomaticKeepAlives: false,
           addRepaintBoundaries: false,
@@ -42,7 +42,7 @@ class _RubricReaderState extends State<RubricReader> {
               horizontal: (constraints.maxWidth - viewMode.width) / 2),
           itemBuilder: (context, index) {
             return ReaderElementWidget(
-              element: widget.canvas.elements[index],
+              element: widget.canvasModel.elements[index],
             );
           },
         );
