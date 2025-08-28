@@ -54,35 +54,38 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     editorState = RubricEditorState.of(context);
     canvas = editorState.canvas.value;
     edits = editorState.edits.value;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          editorState.edits.focusElement();
-        });
-      },
-      child: LayoutBuilder(builder: (context, constraints) {
-        final viewMode = editorState.edits.value.viewMode;
+    return Container(
+      color: canvas.settings.canvasColor,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            editorState.edits.focusElement();
+          });
+        },
+        child: LayoutBuilder(builder: (context, constraints) {
+          final viewMode = editorState.edits.value.viewMode;
 
-        return ListView.builder(
-          itemCount: max(canvas.elements.length, 1),
-          shrinkWrap: true,
-          addAutomaticKeepAlives: false,
-          addRepaintBoundaries: false,
-          addSemanticIndexes: false,
-          padding: EdgeInsets.symmetric(
-              vertical: sidebarButtonHeight,
-              horizontal: (constraints.maxWidth - viewMode.width) / 2),
-          itemBuilder: (context, index) {
-            if (canvas.elements.isEmpty && index == 0) {
-              return EditorEmptyInserterWidget();
-            }
+          return ListView.builder(
+            itemCount: max(canvas.elements.length, 1),
+            shrinkWrap: true,
+            addAutomaticKeepAlives: false,
+            addRepaintBoundaries: false,
+            addSemanticIndexes: false,
+            padding: EdgeInsets.symmetric(
+                vertical: sidebarButtonHeight,
+                horizontal: (constraints.maxWidth - viewMode.width) / 2),
+            itemBuilder: (context, index) {
+              if (canvas.elements.isEmpty && index == 0) {
+                return EditorEmptyInserterWidget();
+              }
 
-            return EditorElementWidget(
-              element: canvas.elements[index],
-            );
-          },
-        );
-      }),
+              return EditorElementWidget(
+                element: canvas.elements[index],
+              );
+            },
+          );
+        }),
+      ),
     );
   }
 }

@@ -79,7 +79,7 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
                 ),
                 Expanded(
                   child: RubricReader(
-                    canvasModel: map?["lesson_data"] == null
+                    canvas: map?["lesson_data"] == null
                         ? CanvasModel()
                         : CanvasModel.fromJson(map!["lesson_data"]),
                   ),

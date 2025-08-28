@@ -218,45 +218,55 @@ class _EditorEmptyInserterWidgetState extends State<EditorEmptyInserterWidget> {
                 _hovered = false;
               });
             },
-            child: DragTarget<ElementModel>(
-              onWillAcceptWithDetails: (details) {
-                // You cannot nest rows
-                if (widget.parent != null &&
-                    details.data.type == ElementType.row) {
-                  return false;
-                }
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: borderWidth, color: editorState.style.fore9)),
+              child: DragTarget<ElementModel>(
+                onWillAcceptWithDetails: (details) {
+                  // You cannot nest rows
+                  if (widget.parent != null &&
+                      details.data.type == ElementType.row) {
+                    return false;
+                  }
 
-                return true;
-              },
-              onAcceptWithDetails: (details) {
-                editorState.canvas.deleteElement(details.data);
-                editorState.canvas.dragInElement(
-                    insert: details.data,
-                    exiting: ElementType.box.generateNewModel(widget.id),
-                    above: true,
-                    parent: widget.parent);
-              },
-              builder: (context, candidateData, rejectedData) {
-                if (candidateData.isNotEmpty) {
-                  return Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: _hovered
-                              ? BorderSide(
-                                  width: 5, color: editorState.style.theme)
-                              : BorderSide(width: 0, color: Colors.transparent),
+                  return true;
+                },
+                onAcceptWithDetails: (details) {
+                  editorState.canvas.deleteElement(details.data);
+                  editorState.canvas.dragInElement(
+                      insert: details.data,
+                      exiting: ElementType.box.generateNewModel(widget.id),
+                      above: true,
+                      parent: widget.parent);
+                },
+                builder: (context, candidateData, rejectedData) {
+                  if (candidateData.isNotEmpty) {
+                    return Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                                width: borderWidth, color: Colors.transparent),
+                            right: BorderSide(
+                                width: borderWidth, color: Colors.transparent),
+                            top: BorderSide(
+                                width: borderWidth,
+                                color: editorState.style.theme),
+                            bottom: BorderSide(
+                                width: borderWidth, color: Colors.transparent),
+                          ),
                         ),
-                      ),
-                      child: SizedBox(
-                        height: 200,
-                        width: double.infinity,
-                      ));
-                }
-                return SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                );
-              },
+                        child: SizedBox(
+                          height: 200,
+                          width: double.infinity,
+                        ));
+                  }
+                  return SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                  );
+                },
+              ),
             ),
           );
         });

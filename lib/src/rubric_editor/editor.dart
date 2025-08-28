@@ -222,7 +222,7 @@ class RubricEditorState extends State<RubricEditor> {
                                 ? ViewModes.mobile.width
                                 : double.infinity,
                             child: RubricReader(
-                              canvasModel: canvas.value,
+                              canvas: canvas.value,
                             ),
                           )),
                     )

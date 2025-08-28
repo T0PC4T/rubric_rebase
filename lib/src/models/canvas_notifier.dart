@@ -163,8 +163,19 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   }
 
   duplicateElement(ElementModel element) {
-    addElement(element.copyWith(id: uuid.v4()),
-        index: value.elements.indexOf(element));
+    ElementModel newElement = element.copyWith(id: newID());
+    if (element.type == ElementType.row) {
+      final properties = element.getProperties<RowElementModel>();
+      final newElements = properties.elements.map((column) {
+        return column.map((e) {
+          return ElementModel.fromMap(e).copyWith(id: newID()).toMap();
+        }).toList();
+      }).toList();
+      newElement = newElement.copyWith(
+          properties: properties.copyWith(elements: newElements).toJson());
+    }
+
+    dragInElement(insert: newElement, exiting: element, above: false);
   }
 
   deleteElement(ElementModel deleteElement) {

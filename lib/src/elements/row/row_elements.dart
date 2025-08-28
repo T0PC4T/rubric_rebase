@@ -4,6 +4,7 @@ import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/elements/row/row_toolbar.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/handler.dart';
 
 class RowEditorElement extends StatefulWidget {
@@ -71,12 +72,17 @@ class RowReaderElement extends StatelessWidget {
   Widget build(BuildContext context) {
     final rowElement = element.getProperties<RowElementModel>();
     final columns = rowElement.elements;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
+    return LayoutBuilder(builder: (context, constraints) {
+      return Flex(
+        direction: constraints.maxWidth <= ViewModes.mobile.width + 100
+            ? Axis.vertical
+            : Axis.horizontal,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           for (var column in columns)
-            Expanded(
+            Flexible(
               child: Column(
                 children: [
                   for (var element in column)
@@ -87,7 +93,7 @@ class RowReaderElement extends StatelessWidget {
               ),
             )
         ],
-      ),
-    );
+      );
+    });
   }
 }

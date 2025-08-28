@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/button/button_model.dart';
@@ -69,9 +67,8 @@ class LayerWidgetState extends State<LayerWidget> {
         )} items)",
       TextListElementModel e => e.textList.join(" "),
       _ => widget.element.type.title,
-    };
-
-    title = title.substring(0, min(title.length, 15));
+    }
+        .replaceAll("\n", "");
 
     return MouseRegion(
       onEnter: (event) {

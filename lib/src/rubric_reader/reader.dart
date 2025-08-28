@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/src/models/canvas.dart';
-import 'package:rubric/src/models/canvas_notifier.dart';
+import 'package:rubric/src/rubric_editor/models/preview.dart';
+import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
+import 'package:rubric/src/rubric_editor/viewer/items/handler.dart';
 
 class RubricReader extends StatefulWidget {
-  final CanvasModel canvasModel;
+  final CanvasModel canvas;
   const RubricReader({
     super.key,
-    required this.canvasModel,
+    required this.canvas,
   });
 
   @override
@@ -14,76 +16,37 @@ class RubricReader extends StatefulWidget {
 }
 
 class _RubricReaderState extends State<RubricReader> {
-  late CanvasNotifier canvas;
   @override
   void initState() {
-    canvas = CanvasNotifier(widget.canvasModel.copyWith());
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: canvas,
-        builder: (context, value, child) {
-          return Text("Hello World");
-          // return Container(
-          //   width: double.infinity,
-          //   height: double.infinity,
-          //   color: widget.canvasModel.settings.canvasColor,
-          //   constraints: BoxConstraints.expand(),
-          //   child: LayoutBuilder(
-          //     builder: (context, constraints) {
-          //       ViewModes curView = constraints.maxWidth < GridSizes.pageSize
-          //           ? ViewModes.mobile
-          //           : ViewModes.desktop;
-          //       return SingleChildScrollView(
-          //         child: Container(
-          //           padding: curView == ViewModes.desktop
-          //               ? EdgeInsets.symmetric(vertical: GridSizes.padding)
-          //               : EdgeInsets.all(0),
-          //           alignment: curView == ViewModes.desktop
-          //               ? Alignment.topCenter
-          //               : null,
-          //           child: FittedBox(
-          //             fit: curView == ViewModes.desktop
-          //                 ? BoxFit.none
-          //                 : BoxFit.fitWidth,
-          //             child: SizedBox(
-          //               width: curView.width,
-          //               child: RubricElementStack(
-          //                 secretSetter: (element, x, y, width, height, mobileX,
-          //                     mobileY, mobileWidth, mobileHeight) {
-          //                   canvas.moveElement(
-          //                       ViewModes.desktop, element, Offset(x, y));
-          //                   canvas.moveElement(ViewModes.mobile, element,
-          //                       Offset(mobileX, mobileY));
-          //                   canvas.scaleElement(ViewModes.desktop, element,
-          //                       Offset(width, height));
-          //                   canvas.scaleElement(ViewModes.mobile, element,
-          //                       Offset(mobileWidth, mobileHeight));
-          //                 },
-          //                 offset: Offset.zero,
-          //                 children: [
-          //                   ColoredBox(
-          //                     color: widget.canvasModel.settings.canvasColor,
-          //                   ),
-          //                   for (var element in widget.canvasModel.elements)
-          //                     ReaderElementWidget(
-          //                       viewMode: curView,
-          //                       key: ValueKey(element.id),
-          //                       element: element,
-          //                     ),
-          //                 ],
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          // );
-          // },
-          // ),
-          // )
-        });
+    return Container(
+      color: widget.canvas.settings.canvasColor,
+      child: LayoutBuilder(builder: (context, constraints) {
+        print(constraints.maxWidth);
+        final viewMode = constraints.maxWidth <= ViewModes.mobile.width
+            ? ViewModes.mobile
+            : ViewModes.desktop;
+
+        return ListView.builder(
+          itemCount: widget.canvas.elements.length,
+          shrinkWrap: true,
+          addAutomaticKeepAlives: false,
+          addRepaintBoundaries: false,
+          addSemanticIndexes: false,
+          padding: EdgeInsets.symmetric(
+              vertical: sidebarButtonHeight,
+              horizontal: (constraints.maxWidth - viewMode.width) / 2),
+          itemBuilder: (context, index) {
+            return ReaderElementWidget(
+              element: widget.canvas.elements[index],
+            );
+          },
+        );
+      }),
+    );
   }
 }

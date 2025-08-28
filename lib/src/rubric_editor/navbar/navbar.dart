@@ -49,6 +49,7 @@ class NavbarWidget extends StatelessWidget {
                   size: NavbarWidget.navbarHeight,
                   onTap: () {
                     editorState.changeViewMode(ViewModes.mobile);
+                    editorState.setPreview(true);
                   },
                 ),
                 RubricIconButton(
@@ -60,6 +61,7 @@ class NavbarWidget extends StatelessWidget {
                   size: NavbarWidget.navbarHeight,
                   onTap: () {
                     editorState.changeViewMode(ViewModes.desktop);
+                    editorState.setPreview(false);
                   },
                 ),
               ],
@@ -93,6 +95,9 @@ class NavbarWidget extends StatelessWidget {
             size: NavbarWidget.navbarHeight,
             onTap: () {
               editorState.edits.focusElement();
+              if (editorState.edits.value.previewing) {
+                editorState.changeViewMode(ViewModes.desktop);
+              }
               editorState.setPreview(!editorState.edits.value.previewing);
             },
           ),

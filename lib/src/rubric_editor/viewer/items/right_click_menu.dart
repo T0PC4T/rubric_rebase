@@ -22,7 +22,7 @@ class RightClickMenu extends StatelessWidget {
     final List<({Widget icon, String text, Function() onTap})> buttons = [];
     buttons.add((
       icon: RubricIcon(Icons.copy),
-      text: "Copy",
+      text: "Duplicate",
       onTap: () {
         final element = this.element;
         editorState.edits.focusElement();
