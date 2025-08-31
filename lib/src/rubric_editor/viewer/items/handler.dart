@@ -41,6 +41,7 @@ class EditorElementWidget extends StatefulWidget {
 class _EditorElementWidgetState extends State<EditorElementWidget> {
   bool _hovered = false;
   bool above = false;
+  late RubricEditorState editorState;
 
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _EditorElementWidgetState extends State<EditorElementWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final editorState = RubricEditorState.of(context);
+    editorState = RubricEditorState.of(context);
 
     return Draggable(
       dragAnchorStrategy: pointerDragAnchorStrategy,

@@ -118,7 +118,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
         },
       ),
       Item(
-        title: "Grid",
+        title: "Spacing",
         icon: Icons.grid_3x3,
         isExpanded: false,
         bodyBuilder: (context) {
@@ -127,26 +127,15 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: RubricEditorStyle.paddingNum * 1.5,
             children: [
-              ColorPickerSettingsWidget(
-                title: "Grid Line Color",
-                color: editorState!.canvas.value.settings.gridColor,
-                onUpdate: (color) {
-                  editorState!.canvas.updateSettings(
-                    editorState!.canvas.value.settings.copyWith(
-                      gridColor: color,
-                    ),
-                  );
-                },
-              ),
               Row(
                 children: [
                   RubricText("Line Spacing: "),
-                  RubricDropdown<GridSizes>(
-                    value: editorState!.canvas.value.settings.gridSize,
+                  RubricDropdown<double>(
+                    value: editorState!.canvas.value.settings.spacing,
                     items: [
                       for (var item in GridSizes.values)
-                        DropdownMenuItem<GridSizes>(
-                          value: item,
+                        DropdownMenuItem<double>(
+                          value: item.spacing,
                           child: Text(item.pretty),
                         ),
                     ],
@@ -154,7 +143,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                       if (value != null) {
                         editorState!.canvas.updateSettings(
                           editorState!.canvas.value.settings.copyWith(
-                            gridSize: value,
+                            spacing: value,
                           ),
                         );
                       }

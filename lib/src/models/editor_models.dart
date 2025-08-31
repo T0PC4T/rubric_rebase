@@ -19,12 +19,12 @@ enum GridSizes {
   }
 
   static const double pageSize = 1000;
-  static const double padding = 25;
+
   double get pixelsPerLock => 10;
-  final double pixelsPerLine;
+  final double spacing;
   final String pretty;
 
-  const GridSizes(this.pretty, this.pixelsPerLine);
+  const GridSizes(this.pretty, this.spacing);
 
   // from name
   static GridSizes fromName(String name) {

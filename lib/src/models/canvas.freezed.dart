@@ -25,9 +25,7 @@ mixin _$CanvasSettings {
   Color get backgroundColor => throw _privateConstructorUsedError;
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   Color get canvasColor => throw _privateConstructorUsedError;
-  @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-  Color get gridColor => throw _privateConstructorUsedError;
-  GridSizes get gridSize => throw _privateConstructorUsedError;
+  double get spacing => throw _privateConstructorUsedError;
   String get fontFamily => throw _privateConstructorUsedError;
   String get icon => throw _privateConstructorUsedError;
 
@@ -52,8 +50,7 @@ abstract class $CanvasSettingsCopyWith<$Res> {
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
       Color backgroundColor,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color canvasColor,
-      @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color gridColor,
-      GridSizes gridSize,
+      double spacing,
       String fontFamily,
       String icon});
 }
@@ -76,8 +73,7 @@ class _$CanvasSettingsCopyWithImpl<$Res, $Val extends CanvasSettings>
     Object? name = null,
     Object? backgroundColor = null,
     Object? canvasColor = null,
-    Object? gridColor = null,
-    Object? gridSize = null,
+    Object? spacing = null,
     Object? fontFamily = null,
     Object? icon = null,
   }) {
@@ -94,14 +90,10 @@ class _$CanvasSettingsCopyWithImpl<$Res, $Val extends CanvasSettings>
           ? _value.canvasColor
           : canvasColor // ignore: cast_nullable_to_non_nullable
               as Color,
-      gridColor: null == gridColor
-          ? _value.gridColor
-          : gridColor // ignore: cast_nullable_to_non_nullable
-              as Color,
-      gridSize: null == gridSize
-          ? _value.gridSize
-          : gridSize // ignore: cast_nullable_to_non_nullable
-              as GridSizes,
+      spacing: null == spacing
+          ? _value.spacing
+          : spacing // ignore: cast_nullable_to_non_nullable
+              as double,
       fontFamily: null == fontFamily
           ? _value.fontFamily
           : fontFamily // ignore: cast_nullable_to_non_nullable
@@ -127,8 +119,7 @@ abstract class _$$CanvasSettingsImplCopyWith<$Res>
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
       Color backgroundColor,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color canvasColor,
-      @JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color gridColor,
-      GridSizes gridSize,
+      double spacing,
       String fontFamily,
       String icon});
 }
@@ -149,8 +140,7 @@ class __$$CanvasSettingsImplCopyWithImpl<$Res>
     Object? name = null,
     Object? backgroundColor = null,
     Object? canvasColor = null,
-    Object? gridColor = null,
-    Object? gridSize = null,
+    Object? spacing = null,
     Object? fontFamily = null,
     Object? icon = null,
   }) {
@@ -167,14 +157,10 @@ class __$$CanvasSettingsImplCopyWithImpl<$Res>
           ? _value.canvasColor
           : canvasColor // ignore: cast_nullable_to_non_nullable
               as Color,
-      gridColor: null == gridColor
-          ? _value.gridColor
-          : gridColor // ignore: cast_nullable_to_non_nullable
-              as Color,
-      gridSize: null == gridSize
-          ? _value.gridSize
-          : gridSize // ignore: cast_nullable_to_non_nullable
-              as GridSizes,
+      spacing: null == spacing
+          ? _value.spacing
+          : spacing // ignore: cast_nullable_to_non_nullable
+              as double,
       fontFamily: null == fontFamily
           ? _value.fontFamily
           : fontFamily // ignore: cast_nullable_to_non_nullable
@@ -198,9 +184,7 @@ class _$CanvasSettingsImpl
       required this.backgroundColor,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
       required this.canvasColor,
-      @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-      required this.gridColor,
-      required this.gridSize,
+      this.spacing = 0,
       required this.fontFamily,
       required this.icon});
 
@@ -216,10 +200,8 @@ class _$CanvasSettingsImpl
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   final Color canvasColor;
   @override
-  @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-  final Color gridColor;
-  @override
-  final GridSizes gridSize;
+  @JsonKey()
+  final double spacing;
   @override
   final String fontFamily;
   @override
@@ -227,7 +209,7 @@ class _$CanvasSettingsImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CanvasSettings(name: $name, backgroundColor: $backgroundColor, canvasColor: $canvasColor, gridColor: $gridColor, gridSize: $gridSize, fontFamily: $fontFamily, icon: $icon)';
+    return 'CanvasSettings(name: $name, backgroundColor: $backgroundColor, canvasColor: $canvasColor, spacing: $spacing, fontFamily: $fontFamily, icon: $icon)';
   }
 
   @override
@@ -238,8 +220,7 @@ class _$CanvasSettingsImpl
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('backgroundColor', backgroundColor))
       ..add(DiagnosticsProperty('canvasColor', canvasColor))
-      ..add(DiagnosticsProperty('gridColor', gridColor))
-      ..add(DiagnosticsProperty('gridSize', gridSize))
+      ..add(DiagnosticsProperty('spacing', spacing))
       ..add(DiagnosticsProperty('fontFamily', fontFamily))
       ..add(DiagnosticsProperty('icon', icon));
   }
@@ -254,10 +235,7 @@ class _$CanvasSettingsImpl
                 other.backgroundColor == backgroundColor) &&
             (identical(other.canvasColor, canvasColor) ||
                 other.canvasColor == canvasColor) &&
-            (identical(other.gridColor, gridColor) ||
-                other.gridColor == gridColor) &&
-            (identical(other.gridSize, gridSize) ||
-                other.gridSize == gridSize) &&
+            (identical(other.spacing, spacing) || other.spacing == spacing) &&
             (identical(other.fontFamily, fontFamily) ||
                 other.fontFamily == fontFamily) &&
             (identical(other.icon, icon) || other.icon == icon));
@@ -266,7 +244,7 @@ class _$CanvasSettingsImpl
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, name, backgroundColor,
-      canvasColor, gridColor, gridSize, fontFamily, icon);
+      canvasColor, spacing, fontFamily, icon);
 
   /// Create a copy of CanvasSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -292,9 +270,7 @@ abstract class _CanvasSettings implements CanvasSettings {
       required final Color backgroundColor,
       @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
       required final Color canvasColor,
-      @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-      required final Color gridColor,
-      required final GridSizes gridSize,
+      final double spacing,
       required final String fontFamily,
       required final String icon}) = _$CanvasSettingsImpl;
 
@@ -310,10 +286,7 @@ abstract class _CanvasSettings implements CanvasSettings {
   @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
   Color get canvasColor;
   @override
-  @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-  Color get gridColor;
-  @override
-  GridSizes get gridSize;
+  double get spacing;
   @override
   String get fontFamily;
   @override
