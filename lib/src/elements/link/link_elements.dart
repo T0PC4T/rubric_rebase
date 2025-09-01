@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/link/link_model.dart';
 import 'package:rubric/src/elements/link/link_toolbar.dart';
@@ -35,7 +36,9 @@ class LinkEditorElementState extends TextEditorElementState<LinkEditorElement> {
 
 class LinkReaderWidget extends StatelessWidget {
   final ElementModel element;
-  const LinkReaderWidget({super.key, required this.element});
+  final CanvasModel canvas;
+  const LinkReaderWidget(
+      {super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {

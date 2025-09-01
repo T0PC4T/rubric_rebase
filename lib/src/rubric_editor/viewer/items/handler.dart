@@ -119,6 +119,7 @@ class _EditorElementWidgetState extends State<EditorElementWidget> {
                 builder: (context, candidateData, rejectedData) {
                   if (candidateData.isNotEmpty) {
                     return Container(
+                        constraints: BoxConstraints(minHeight: 100),
                         decoration: BoxDecoration(
                           border: Border(
                               left: BorderSide(
@@ -276,14 +277,16 @@ class _EditorEmptyInserterWidgetState extends State<EditorEmptyInserterWidget> {
 
 class ReaderElementWidget extends StatelessWidget {
   final ElementModel element;
+  final CanvasModel canvas;
 
-  const ReaderElementWidget({super.key, required this.element});
+  const ReaderElementWidget(
+      {super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(element.padding),
-      child: element.type.readerBuilder(element: element),
+      child: element.type.readerBuilder(element: element, canvas: canvas),
     );
   }
 }

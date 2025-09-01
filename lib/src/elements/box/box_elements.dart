@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/box/box_model.dart';
 import 'package:rubric/src/elements/box/box_toolbar.dart';
@@ -43,7 +44,9 @@ class BoxEditorElementState extends FocusableState<BoxEditorElement> {
 
 class BoxReaderElement extends StatelessWidget {
   final ElementModel element;
-  const BoxReaderElement({super.key, required this.element});
+  final CanvasModel canvas;
+  const BoxReaderElement(
+      {super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {

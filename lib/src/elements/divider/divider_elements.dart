@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/divider/divider_toolbar.dart';
@@ -41,7 +42,9 @@ class DividerEditorElementState extends FocusableState<DividerEditorElement> {
 
 class DividerReaderElement extends StatelessWidget {
   final ElementModel element;
-  const DividerReaderElement({super.key, required this.element});
+  final CanvasModel canvas;
+  const DividerReaderElement(
+      {super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {

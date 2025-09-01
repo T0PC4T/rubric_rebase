@@ -1,5 +1,6 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
@@ -65,7 +66,9 @@ class VideoEditorElementState extends FocusableState<VideoEditorElement> {
 
 class VideoReaderElement extends StatefulWidget {
   final ElementModel element;
-  const VideoReaderElement({super.key, required this.element});
+  final CanvasModel canvas;
+  const VideoReaderElement(
+      {super.key, required this.element, required this.canvas});
 
   @override
   State<VideoReaderElement> createState() => VideoReaderElementState();

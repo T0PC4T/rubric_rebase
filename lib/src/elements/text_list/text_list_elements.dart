@@ -105,7 +105,6 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
   Widget build(BuildContext context) {
     final properties = widget.element.getProperties<TextListElementModel>();
     final textStyle = properties.textStyle();
-    editorState = RubricEditorState.of(context);
 
     return Container(
       constraints: BoxConstraints(minHeight: 50, minWidth: double.infinity),
@@ -258,7 +257,9 @@ class TextListLayerWidget extends StatelessWidget {
 
 class TextListReaderWidget extends StatelessWidget {
   final ElementModel element;
-  const TextListReaderWidget({super.key, required this.element});
+  final CanvasModel canvas;
+  const TextListReaderWidget(
+      {super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {

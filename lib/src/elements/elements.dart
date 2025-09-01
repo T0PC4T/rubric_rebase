@@ -19,12 +19,16 @@ import 'package:rubric/src/elements/text_list/text_list_elements.dart';
 import 'package:rubric/src/elements/text_list/text_list_model.dart';
 import 'package:rubric/src/elements/video/video_elements.dart';
 import 'package:rubric/src/elements/video/video_model.dart';
+import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
 import 'package:rubric/src/utilities/uuid.dart';
 
-typedef ElementBuilderFunction = Widget Function(
+typedef ElementEditorBuilderFunction = Widget Function(
     {Key? key, required ElementModel element});
+
+typedef ElementBuilderFunction = Widget Function(
+    {Key? key, required ElementModel element, required CanvasModel canvas});
 
 enum ElementType {
   heading(
@@ -93,18 +97,9 @@ enum ElementType {
     readerBuilder: DividerReaderElement.new,
   );
 
-  // richtext(
-  //   "Rich Text",
-  //   Icons.text_fields_rounded,
-  //   editorBuilder: RichTextEditorElement.new,
-  //   layerBuilder: RichTextLayerWidget.new,
-  //   readerBuilder: RichTextReaderWidget.new,
-  //   focusable: true,
-  // );
-
   final String title;
   final IconData icon;
-  final ElementBuilderFunction editorBuilder;
+  final ElementEditorBuilderFunction editorBuilder;
 
   final ElementBuilderFunction readerBuilder;
   const ElementType(

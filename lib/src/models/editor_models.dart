@@ -10,9 +10,9 @@ These models are dedicated to the editor state. This state does not affect the a
  */
 enum GridSizes {
   none("None", 0),
-  small("Small", 25),
-  medium("Medium", 50),
-  large("Large", 100);
+  small("Small", 10),
+  medium("Medium", 20),
+  large("Large", 30);
 
   static bool isMobile(double screenWidth) {
     return screenWidth < pageSize;

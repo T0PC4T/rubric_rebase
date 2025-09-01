@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/base/states.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/image/image_toolbar.dart';
@@ -29,7 +30,8 @@ class ImageEditorElementState extends FocusableState<ImageEditorElement> {
   @override
   Widget build(BuildContext context) {
     return ImageReaderElement(
-      element: element,
+      canvas: editorState.canvas.value,
+      element: widget.element,
     );
   }
 }
@@ -47,7 +49,9 @@ class ImageLayerElement extends StatelessWidget {
 
 class ImageReaderElement extends StatelessWidget {
   final ElementModel element;
-  const ImageReaderElement({super.key, required this.element});
+  final CanvasModel canvas;
+  const ImageReaderElement(
+      {super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {

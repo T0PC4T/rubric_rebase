@@ -4,19 +4,13 @@ import 'package:rubric/src/models/elements.dart';
 
 abstract class FocusableState<T extends StatefulWidget> extends State<T> {
   ElementModel get element;
-  late RubricEditorState editorState;
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(postFrame);
-    super.initState();
-  }
-
-  postFrame(_) {
-    if (mounted) {
-      editorState = RubricEditorState.of(context);
-
-      editorState.edits.focusNotifier.addListener(element.id, onFocus);
+  RubricEditorState? _editorState;
+  RubricEditorState get editorState {
+    if (mounted && _editorState == null) {
+      _editorState = RubricEditorState.of(context);
+      _editorState!.edits.focusNotifier.addListener(element.id, onFocus);
     }
+    return _editorState!;
   }
 
   bool get isFocused => editorState.edits.isFocused(element);
@@ -25,7 +19,7 @@ abstract class FocusableState<T extends StatefulWidget> extends State<T> {
 
   @override
   void dispose() {
-    editorState.edits.focusNotifier.removeListener(element.id);
+    _editorState?.edits.focusNotifier.removeListener(element.id);
     super.dispose();
   }
 }

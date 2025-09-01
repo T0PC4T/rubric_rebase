@@ -138,8 +138,6 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
   Widget build(BuildContext context) {
     final properties = widget.element.getProperties<ButtonElementModel>();
 
-    editorState = RubricEditorState.of(context);
-
     return Container(
       alignment: Alignment.center,
       decoration: buttonDecoration(properties),
@@ -201,7 +199,9 @@ class ButtonLayerWidget extends StatelessWidget {
 
 class ButtonReaderWidget extends StatefulWidget {
   final ElementModel element;
-  const ButtonReaderWidget({super.key, required this.element});
+  final CanvasModel canvas;
+  const ButtonReaderWidget(
+      {super.key, required this.element, required this.canvas});
 
   @override
   State<ButtonReaderWidget> createState() => ButtonReaderWidgetState();

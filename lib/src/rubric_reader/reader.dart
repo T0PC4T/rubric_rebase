@@ -42,6 +42,7 @@ class _RubricReaderState extends State<RubricReader> {
               horizontal: (constraints.maxWidth - viewMode.width) / 2),
           itemBuilder: (context, index) {
             return ReaderElementWidget(
+              canvas: widget.canvasModel,
               element: widget.canvasModel.elements[index],
             );
           },
