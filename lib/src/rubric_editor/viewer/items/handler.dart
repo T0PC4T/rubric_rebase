@@ -119,7 +119,6 @@ class _EditorElementWidgetState extends State<EditorElementWidget> {
                 builder: (context, candidateData, rejectedData) {
                   if (candidateData.isNotEmpty) {
                     return Container(
-                        constraints: BoxConstraints(minHeight: 100),
                         decoration: BoxDecoration(
                           border: Border(
                               left: BorderSide(

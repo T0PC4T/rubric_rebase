@@ -146,7 +146,7 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
         offset: Offset(0, -0),
         child: TextField(
           decoration: InputDecoration.collapsed(
-              hintText: "[Empty Text]",
+              hintText: "Write something here...",
               hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
           undoController: undoController,
 

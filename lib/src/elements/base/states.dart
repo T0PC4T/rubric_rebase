@@ -13,13 +13,23 @@ abstract class FocusableState<T extends StatefulWidget> extends State<T> {
     return _editorState!;
   }
 
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(postFrame);
+    super.initState();
+  }
+
+  postFrame(_) {
+    final a = editorState;
+  }
+
   bool get isFocused => editorState.edits.isFocused(element);
 
   onFocus(bool focused);
 
   @override
   void dispose() {
-    _editorState?.edits.focusNotifier.removeListener(element.id);
+    _editorState?.edits.focusNotifier.removeParticularListener(onFocus);
     super.dispose();
   }
 }

@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         body: RubricLessonEditorWidget(
           moduleID: "NprjbWJhwvocFpoEvD9d",
           onSaved: () async {
-            print("hello");
+            print("saving");
           },
         ),
         // body: RubricLessonReaderWidget(

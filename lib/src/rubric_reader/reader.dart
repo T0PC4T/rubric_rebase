@@ -26,7 +26,6 @@ class _RubricReaderState extends State<RubricReader> {
     return Container(
       color: widget.canvasModel.settings.canvasColor,
       child: LayoutBuilder(builder: (context, constraints) {
-        print(constraints.maxWidth);
         final viewMode = constraints.maxWidth <= ViewModes.mobile.width
             ? ViewModes.mobile
             : ViewModes.desktop;
