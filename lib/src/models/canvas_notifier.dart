@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
@@ -179,10 +181,50 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   }
 
   deleteElement(ElementModel deleteElement) {
-    value.elements = value.elements
-        .where((element) => deleteElement.id != element.id)
-        .toList();
+    // TODO add the value for font size and put value of padding in brackets.
+    // TODO add ability to scroll when your
+    // TODO allow to delete within row
+    final List<ElementModel> newElements = [];
+    for (var element in value.elements) {
+      if (element.type == ElementType.row) {
+        final rowModel = element.getProperties<RowElementModel>();
+        for (var columnIndex = 0;
+            columnIndex < rowModel.columns;
+            columnIndex++) {
+          final column = rowModel.elements[columnIndex];
+          for (var elementIndex = 0;
+              elementIndex < column.length;
+              elementIndex++) {
+            final rowElement = ElementModel.fromMap(column[elementIndex]);
+            if (rowElement.id == deleteElement.id) {
+              // DELETE THIS ITEM AND REPACKAGE PROPERTIES DO AN UPDATE INSTEAD
+              final newColumn = List<Map<String, dynamic>>.from(column);
+              newColumn.removeAt(elementIndex);
+              final newElements =
+                  List<List<Map<String, dynamic>>>.from(rowModel.elements);
+              newElements[columnIndex] = newColumn;
+              updateProperties(
+                  element, rowModel.copyWith(elements: newElements).toJson());
+              notifyListeners();
+              return;
+            }
+          }
+        }
+      }
+      if (element.id == deleteElement.id) {
+        continue;
+      } else {
+        newElements.add(element);
+      }
+    }
+    print("Element Length (${value.elements.length} => ${newElements.length})");
+    value = value.copyWith(elements: newElements);
     notifyListeners();
+
+    // value.elements = value.elements
+    //     .where((element) => element.id != deleteElement.id)
+    //     .toList();
+    // notifyListeners();
   }
 
   deleteElements(List<ElementModel> deleteElements) {

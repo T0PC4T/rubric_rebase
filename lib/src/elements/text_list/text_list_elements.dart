@@ -87,6 +87,7 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
   }
 
   String _getTextAfterSelection() {
+    // TODO ERROR WHEN EDITED
     // Get the full text from the controller
     final String text = controller.text;
 
@@ -122,112 +123,125 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
                   index: i,
                 ),
                 Expanded(
-                  child: editingPoint != i
-                      ? GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (textList[editingPoint] != controller.text) {
-                                final newText = List<String>.from(textList);
-                                newText[editingPoint] = controller.text;
-
-                                textList = newText;
-                              }
-                              editingPoint = i;
-                              controller.text = textList[i];
-                            });
-                          },
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Text(
-                              overflow: TextOverflow.visible,
-                              textList[i],
-                              style: textStyle,
-                            ),
+                  child: !isFocused && textList[i].isEmpty
+                      ? Text(
+                          "Write something here...",
+                          style: textStyle.copyWith(
+                            color: textStyle.color?.withAlpha(100),
                           ),
                         )
-                      : KeyboardListener(
-                          key: ValueKey("KeyboardListener"),
-                          focusNode: focusNodeTextField,
-                          onKeyEvent: (value) {
-                            // if is key down return
-                            if (value.runtimeType == KeyUpEvent) {
-                              return;
-                            }
-
-                            // if delete key is pressed
-                            if (value.logicalKey ==
-                                    LogicalKeyboardKey.backspace &&
-                                controller.text == "" &&
-                                textList.length > 1) {
-                              setState(() {
-                                final newIndex =
-                                    editingPoint != 0 ? editingPoint - 1 : 0;
-                                controller.text = textList[newIndex];
-                                final newTextList = List<String>.from(textList);
-                                newTextList.removeAt(i);
-                                textList = newTextList;
-
-                                // controller.text = properties.textList[newIndex];
-                                editingPoint = newIndex;
-                              });
-                            } else if (value.logicalKey ==
-                                LogicalKeyboardKey.enter) {
-                              setState(() {
-                                final newTextList = List<String>.from(textList);
-
-                                // update to be only the text before the selected
-                                newTextList[editingPoint] = controller.text
-                                    .substring(0, controller.selection.end);
-
-                                // Create a new point from what is after the selection
-                                final newPoint = editingPoint + 1;
-                                String leftover = _getTextAfterSelection();
-
-                                if (newPoint < newTextList.length) {
-                                  newTextList.insert(newPoint, leftover);
-                                } else {
-                                  newTextList.add(leftover);
-                                }
-
-                                textList = newTextList;
-                                editingPoint = newPoint;
-
-                                controller.text = leftover;
-                                Future.delayed(Duration(milliseconds: 1)).then(
-                                  (value) {
-                                    controller.text = leftover;
-                                  },
-                                );
-                              });
-                            }
-                          },
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: TextField(
-                              key: textListKey,
-                              decoration: null,
-                              onChanged: (value) {
+                      : editingPoint != i
+                          ? GestureDetector(
+                              onTap: () {
                                 setState(() {
-                                  textList[editingPoint] = value;
+                                  if (textList[editingPoint] !=
+                                      controller.text) {
+                                    final newText = List<String>.from(textList);
+                                    newText[editingPoint] = controller.text;
+
+                                    textList = newText;
+                                  }
+                                  editingPoint = i;
+                                  controller.text = textList[i];
                                 });
                               },
-                              autofocus: true,
-                              undoController: undoController,
-                              style: textStyle.copyWith(height: 1.2),
-                              cursorColor: textStyle.color,
-                              keyboardType: TextInputType.multiline,
-                              scrollPadding: EdgeInsets.zero,
-                              selectionControls: DesktopTextSelectionControls(),
-                              maxLines: null,
-                              enableInteractiveSelection: true,
-                              readOnly: false,
-                              minLines: null,
-                              scrollController: _scrollController,
-                              controller: controller,
-                              focusNode: focusNode,
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Text(
+                                  overflow: TextOverflow.visible,
+                                  textList[i],
+                                  style: textStyle,
+                                ),
+                              ),
+                            )
+                          : KeyboardListener(
+                              key: ValueKey("KeyboardListener"),
+                              focusNode: focusNodeTextField,
+                              onKeyEvent: (value) {
+                                // if is key down return
+                                if (value.runtimeType == KeyUpEvent) {
+                                  return;
+                                }
+
+                                // if delete key is pressed
+                                if (value.logicalKey ==
+                                        LogicalKeyboardKey.backspace &&
+                                    controller.text == "" &&
+                                    textList.length > 1) {
+                                  setState(() {
+                                    final newIndex = editingPoint != 0
+                                        ? editingPoint - 1
+                                        : 0;
+                                    controller.text = textList[newIndex];
+                                    final newTextList =
+                                        List<String>.from(textList);
+                                    newTextList.removeAt(i);
+                                    textList = newTextList;
+
+                                    // controller.text = properties.textList[newIndex];
+                                    editingPoint = newIndex;
+                                  });
+                                } else if (value.logicalKey ==
+                                    LogicalKeyboardKey.enter) {
+                                  setState(() {
+                                    final newTextList =
+                                        List<String>.from(textList);
+
+                                    // update to be only the text before the selected
+                                    newTextList[editingPoint] = controller.text
+                                        .substring(0, controller.selection.end);
+
+                                    // Create a new point from what is after the selection
+                                    final newPoint = editingPoint + 1;
+                                    String leftover = _getTextAfterSelection();
+
+                                    if (newPoint < newTextList.length) {
+                                      newTextList.insert(newPoint, leftover);
+                                    } else {
+                                      newTextList.add(leftover);
+                                    }
+
+                                    textList = newTextList;
+                                    editingPoint = newPoint;
+
+                                    controller.text = leftover;
+                                    Future.delayed(Duration(milliseconds: 1))
+                                        .then(
+                                      (value) {
+                                        controller.text = leftover;
+                                      },
+                                    );
+                                  });
+                                }
+                              },
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: TextField(
+                                  key: textListKey,
+                                  decoration: null,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      textList[editingPoint] = value;
+                                    });
+                                  },
+                                  autofocus: true,
+                                  undoController: undoController,
+                                  style: textStyle.copyWith(height: 1.2),
+                                  cursorColor: textStyle.color,
+                                  keyboardType: TextInputType.multiline,
+                                  scrollPadding: EdgeInsets.zero,
+                                  selectionControls:
+                                      DesktopTextSelectionControls(),
+                                  maxLines: null,
+                                  enableInteractiveSelection: true,
+                                  readOnly: false,
+                                  minLines: null,
+                                  scrollController: _scrollController,
+                                  controller: controller,
+                                  focusNode: focusNode,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                 ),
               ],
             ),

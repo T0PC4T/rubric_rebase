@@ -78,6 +78,15 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
   void onFocus(bool focused) {
     if (focused) {
       focusNode.requestFocus();
+      editorState.showToolbar(
+        widget.element,
+        ButtonTooltipWidget(
+          element: widget.element,
+          controller: controller,
+          undoController: undoController,
+          header: widget.header,
+        ),
+      );
     } else {
       final properties = widget.element.getProperties<ButtonElementModel>();
       editorState.canvas.updateProperties(
@@ -109,21 +118,6 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
     }
 
     super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  onSelect(bool selected) {
-    if (selected) {
-      editorState.showToolbar(
-        widget.element,
-        ButtonTooltipWidget(
-          element: widget.element,
-          controller: controller,
-          undoController: undoController,
-          header: widget.header,
-        ),
-      );
-    }
   }
 
   @override

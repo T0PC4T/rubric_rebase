@@ -118,6 +118,12 @@ class _EditorElementWidgetState extends State<EditorElementWidget> {
                       exiting: widget.element,
                       above: above,
                       parent: widget.parent);
+                  // Select new element after a few frames have passed
+                  Future.delayed(Duration(milliseconds: 10)).then(
+                    (value) {
+                      editorState.edits.focusElement(details.data);
+                    },
+                  );
                 },
                 builder: (context, candidateData, rejectedData) {
                   if (candidateData.isNotEmpty) {
