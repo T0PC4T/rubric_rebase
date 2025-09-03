@@ -69,6 +69,52 @@ class CanvasModel {
     };
   }
 
+  String toHTML() {
+    String html = "";
+    for (var element in elements) {
+      html += """<div class="element-padding">${element.toHTML()}</div>""";
+    }
+    return """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${settings.name}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #${colorToHex(settings.backgroundColor)};
+            font-family: ${settings.fontFamily};
+        }
+        .canvas-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #${colorToHex(settings.canvasColor)};
+            padding: ${settings.spacing / 2}px;
+        }
+        .element-padding {
+            padding: ${settings.spacing / 2}px;
+        }
+        /* Basic responsive adjustments */
+        @media (max-width: 800px) {
+            .canvas-container {
+                max-width: 100%;
+                padding: ${settings.spacing / 2}px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-container">
+        $html
+    </div>
+</body>
+</html>
+    """;
+  }
+
   factory CanvasModel.fromMap(Map<String, dynamic> map) {
     return CanvasModel(
       elements: List<ElementModel>.from(

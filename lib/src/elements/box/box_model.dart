@@ -17,4 +17,16 @@ class BoxElementModel with _$BoxElementModel {
 
   factory BoxElementModel.fromJson(Map<String, dynamic> json) =>
       _$BoxElementModelFromJson(json);
+
+  static String toHTML(Map<String, dynamic> properties) {
+    final model = BoxElementModel.fromJson(properties);
+    return '''
+    <div style="
+      background-color: #${colorToHex(model.color)};
+      border-radius: ${model.borderRadius}px;
+      aspect-ratio: ${model.aspectRatio};
+      width: 100%;
+    "></div>
+    ''';
+  }
 }

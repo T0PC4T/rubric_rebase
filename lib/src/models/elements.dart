@@ -66,6 +66,23 @@ class ElementModel {
     };
   }
 
+  String toHTML() {
+    final html = switch (type) {
+      ElementType.text => TextElementModel.toHTML(properties),
+      ElementType.heading => TextElementModel.toHTML(properties),
+      ElementType.textList => TextListElementModel.toHTML(properties),
+      ElementType.link => LinkElementModel.toHTML(properties),
+      ElementType.button => ButtonElementModel.toHTML(properties),
+      ElementType.box => BoxElementModel.toHTML(properties),
+      ElementType.row => RowElementModel.toHTML(properties),
+      ElementType.image => ImageElementModel.toHTML(properties),
+      ElementType.video => VideoElementModel.toHTML(properties),
+      ElementType.divider => DividerElementModel.toHTML(properties),
+    };
+    // add padding
+    return """<div style="padding: ${padding}px;">$html</div>""";
+  }
+
   factory ElementModel.fromMap(Map<String, dynamic> map) {
     return ElementModel(
       id: map['id'] as String,

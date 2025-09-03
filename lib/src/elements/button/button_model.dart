@@ -22,6 +22,38 @@ abstract class ButtonElementModel with _$ButtonElementModel {
 
   factory ButtonElementModel.fromJson(Map<String, dynamic> json) =>
       _$ButtonElementModelFromJson(json);
+  static String toHTML(Map<String, dynamic> properties) {
+    final model = ButtonElementModel.fromJson(properties);
+    String buttonStyle = '';
+    String textColor = colorToHex(model.textColor);
+    String backgroundColor = colorToHex(model.color);
+    String borderColor = colorToHex(model.color);
+
+    switch (ButtonStyles.fromString(model.style)) {
+      case ButtonStyles.text:
+        buttonStyle = 'background-color: transparent; border: none;';
+        break;
+      case ButtonStyles.outlined:
+        buttonStyle =
+            'background-color: transparent; border: 1px solid #$borderColor;';
+        break;
+      case ButtonStyles.filled:
+        buttonStyle = 'background-color: #$backgroundColor; border: none;';
+        break;
+    }
+
+    return '''
+    <a href="${model.link}" style="
+      display: inline-block;
+      padding: 10px 20px;
+      color: #$textColor;
+      text-align: center;
+      text-decoration: none;
+      border-radius: ${model.borderRadius}px;
+      $buttonStyle
+    ">${model.text}</a>
+    ''';
+  }
 }
 
 enum ButtonStyles {

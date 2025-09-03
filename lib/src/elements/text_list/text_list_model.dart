@@ -39,4 +39,41 @@ abstract class TextListElementModel with _$TextListElementModel {
         decoration:
             isUnderline ? TextDecoration.underline : TextDecoration.none,
       );
+
+  static String toHTML(Map<String, dynamic> properties) {
+    final model = TextListElementModel.fromJson(properties);
+    String listItems = '';
+    for (int i = 0; i < model.textList.length; i++) {
+      String itemText = model.textList[i];
+      if (model.isBold) {
+        itemText = '<b>$itemText</b>';
+      }
+      if (model.isItalic) {
+        itemText = '<i>$itemText</i>';
+      }
+      if (model.isUnderline) {
+        itemText = '<u>$itemText</u>';
+      }
+
+      if (model.textListType == TextListTypes.numbered) {
+        listItems += '<li>$itemText</li>';
+      } else {
+        listItems += '<li>$itemText</li>';
+      }
+    }
+
+    String listTag = model.textListType == TextListTypes.numbered ? 'ol' : 'ul';
+
+    return '''
+    <$listTag style="
+      color: #${colorToHex(model.color)};
+      font-size: ${model.size}px;
+      font-family: 'Roboto';
+      letter-spacing: 0.1px;
+      font-weight: ${model.isBold ? 'bold' : 'normal'};
+      font-style: ${model.isItalic ? 'italic' : 'normal'};
+      text-decoration: ${model.isUnderline ? 'underline' : 'none'};
+    ">$listItems</$listTag>
+    ''';
+  }
 }

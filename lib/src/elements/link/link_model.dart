@@ -40,4 +40,32 @@ abstract class LinkElementModel
         decoration:
             isUnderline ? TextDecoration.underline : TextDecoration.none,
       );
+
+  static String toHTML(Map<String, dynamic> properties) {
+    final model = LinkElementModel.fromJson(properties);
+    String html = model.text;
+
+    if (model.isBold) {
+      html = '<b>$html</b>';
+    }
+    if (model.isItalic) {
+      html = '<i>$html</i>';
+    }
+    if (model.isUnderline) {
+      html = '<u>$html</u>';
+    }
+
+    return '''
+    <a href="${model.link}" style="
+      color: #${colorToHex(model.color)};
+      font-size: ${model.size}px;
+      font-family: 'Roboto';
+      letter-spacing: 0.1px;
+      font-weight: ${model.isBold ? 'bold' : 'normal'};
+      font-style: ${model.isItalic ? 'italic' : 'normal'};
+      text-decoration: ${model.isUnderline ? 'underline' : 'none'};
+      text-align: ${model.alignment};
+    ">$html</a>
+    ''';
+  }
 }

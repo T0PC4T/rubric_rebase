@@ -16,4 +16,15 @@ class DividerElementModel with _$DividerElementModel {
 
   factory DividerElementModel.fromJson(Map<String, dynamic> json) =>
       _$DividerElementModelFromJson(json);
+
+  static String toHTML(Map<String, dynamic> properties) {
+    final model = DividerElementModel.fromJson(properties);
+    return '''
+    <hr style="
+      border: none;
+      border-top: ${model.weight}px solid #${colorToHex(model.color)};
+      margin: 0;
+    ">
+    ''';
+  }
 }

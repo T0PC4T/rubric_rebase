@@ -14,6 +14,7 @@ import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 import 'package:rubric/src/rubric_editor/viewer/viewer.dart';
 import 'package:rubric/src/rubric_reader/size_block.dart';
+import 'package:rubric/src/utilities/download.dart';
 import 'package:web/web.dart' as web;
 
 class RubricEditor extends StatefulWidget {
@@ -141,6 +142,12 @@ class RubricEditorState extends State<RubricEditor> {
     setState(() {
       overlays = <Widget>[];
     });
+  }
+
+  downloadHTML() {
+    final htmlContent = canvas.value.toHTML();
+    downloadFile(Uint8List.fromList(htmlContent.codeUnits), 'text/html',
+        '${canvas.value.settings.name}.html');
   }
 
   // ? VIEW MODES

@@ -16,6 +16,19 @@ class ImageElementModel with _$ImageElementModel {
 
   factory ImageElementModel.fromJson(Map<String, dynamic> json) =>
       _$ImageElementModelFromJson(json);
+
+  static String toHTML(Map<String, dynamic> properties) {
+    final model = ImageElementModel.fromJson(properties);
+    return '''
+    <img src="${model.imageUrl}" style="
+      width: 100%;
+      height: auto;
+      aspect-ratio: ${model.aspectRatio};
+      object-fit: ${model.fit};
+      border-radius: ${model.borderRadius}px;
+    ">
+    ''';
+  }
 }
 
 abstract class ImageFits {

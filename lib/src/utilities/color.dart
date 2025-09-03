@@ -19,3 +19,9 @@ extension on Color {
       _floatToInt8(g) << 8 |
       _floatToInt8(b) << 0;
 }
+
+String colorToHex(Color color) {
+  return '${(color.r * 255.0).round().clamp(0, 255).toRadixString(16).padLeft(2, '0')}'
+      '${(color.r * 255.0).round().clamp(0, 255).toRadixString(16).padLeft(2, '0')}'
+      '${(color.r * 255.0).round().clamp(0, 255).toRadixString(16).padLeft(2, '0')}';
+}
