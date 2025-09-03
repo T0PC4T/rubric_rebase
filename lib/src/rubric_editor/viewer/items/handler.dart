@@ -50,7 +50,10 @@ class _EditorElementWidgetState extends State<EditorElementWidget> {
 
   Widget renderWidget() {
     return Padding(
-        padding: EdgeInsets.all(widget.element.padding),
+        padding: EdgeInsets.all(
+          widget.element.padding +
+              editorState.canvas.value.settings.spacing / 2,
+        ),
         child: widget.element.type.editorBuilder(element: widget.element));
   }
 
@@ -284,7 +287,9 @@ class ReaderElementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(element.padding),
+      padding: EdgeInsets.all(
+        element.padding + canvas.settings.spacing / 2,
+      ),
       child: element.type.readerBuilder(element: element, canvas: canvas),
     );
   }

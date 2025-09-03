@@ -19,6 +19,7 @@ enum GridSizes {
   }
 
   static const double pageSize = 1000;
+  static const double defaultSpacing = 20;
 
   double get pixelsPerLock => 10;
   final double spacing;

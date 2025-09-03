@@ -72,31 +72,15 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
             addRepaintBoundaries: false,
             addSemanticIndexes: false,
             padding: EdgeInsets.symmetric(
-                vertical: sidebarButtonHeight,
+                vertical: max(sidebarButtonHeight, canvas.settings.spacing / 2),
                 horizontal: (constraints.maxWidth - viewMode.width) / 2 +
-                    canvas.settings.spacing),
+                    canvas.settings.spacing / 2),
             itemBuilder: (context, index) {
               if (canvas.elements.isEmpty && index == 0) {
                 return EditorEmptyInserterWidget();
-              } else if (index == 0) {
-                return Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                      horizontal: canvas.settings.spacing,
-                      vertical: canvas.settings.spacing),
-                  child: EditorElementWidget(
-                    element: canvas.elements[index],
-                  ),
-                );
               }
-
-              return Padding(
-                padding: EdgeInsets.only(
-                    left: canvas.settings.spacing,
-                    right: canvas.settings.spacing,
-                    bottom: canvas.settings.spacing),
-                child: EditorElementWidget(
-                  element: canvas.elements[index],
-                ),
+              return EditorElementWidget(
+                element: canvas.elements[index],
               );
             },
           );

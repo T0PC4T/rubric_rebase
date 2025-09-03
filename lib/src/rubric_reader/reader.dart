@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
-import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/handler.dart';
 
 class RubricReader extends StatefulWidget {
@@ -37,8 +36,9 @@ class _RubricReaderState extends State<RubricReader> {
           addRepaintBoundaries: false,
           addSemanticIndexes: false,
           padding: EdgeInsets.symmetric(
-              vertical: sidebarButtonHeight,
-              horizontal: (constraints.maxWidth - viewMode.width) / 2),
+              vertical: widget.canvasModel.settings.spacing / 2,
+              horizontal: (constraints.maxWidth - viewMode.width) / 2 +
+                  widget.canvasModel.settings.spacing / 2),
           itemBuilder: (context, index) {
             if (index == 0) {
               return Padding(
@@ -52,15 +52,9 @@ class _RubricReaderState extends State<RubricReader> {
               );
             }
 
-            return Padding(
-              padding: EdgeInsets.only(
-                  left: widget.canvasModel.settings.spacing,
-                  right: widget.canvasModel.settings.spacing,
-                  bottom: widget.canvasModel.settings.spacing),
-              child: ReaderElementWidget(
-                canvas: widget.canvasModel,
-                element: widget.canvasModel.elements[index],
-              ),
+            return ReaderElementWidget(
+              canvas: widget.canvasModel,
+              element: widget.canvasModel.elements[index],
             );
           },
         );

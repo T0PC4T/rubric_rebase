@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/utilities/color.dart';
 
@@ -35,7 +36,7 @@ class CanvasModel {
     this.settings = const CanvasSettings(
       backgroundColor: Color.fromARGB(255, 222, 222, 222),
       canvasColor: Color.fromARGB(255, 255, 255, 255),
-      spacing: 0,
+      spacing: GridSizes.defaultSpacing,
       name: "Untitled",
       icon: "doc",
       fontFamily: "Roboto",
