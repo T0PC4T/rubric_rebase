@@ -40,9 +40,27 @@ class _RubricReaderState extends State<RubricReader> {
               vertical: sidebarButtonHeight,
               horizontal: (constraints.maxWidth - viewMode.width) / 2),
           itemBuilder: (context, index) {
-            return ReaderElementWidget(
-              canvas: widget.canvasModel,
-              element: widget.canvasModel.elements[index],
+            if (index == 0) {
+              return Padding(
+                padding: EdgeInsetsGeometry.symmetric(
+                    horizontal: widget.canvasModel.settings.spacing,
+                    vertical: widget.canvasModel.settings.spacing),
+                child: ReaderElementWidget(
+                  canvas: widget.canvasModel,
+                  element: widget.canvasModel.elements[index],
+                ),
+              );
+            }
+
+            return Padding(
+              padding: EdgeInsets.only(
+                  left: widget.canvasModel.settings.spacing,
+                  right: widget.canvasModel.settings.spacing,
+                  bottom: widget.canvasModel.settings.spacing),
+              child: ReaderElementWidget(
+                canvas: widget.canvasModel,
+                element: widget.canvasModel.elements[index],
+              ),
             );
           },
         );
