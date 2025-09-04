@@ -157,13 +157,6 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     commit();
   }
 
-  mergeTextElements(List<ElementModel> elements) {
-    final properties = elements.first.properties;
-    properties["text"] = elements.map((e) => e.properties["text"]).join("\n\n");
-
-    deleteElements(elements.sublist(1));
-  }
-
   duplicateElement(ElementModel element) {
     ElementModel newElement = element.copyWith(id: newID());
     if (element.type == ElementType.row) {
@@ -181,9 +174,6 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
   }
 
   deleteElement(ElementModel deleteElement) {
-    // TODO add the value for font size and put value of padding in brackets.
-    // TODO add ability to scroll when your
-    // TODO allow to delete within row
     final List<ElementModel> newElements = [];
     for (var element in value.elements) {
       if (element.type == ElementType.row) {
@@ -217,7 +207,7 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
         newElements.add(element);
       }
     }
-    print("Element Length (${value.elements.length} => ${newElements.length})");
+
     value = value.copyWith(elements: newElements);
     notifyListeners();
 
@@ -225,12 +215,5 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     //     .where((element) => element.id != deleteElement.id)
     //     .toList();
     // notifyListeners();
-  }
-
-  deleteElements(List<ElementModel> deleteElements) {
-    value.elements = value.elements
-        .where((element) => !deleteElements.contains(element))
-        .toList();
-    notifyListeners();
   }
 }
