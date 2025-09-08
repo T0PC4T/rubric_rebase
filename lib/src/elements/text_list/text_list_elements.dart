@@ -67,6 +67,14 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
 
       focusNode.requestFocus();
     } else {
+      final properties = widget.element.getProperties<TextListElementModel>();
+
+      final newTextList = List<String>.from(textList);
+      editorState.canvas.updateProperties(
+        widget.element,
+        properties.copyWith(textList: newTextList).toJson(),
+      );
+
       editingPoint = -1;
     }
   }

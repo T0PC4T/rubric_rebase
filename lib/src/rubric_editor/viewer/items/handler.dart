@@ -253,6 +253,9 @@ class _EditorEmptyInserterWidgetState extends State<EditorEmptyInserterWidget> {
                 builder: (context, candidateData, rejectedData) {
                   if (candidateData.isNotEmpty) {
                     return Container(
+                        height: 250,
+                        width: double.infinity,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border(
                             left: BorderSide(
@@ -266,14 +269,20 @@ class _EditorEmptyInserterWidgetState extends State<EditorEmptyInserterWidget> {
                                 width: borderWidth, color: Colors.transparent),
                           ),
                         ),
-                        child: SizedBox(
-                          height: 200,
-                          width: double.infinity,
+                        child: Icon(
+                          Icons.add,
+                          size: 50,
+                          color: editorState.style.theme,
                         ));
                   }
                   return SizedBox(
-                    height: 200,
+                    height: 250,
                     width: double.infinity,
+                    child: Icon(
+                      Icons.add,
+                      size: 50,
+                      color: editorState.style.fore9,
+                    ),
                   );
                 },
               ),

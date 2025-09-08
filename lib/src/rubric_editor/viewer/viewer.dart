@@ -28,10 +28,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
 
   @override
   void initState() {
-    _scrollController = ScrollController()
-      ..addListener(() {
-        editorState.edits.setScrollOffset(_scrollController.offset);
-      });
+    _scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       editorState.registerScrollController(_scrollController);
       editorState.canvas.addListener(_refreshHandler);
@@ -54,7 +51,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
     editorState = RubricEditorState.of(context);
     canvas = editorState.canvas.value;
     edits = editorState.edits.value;
-    return Container(
+    return ColoredBox(
       color: canvas.settings.canvasColor,
       child: GestureDetector(
         onTap: () {
@@ -65,24 +62,37 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
         child: LayoutBuilder(builder: (context, constraints) {
           final viewMode = editorState.edits.value.viewMode;
 
-          return ListView.builder(
-            itemCount: max(canvas.elements.length, 1),
-            shrinkWrap: true,
-            addAutomaticKeepAlives: false,
-            addRepaintBoundaries: false,
-            addSemanticIndexes: false,
-            padding: EdgeInsets.symmetric(
-                vertical: max(sidebarButtonHeight, canvas.settings.spacing / 2),
-                horizontal: (constraints.maxWidth - viewMode.width) / 2 +
-                    canvas.settings.spacing / 2),
-            itemBuilder: (context, index) {
-              if (canvas.elements.isEmpty && index == 0) {
-                return EditorEmptyInserterWidget();
+          return Listener(
+            onPointerMove: (event) {
+              if (event.localPosition.dy < 100) {
+                _scrollController.jumpTo(max(_scrollController.offset - 10, 0));
               }
-              return EditorElementWidget(
-                element: canvas.elements[index],
-              );
+              if (event.localPosition.dy > constraints.maxHeight - 100) {
+                _scrollController.jumpTo(min(_scrollController.offset + 10,
+                    _scrollController.position.maxScrollExtent));
+              }
             },
+            child: ListView.builder(
+              itemCount: max(canvas.elements.length, 1),
+              shrinkWrap: true,
+              addAutomaticKeepAlives: false,
+              addRepaintBoundaries: false,
+              addSemanticIndexes: false,
+              controller: _scrollController,
+              padding: EdgeInsets.symmetric(
+                  vertical:
+                      max(sidebarButtonHeight, canvas.settings.spacing / 2),
+                  horizontal: (constraints.maxWidth - viewMode.width) / 2 +
+                      canvas.settings.spacing / 2),
+              itemBuilder: (context, index) {
+                if (canvas.elements.isEmpty && index == 0) {
+                  return EditorEmptyInserterWidget();
+                }
+                return EditorElementWidget(
+                  element: canvas.elements[index],
+                );
+              },
+            ),
           );
         }),
       ),

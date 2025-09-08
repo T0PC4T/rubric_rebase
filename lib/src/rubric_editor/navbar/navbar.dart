@@ -110,8 +110,9 @@ class NavbarWidget extends StatelessWidget {
               textType: TextType.thick,
               color: style.back,
             ),
-            onTap: () {
+            onTap: () async {
               editorState.edits.focusElement();
+              await Future.delayed(Duration(milliseconds: 1));
               editorState.save();
             },
           ),
