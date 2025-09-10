@@ -45,8 +45,8 @@ class TextEditorElementState<T extends TextEditorElement>
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        TextToolbarWidget(
-          element: widget.element,
+        (element) => TextToolbarWidget(
+          element: element,
           controller: controller,
           undoController: undoController,
           header: widget.header,

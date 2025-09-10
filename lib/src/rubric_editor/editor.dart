@@ -176,9 +176,10 @@ class RubricEditorState extends State<RubricEditor> {
     });
   }
 
-  showToolbar(ElementModel element, Widget child) {
+  showToolbar(
+      ElementModel element, Widget Function(ElementModel element) builder) {
     pushOverlay(
-      ElementToolbarWidget(element: element, child: child),
+      ElementToolbarWidget(element: element, builder: builder),
       removeToLength: 0,
     );
   }

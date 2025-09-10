@@ -28,7 +28,7 @@ class VideoEditorElementState extends FocusableState<VideoEditorElement> {
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        VideoTooltipWidget(element: widget.element),
+        (element) => VideoTooltipWidget(element: element),
       );
     }
   }

@@ -56,8 +56,8 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        TextListToolbarWidget(
-            element: widget.element,
+        (element) => TextListToolbarWidget(
+            element: element,
             controller: controller,
             undoController: undoController),
       );

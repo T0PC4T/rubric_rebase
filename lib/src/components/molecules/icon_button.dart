@@ -68,9 +68,12 @@ class RubricIconButton extends StatelessWidget {
                   iconData,
                   color: switch ((disabled, isActive, style)) {
                     (true, _, _) => rubricStyle.fore4,
-                    (_, true, RBStyles.dark || RBStyles.theme) =>
+                    (
+                      _,
+                      true,
+                      RBStyles.alt || RBStyles.dark || RBStyles.theme
+                    ) =>
                       rubricStyle.theme,
-                    (_, true, RBStyles.alt) => rubricStyle.alt5,
                     (_, true, RBStyles.light) => rubricStyle.theme,
                     (_, false, RBStyles.dark || RBStyles.theme) =>
                       rubricStyle.back,

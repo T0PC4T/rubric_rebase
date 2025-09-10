@@ -152,7 +152,7 @@ Map<String, dynamic> generateDefaultProperties(
     ElementType.heading => TextElementModel(
             text: "",
             size: HeadingFontSizes.h3.value.toDouble(),
-            isBold: true,
+            isBold: false,
             isUnderline: false,
             alignment: "center",
             color: Colors.black)
@@ -180,13 +180,13 @@ Map<String, dynamic> generateDefaultProperties(
             isBold: false,
             isItalic: false,
             isUnderline: true,
-            color: Colors.blue)
+            color: const Color.fromARGB(255, 0, 99, 181))
         .toJson(),
     ElementType.button => ButtonElementModel(
         text: "Click Me",
         link: "",
         style: ButtonStyles.filled.name,
-        color: const Color.fromARGB(255, 0, 162, 255),
+        color: const Color.fromARGB(255, 0, 99, 181),
         borderRadius: BorderRadiusPresets.rounded.radius,
         textColor: Colors.white,
       ).toJson(),

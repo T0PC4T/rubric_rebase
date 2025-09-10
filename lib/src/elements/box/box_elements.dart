@@ -19,7 +19,7 @@ class BoxEditorElementState extends FocusableState<BoxEditorElement> {
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        BoxTooltipWidget(element: widget.element),
+        (element) => BoxTooltipWidget(element: element),
       );
     }
   }

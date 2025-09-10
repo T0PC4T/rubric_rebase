@@ -4,6 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rubric/src/elements/elements.dart';
+import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/utilities/color.dart';
@@ -44,6 +46,24 @@ class CanvasModel {
   });
 
   ElementModel element(String id) {
+    for (var element in elements) {
+      if (element.type == ElementType.row) {
+        if (element.getProperties<RowElementModel>().elements.isNotEmpty) {
+          for (var column
+              in element.getProperties<RowElementModel>().elements) {
+            for (var rowElement in column) {
+              final el = ElementModel.fromMap(rowElement);
+              if (el.id == id) {
+                return el;
+              }
+            }
+          }
+        }
+      }
+      if (element.id == id) {
+        return element;
+      }
+    }
     return elements.firstWhere(
       (element) => element.id == id,
     );

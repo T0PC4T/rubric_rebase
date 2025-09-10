@@ -129,7 +129,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
             children: [
               Row(
                 children: [
-                  RubricText("Line Spacing: "),
+                  RubricText("Element Spacing: "),
                   RubricDropdown<double>(
                     value: editorState!.canvas.value.settings.spacing,
                     items: [

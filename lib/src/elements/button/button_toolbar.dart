@@ -34,200 +34,187 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
   @override
   Widget build(BuildContext context) {
     final editorState = RubricEditorState.of(context);
-
-    return ValueListenableBuilder(
-        valueListenable: editorState.canvas,
-        builder: (context, canvalModel, child) {
-          final properties = canvalModel
-              .element(widget.element.id)
-              .getProperties<ButtonElementModel>();
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              RubricIconTextButton(
-                onTap: () async {
-                  final videoUrl = await PopupWidget.showPopup<String>(
-                    context,
-                    (closeWith) {
-                      return SizedBox(
-                        width: PopupWidget.popWidth,
-                        child: Column(
-                          children: [
-                            RubricText(
-                              "Edit Link",
-                              textType: TextType.title,
-                            ),
-                            Padding(
-                              padding: RubricEditorStyle.padding,
-                              child: RubricTextField(
-                                initialValue: properties.link,
-                                onComplete: closeWith,
-                                onChanged: (value) {
-                                  lastValue = value;
-                                },
-                                helpText: "https://www.google.com",
-                              ),
-                            ),
-                            RubricButton.light(editorState.style,
-                                width: 150,
-                                height: 30,
-                                onTap: () => closeWith(lastValue),
-                                child: Text("Save Link"))
-                          ],
+    final properties = widget.element.getProperties<ButtonElementModel>();
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        RubricIconTextButton(
+          onTap: () async {
+            final videoUrl = await PopupWidget.showPopup<String>(
+              context,
+              (closeWith) {
+                return SizedBox(
+                  width: PopupWidget.popWidth,
+                  child: Column(
+                    children: [
+                      RubricText(
+                        "Edit Link",
+                        textType: TextType.title,
+                      ),
+                      Padding(
+                        padding: RubricEditorStyle.padding,
+                        child: RubricTextField(
+                          initialValue: properties.link,
+                          onComplete: closeWith,
+                          onChanged: (value) {
+                            lastValue = value;
+                          },
+                          helpText: "https://www.google.com",
                         ),
-                      );
-                    },
-                  );
-                  if (videoUrl case String newUrl) {
-                    editorState.canvas.updateProperties(
-                      widget.element,
-                      properties.copyWith(link: newUrl).toJson(),
-                    );
-                  }
-                },
-                iconData: Icons.link,
-                text: "Edit Link",
+                      ),
+                      RubricButton.light(editorState.style,
+                          width: 150,
+                          height: 30,
+                          onTap: () => closeWith(lastValue),
+                          child: Text("Save Link"))
+                    ],
+                  ),
+                );
+              },
+            );
+            if (videoUrl case String newUrl) {
+              editorState.canvas.updateProperties(
+                widget.element,
+                properties.copyWith(link: newUrl).toJson(),
+              );
+            }
+          },
+          iconData: Icons.link,
+          text: "Edit Link",
+        ),
+        RubricVerticleDivider(),
+        // Button styles
+        RubricToolbarDropdown(
+          onUpdate: (value) {
+            if (value case String newValue) {
+              final newProperties = properties.copyWith(
+                style: newValue,
+              );
+              if (newProperties.style == ButtonStyles.outlined.value) {
+                editorState.canvas.updateProperties(
+                  widget.element,
+                  newProperties
+                      .copyWith(style: newValue, textColor: properties.color)
+                      .toJson(),
+                );
+              } else if (newProperties.style == ButtonStyles.filled.value) {
+                Color textColor;
+                if (properties.color.computeLuminance() > 0.5) {
+                  textColor = Color.lerp(properties.color, Colors.black, 0.5)!;
+                } else {
+                  textColor = Colors.white;
+                }
+                editorState.canvas.updateProperties(
+                  widget.element,
+                  newProperties
+                      .copyWith(style: newValue, textColor: textColor)
+                      .toJson(),
+                );
+              } else {
+                editorState.canvas.updateProperties(
+                  widget.element,
+                  newProperties
+                      .copyWith(
+                          style: newValue, textColor: editorState.style.theme)
+                      .toJson(),
+                );
+              }
+            }
+          },
+          items: [
+            for (var value in ButtonStyles.values)
+              RubricDropdownMenuItem(
+                value: value.value,
+                text: value.name,
               ),
-              RubricVerticleDivider(),
-              // Button styles
-              RubricToolbarDropdown(
-                onUpdate: (value) {
-                  if (value case String newValue) {
-                    final newProperties = properties.copyWith(
-                      style: newValue,
-                    );
-                    if (newProperties.style == ButtonStyles.outlined.value) {
-                      editorState.canvas.updateProperties(
-                        widget.element,
-                        newProperties
-                            .copyWith(
-                                style: newValue, textColor: properties.color)
-                            .toJson(),
-                      );
-                    } else if (newProperties.style ==
-                        ButtonStyles.filled.value) {
-                      Color textColor;
-                      if (properties.color.computeLuminance() > 0.5) {
-                        textColor =
-                            Color.lerp(properties.color, Colors.black, 0.5)!;
-                      } else {
-                        textColor = Colors.white;
-                      }
-                      editorState.canvas.updateProperties(
-                        widget.element,
-                        newProperties
-                            .copyWith(style: newValue, textColor: textColor)
-                            .toJson(),
-                      );
-                    } else {
-                      editorState.canvas.updateProperties(
-                        widget.element,
-                        newProperties
-                            .copyWith(
-                                style: newValue,
-                                textColor: editorState.style.theme)
-                            .toJson(),
-                      );
-                    }
-                  }
-                },
-                items: [
-                  for (var value in ButtonStyles.values)
-                    RubricDropdownMenuItem(
-                      value: value.value,
-                      text: value.name,
-                    ),
-                ],
-                child: Row(
-                  spacing: RubricEditorStyle.paddingUnit * 0.5,
-                  children: [
-                    RubricIcon(
-                      Icons.smart_button_sharp,
-                      size: ElementToolbarWidget.iconSize,
-                    ),
-                    RubricText("Button Style"),
-                  ],
-                ),
+          ],
+          child: Row(
+            spacing: RubricEditorStyle.paddingUnit * 0.5,
+            children: [
+              RubricIcon(
+                Icons.smart_button_sharp,
+                size: ElementToolbarWidget.iconSize,
               ),
-
-              RubricVerticleDivider(),
-              RubricBorderRadiusDropdown(
-                radius: properties.borderRadius,
-                onChanged: (value) {
-                  if (value case double newValue) {
-                    final newProperties = properties.copyWith(
-                      borderRadius: newValue,
-                    );
-                    editorState.canvas.updateProperties(
-                      widget.element,
-                      newProperties.toJson(),
-                    );
-                  }
-                },
-              ),
-              RubricVerticleDivider(),
-              Padding(
-                padding: RubricEditorStyle.padding,
-                child: RubricColorButton(
-                  color: properties.color,
-                  onTap: () async {
-                    final newColor =
-                        await PopupWidget.showPopup<Color>(context, (
-                      closeWith,
-                    ) {
-                      return RubricColorPicker(
-                        onComplete: closeWith,
-                        color: properties.color,
-                      );
-                    });
-                    if (newColor != null) {
-                      editorState.canvas.updateProperties(
-                        widget.element,
-                        properties.copyWith(color: newColor).toJson(),
-                      );
-                    }
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsGeometry.only(
-                    left: RubricEditorStyle.paddingNum * 0.5,
-                    right: RubricEditorStyle.paddingNum),
-                child: RubricColorButton(
-                  builder: (color) {
-                    return RubricIcon(
-                      Icons.text_fields_outlined,
-                      color: color.computeLuminance() > 0.95
-                          ? editorState.style.fore
-                          : color,
-                      size: ElementToolbarWidget.iconSize,
-                    );
-                  },
-                  color: properties.textColor,
-                  onTap: () async {
-                    final newColor =
-                        await PopupWidget.showPopup<Color>(context, (
-                      closeWith,
-                    ) {
-                      return RubricColorPicker(
-                        onComplete: closeWith,
-                        color: properties.textColor,
-                      );
-                    });
-                    if (newColor != null) {
-                      editorState.canvas.updateProperties(
-                        widget.element,
-                        properties.copyWith(textColor: newColor).toJson(),
-                      );
-                    }
-                  },
-                ),
-              ),
-              ToolbarUniversalIcons(
-                element: widget.element,
-              ),
+              RubricText("Button Style"),
             ],
-          );
-        });
+          ),
+        ),
+
+        RubricVerticleDivider(),
+        RubricBorderRadiusDropdown(
+          radius: properties.borderRadius,
+          onChanged: (value) {
+            if (value case double newValue) {
+              final newProperties = properties.copyWith(
+                borderRadius: newValue,
+              );
+              editorState.canvas.updateProperties(
+                widget.element,
+                newProperties.toJson(),
+              );
+            }
+          },
+        ),
+        RubricVerticleDivider(),
+        Padding(
+          padding: RubricEditorStyle.padding,
+          child: RubricColorButton(
+            color: properties.color,
+            onTap: () async {
+              final newColor = await PopupWidget.showPopup<Color>(context, (
+                closeWith,
+              ) {
+                return RubricColorPicker(
+                  onComplete: closeWith,
+                  color: properties.color,
+                );
+              });
+              if (newColor != null) {
+                editorState.canvas.updateProperties(
+                  widget.element,
+                  properties.copyWith(color: newColor).toJson(),
+                );
+              }
+            },
+          ),
+        ),
+        Padding(
+          padding: EdgeInsetsGeometry.only(
+              left: RubricEditorStyle.paddingNum * 0.5,
+              right: RubricEditorStyle.paddingNum),
+          child: RubricColorButton(
+            builder: (color) {
+              return RubricIcon(
+                Icons.text_fields_outlined,
+                color: color.computeLuminance() > 0.95
+                    ? editorState.style.fore
+                    : color,
+                size: ElementToolbarWidget.iconSize,
+              );
+            },
+            color: properties.textColor,
+            onTap: () async {
+              final newColor = await PopupWidget.showPopup<Color>(context, (
+                closeWith,
+              ) {
+                return RubricColorPicker(
+                  onComplete: closeWith,
+                  color: properties.textColor,
+                );
+              });
+              if (newColor != null) {
+                editorState.canvas.updateProperties(
+                  widget.element,
+                  properties.copyWith(textColor: newColor).toJson(),
+                );
+              }
+            },
+          ),
+        ),
+        ToolbarUniversalIcons(
+          element: widget.element,
+        ),
+      ],
+    );
   }
 }

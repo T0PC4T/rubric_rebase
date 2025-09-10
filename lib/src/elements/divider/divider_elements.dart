@@ -19,7 +19,7 @@ class DividerEditorElementState extends FocusableState<DividerEditorElement> {
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        DividerTooltipWidget(element: widget.element),
+        (element) => DividerTooltipWidget(element: element),
       );
     }
   }

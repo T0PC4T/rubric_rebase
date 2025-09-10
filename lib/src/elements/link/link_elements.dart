@@ -20,8 +20,8 @@ class LinkEditorElementState extends TextEditorElementState<LinkEditorElement> {
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        LinkTooltipWidget(
-          element: widget.element,
+        (element) => LinkTooltipWidget(
+          element: element,
           controller: controller,
           undoController: undoController,
           header: widget.header,

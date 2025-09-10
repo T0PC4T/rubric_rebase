@@ -7,7 +7,7 @@ import 'package:rubric/src/elements/button/button_toolbar.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-const buttonPadding = EdgeInsets.all(10);
+const buttonPadding = EdgeInsets.all(15);
 
 class ButtonEditorElement extends StatefulWidget {
   final ElementModel element;
@@ -80,8 +80,8 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
       focusNode.requestFocus();
       editorState.showToolbar(
         widget.element,
-        ButtonTooltipWidget(
-          element: widget.element,
+        (element) => ButtonTooltipWidget(
+          element: element,
           controller: controller,
           undoController: undoController,
           header: widget.header,
@@ -128,6 +128,17 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
     super.dispose();
   }
 
+  static TextStyle getTextStyle(ButtonElementModel properties) {
+    return TextStyle(
+        fontSize: FontSizes.medium.value.toDouble(),
+        color: properties.textColor,
+        fontWeight: FontWeight.bold,
+        decoration: properties.style == ButtonStyles.text.value
+            ? TextDecoration.underline
+            : null,
+        decorationColor: properties.textColor);
+  }
+
   @override
   Widget build(BuildContext context) {
     final properties = widget.element.getProperties<ButtonElementModel>();
@@ -136,41 +147,39 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
       alignment: Alignment.center,
       decoration: buttonDecoration(properties),
       padding: buttonPadding,
-      child: Transform.translate(
-        offset: Offset(0, -0),
-        child: TextField(
-          decoration: InputDecoration.collapsed(
-              hintText: "Write something here...",
-              hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
-          undoController: undoController,
+      child: !isFocused
+          ? Text(
+              overflow: TextOverflow.visible,
+              properties.text,
+              textAlign: TextAlign.center,
+              style: getTextStyle(properties))
+          : Transform.translate(
+              offset: Offset(0, -0),
+              child: TextField(
+                decoration: InputDecoration.collapsed(
+                    hintText: "Write something here...",
+                    hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
+                undoController: undoController,
 
-          // spellCheckConfiguration: SpellCheckConfiguration(),
-          cursorColor: properties.color,
-          keyboardType: TextInputType.multiline,
-          scrollPadding: EdgeInsets.zero,
-          selectionControls: DesktopTextSelectionControls(),
-          textAlign: TextAlign.center,
+                // spellCheckConfiguration: SpellCheckConfiguration(),
+                cursorColor: properties.color,
+                keyboardType: TextInputType.multiline,
+                scrollPadding: EdgeInsets.zero,
+                selectionControls: DesktopTextSelectionControls(),
+                textAlign: TextAlign.center,
 
-          style: TextStyle(
-              height: 1.8,
-              fontSize: FontSizes.medium.value.toDouble(),
-              color: properties.textColor,
-              fontWeight: FontWeight.bold,
-              decoration: properties.style == ButtonStyles.text.value
-                  ? TextDecoration.underline
-                  : null,
-              decorationColor: properties.textColor),
+                style: getTextStyle(properties),
 
-          maxLines: null,
-          enableInteractiveSelection: true,
-          readOnly: false,
-          minLines: null,
-          onChanged: _onChange,
-          scrollController: _scrollController,
-          controller: controller,
-          focusNode: focusNode,
-        ),
-      ),
+                maxLines: null,
+                enableInteractiveSelection: true,
+                readOnly: false,
+                minLines: null,
+                onChanged: _onChange,
+                scrollController: _scrollController,
+                controller: controller,
+                focusNode: focusNode,
+              ),
+            ),
     );
   }
 }
@@ -237,10 +246,7 @@ class ButtonReaderWidgetState extends State<ButtonReaderWidget> {
             overflow: TextOverflow.visible,
             properties.text,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: FontSizes.medium.value.toDouble(),
-                color: properties.textColor,
-                fontWeight: FontWeight.bold),
+            style: ButtonEditorElementState.getTextStyle(properties),
           ),
         ),
       ),

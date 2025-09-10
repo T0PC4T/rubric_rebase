@@ -25,7 +25,7 @@ class RowEditorElementState extends FocusableState<RowEditorElement> {
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        RowTooltipWidget(element: widget.element),
+        (element) => RowTooltipWidget(element: element),
       );
     }
   }

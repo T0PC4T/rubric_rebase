@@ -10,39 +10,47 @@ import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
 
 class ElementToolbarWidget extends StatelessWidget {
   final ElementModel element;
-  final Widget? child;
+  final Widget Function(ElementModel element) builder;
   static const double elementToolbarHeight = 40;
   static const double iconSize = 24;
-  const ElementToolbarWidget({super.key, required this.element, this.child});
+  const ElementToolbarWidget(
+      {super.key, required this.element, required this.builder});
 
   @override
   Widget build(BuildContext context) {
+    final editorState = RubricEditorState.of(context);
     final style = RubricEditorStyle.of(context);
 
-    return Container(
-      padding: EdgeInsets.only(
-        top: NavbarWidget.navbarHeight,
-        left: RubricSideBar.sideBarSize,
-      ),
-      alignment: Alignment.topCenter,
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        margin: EdgeInsets.all(RubricEditorStyle.paddingUnit * 2),
-        height: elementToolbarHeight,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: style.borderRadius,
-          boxShadow: [
-            BoxShadow(
-              color: style.fore.withAlpha(50),
-              blurRadius: style.elevation,
-              offset: Offset(0, style.elevation), // changes position of shadow
+    return ValueListenableBuilder(
+        valueListenable: editorState.canvas,
+        builder: (context, canvas, _) {
+          final newestElement = canvas.element(element.id);
+          return Container(
+            padding: EdgeInsets.only(
+              top: NavbarWidget.navbarHeight,
+              left: RubricSideBar.sideBarSize,
             ),
-          ],
-        ),
-        child: child,
-      ),
-    );
+            alignment: Alignment.topCenter,
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              margin: EdgeInsets.all(RubricEditorStyle.paddingUnit * 2),
+              height: elementToolbarHeight,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: style.borderRadius,
+                boxShadow: [
+                  BoxShadow(
+                    color: style.fore.withAlpha(50),
+                    blurRadius: style.elevation,
+                    offset: Offset(
+                        0, style.elevation), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: builder(newestElement),
+            ),
+          );
+        });
   }
 }
 

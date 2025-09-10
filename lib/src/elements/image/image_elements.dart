@@ -22,7 +22,7 @@ class ImageEditorElementState extends FocusableState<ImageEditorElement> {
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        ImageTooltipWidget(element: widget.element),
+        (element) => ImageTooltipWidget(element: element),
       );
     }
   }
