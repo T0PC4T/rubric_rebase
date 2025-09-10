@@ -193,62 +193,51 @@ class RubricEditorState extends State<RubricEditor> {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardListener(
-      onKeyEvent: (value) {
-        if (value.logicalKey == LogicalKeyboardKey.delete) {
-          if (edits.value.focused case ElementModel element) {
-            edits.focusElement();
-            canvas.deleteElement(element);
-          }
-        }
-      },
-      focusNode: keyboardFocus,
-      child: SizeBlockerWidget(
-        // previewing ? RubricReader(canvasModel: canvas.value)
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            DefaultTextStyle(
-              style: TextStyle(
-                color: style.fore,
-                fontSize: style.fontSize,
-                fontWeight: style.fontWeight,
-              ),
-              child: Column(
-                children: [
-                  NavbarWidget(),
-                  if (edits.value.previewing)
-                    Expanded(
-                      child: Container(
-                          color: edits.value.viewMode == ViewModes.mobile
-                              ? style.fore
-                              : canvas.value.settings.canvasColor,
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: edits.value.viewMode == ViewModes.mobile
-                                ? ViewModes.mobile.width
-                                : double.infinity,
-                            child: RubricReader(
-                              canvasModel: canvas.value,
-                            ),
-                          )),
-                    )
-                  else
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          RubricSideBar(),
-                          Expanded(child: RubricEditorViewer()),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
+    return SizeBlockerWidget(
+      // previewing ? RubricReader(canvasModel: canvas.value)
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          DefaultTextStyle(
+            style: TextStyle(
+              color: style.fore,
+              fontSize: style.fontSize,
+              fontWeight: style.fontWeight,
             ),
-            for (var overlay in overlays) overlay,
-          ],
-        ),
+            child: Column(
+              children: [
+                NavbarWidget(),
+                if (edits.value.previewing)
+                  Expanded(
+                    child: Container(
+                        color: edits.value.viewMode == ViewModes.mobile
+                            ? style.fore
+                            : canvas.value.settings.canvasColor,
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          width: edits.value.viewMode == ViewModes.mobile
+                              ? ViewModes.mobile.width
+                              : double.infinity,
+                          child: RubricReader(
+                            canvasModel: canvas.value,
+                          ),
+                        )),
+                  )
+                else
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        RubricSideBar(),
+                        Expanded(child: RubricEditorViewer()),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          for (var overlay in overlays) overlay,
+        ],
       ),
     );
   }

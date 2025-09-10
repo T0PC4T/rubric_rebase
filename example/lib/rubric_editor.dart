@@ -4,6 +4,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:example/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
@@ -32,8 +33,12 @@ class _RubricLessonEditorWidgetState extends State<RubricLessonEditorWidget> {
 
   @override
   void initState() {
-    final firestore = FirebaseFirestore.instance;
+    final firestore = FirebaseFirestore.instanceFor(
+      app: firebaseApp!,
+      databaseId: "test",
+    );
     future = firestore.collection("modules").doc(widget.moduleID).get();
+    future!.then((value) {});
     super.initState();
   }
 

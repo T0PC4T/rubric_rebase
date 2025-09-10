@@ -11,9 +11,11 @@ const FirebaseOptions destination = FirebaseOptions(
   appId: "1:492783007613:web:16400f648afd47c338fe14",
 );
 
+FirebaseApp? firebaseApp;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: destination);
+  firebaseApp = await Firebase.initializeApp(options: destination);
 
   runApp(const MyApp());
 }
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: RubricLessonEditorWidget(
-          moduleID: "aGnekhJwt5dInwXeVODc",
+          moduleID: "cx4A3jEN6dc3uSwFlqaX",
           onSaved: () async {
             print("saving");
           },
