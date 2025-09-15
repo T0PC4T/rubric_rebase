@@ -115,11 +115,10 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
     }
 
     widget.controller.text = newText;
-
-    final newProperties = widget.element
-        .getProperties<TextElementModel>()
-        .copyWith(text: widget.controller.text);
-    editorState.canvas.updateProperties(widget.element, newProperties.toJson());
+    editorState.canvas.updateProperties<TextElementModel>(widget.element,
+        (properties) {
+      return properties.copyWith(text: widget.controller.text).toJson();
+    });
   }
 
   @override
@@ -164,10 +163,10 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
               isActive: properties.alignment == align,
               size: ElementToolbarWidget.elementToolbarHeight,
               onTap: () {
-                final newProperties =
-                    widget.element.getProperties<TextElementModel>();
-                editorState.canvas.updateProperties(widget.element,
-                    newProperties.copyWith(alignment: align).toJson());
+                editorState.canvas.updateProperties<TextElementModel>(
+                    widget.element,
+                    (properties) =>
+                        properties.copyWith(alignment: align).toJson());
               },
               iconData: ElementAlignment.icon(align)),
         RubricVerticleDivider(),
@@ -185,9 +184,9 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
                 );
               });
               if (newColor != null) {
-                editorState.canvas.updateProperties(
+                editorState.canvas.updateProperties<TextElementModel>(
                   widget.element,
-                  properties.copyWith(color: newColor).toJson(),
+                  (properties) => properties.copyWith(color: newColor).toJson(),
                 );
               }
             },
@@ -196,11 +195,9 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case double newValue) {
-              final newProperties = widget.element
-                  .getProperties<TextElementModel>()
-                  .copyWith(size: newValue);
-              editorState.canvas
-                  .updateProperties(widget.element, newProperties.toJson());
+              editorState.canvas.updateProperties<TextElementModel>(
+                  widget.element,
+                  (properties) => properties.copyWith(size: newValue).toJson());
             }
           },
           items: [

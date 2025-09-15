@@ -63,10 +63,12 @@ class _VideoTooltipWidgetState extends State<VideoTooltipWidget> {
               },
             );
             if (videoUrl case String newUrl) {
-              editorState.canvas.updateProperties(
-                widget.element,
-                properties.copyWith(videoUrl: newUrl, isYoutube: true).toJson(),
-              );
+              editorState.canvas.updateProperties<VideoElementModel>(
+                  widget.element, (properties) {
+                return properties
+                    .copyWith(videoUrl: newUrl, isYoutube: true)
+                    .toJson();
+              });
             }
           },
           iconData: Icons.link,
@@ -86,12 +88,12 @@ class _VideoTooltipWidgetState extends State<VideoTooltipWidget> {
                   fileBytes,
                   name: result.files.first.name,
                 );
-                editorState.canvas.updateProperties(
-                  widget.element,
-                  properties
+                editorState.canvas.updateProperties<VideoElementModel>(
+                    widget.element, (properties) {
+                  return properties
                       .copyWith(videoUrl: videoUrl, isYoutube: false)
-                      .toJson(),
-                );
+                      .toJson();
+                });
               }
             }
           },

@@ -113,7 +113,6 @@ class RubricEditorState extends State<RubricEditor> {
   _canvasListener() {
     // ? if this is false, the the last change was from an undo.
     if (edits.currentUndo != canvas.value) {
-      markAsDirty();
       edits.saveStep(canvas.clone());
     }
   }
@@ -156,18 +155,7 @@ class RubricEditorState extends State<RubricEditor> {
     clearOverlays();
   }
 
-  bool mobileDirty = false;
-
-  markAsDirty() {
-    if (edits.value.viewMode != ViewModes.mobile) {
-      mobileDirty = true;
-    }
-  }
-
   changeViewMode(ViewModes newValue) {
-    if (newValue == ViewModes.mobile) {
-      mobileDirty = false;
-    }
     if (edits.value.viewMode == newValue) {
       return;
     }

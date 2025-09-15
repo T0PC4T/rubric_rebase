@@ -38,13 +38,10 @@ class ImageTooltipWidget extends StatelessWidget {
                   fileBytes,
                   name: result.files.first.name,
                 );
-                final newProperties = element
-                    .getProperties<ImageElementModel>()
-                    .copyWith(imageUrl: imageUrl);
-                editorState.canvas.updateProperties(
-                  element,
-                  newProperties.toJson(),
-                );
+                editorState.canvas.updateProperties<ImageElementModel>(
+                    element,
+                    (properties) =>
+                        properties.copyWith(imageUrl: imageUrl).toJson());
               }
             }
           },
@@ -56,11 +53,10 @@ class ImageTooltipWidget extends StatelessWidget {
           radius: properties.borderRadius,
           onChanged: (value) {
             if (value case double newValue) {
-              final newProperties = element
-                  .getProperties<ImageElementModel>()
-                  .copyWith(borderRadius: newValue);
-              editorState.canvas
-                  .updateProperties(element, newProperties.toJson());
+              editorState.canvas.updateProperties<ImageElementModel>(
+                  element,
+                  (properties) =>
+                      properties.copyWith(borderRadius: newValue).toJson());
             }
           },
         ),
@@ -68,11 +64,8 @@ class ImageTooltipWidget extends StatelessWidget {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case String newValue) {
-              final newProperties = element
-                  .getProperties<ImageElementModel>()
-                  .copyWith(fit: newValue);
-              editorState.canvas
-                  .updateProperties(element, newProperties.toJson());
+              editorState.canvas.updateProperties<ImageElementModel>(element,
+                  (properties) => properties.copyWith(fit: newValue).toJson());
             }
           },
           items: [
@@ -99,11 +92,10 @@ class ImageTooltipWidget extends StatelessWidget {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case double newValue) {
-              final newProperties = element
-                  .getProperties<ImageElementModel>()
-                  .copyWith(aspectRatio: newValue);
-              editorState.canvas
-                  .updateProperties(element, newProperties.toJson());
+              editorState.canvas.updateProperties<ImageElementModel>(
+                  element,
+                  (properties) =>
+                      properties.copyWith(aspectRatio: newValue).toJson());
             }
           },
           items: [

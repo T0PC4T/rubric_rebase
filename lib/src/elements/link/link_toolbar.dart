@@ -75,10 +75,13 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
               },
             );
             if (linkUrl case String newUrl) {
-              editorState.canvas.updateProperties(
-                widget.element,
-                properties.copyWith(link: newUrl).toJson(),
-              );
+              editorState.canvas.updateProperties<LinkElementModel>(
+                  widget.element,
+                  (properties) => properties.copyWith(link: newUrl).toJson());
+              // editorState.canvas.updateProperties(
+              //   widget.element,
+              //   properties.copyWith(link: newUrl).toJson(),
+              // );
             }
           },
           iconData: Icons.link,
@@ -88,25 +91,20 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
             isActive: properties.isBold,
             size: ElementToolbarWidget.elementToolbarHeight,
             onTap: () {
-              final newProperties =
-                  widget.element.getProperties<LinkElementModel>();
-              editorState.canvas.updateProperties(
+              editorState.canvas.updateProperties<LinkElementModel>(
                   widget.element,
-                  newProperties
-                      .copyWith(isBold: !newProperties.isBold)
-                      .toJson());
+                  (properties) =>
+                      properties.copyWith(isBold: !properties.isBold).toJson());
             },
             iconData: Icons.format_bold),
         RubricIconButton(
             isActive: properties.isItalic,
             size: ElementToolbarWidget.elementToolbarHeight,
             onTap: () {
-              final newProperties =
-                  widget.element.getProperties<LinkElementModel>();
-              editorState.canvas.updateProperties(
+              editorState.canvas.updateProperties<LinkElementModel>(
                   widget.element,
-                  newProperties
-                      .copyWith(isItalic: !newProperties.isItalic)
+                  (properties) => properties
+                      .copyWith(isItalic: !properties.isItalic)
                       .toJson());
             },
             iconData: Icons.format_italic),
@@ -114,12 +112,10 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
             isActive: properties.isUnderline,
             size: ElementToolbarWidget.elementToolbarHeight,
             onTap: () {
-              final newProperties =
-                  widget.element.getProperties<LinkElementModel>();
-              editorState.canvas.updateProperties(
+              editorState.canvas.updateProperties<LinkElementModel>(
                   widget.element,
-                  newProperties
-                      .copyWith(isUnderline: !newProperties.isUnderline)
+                  (properties) => properties
+                      .copyWith(isUnderline: !properties.isUnderline)
                       .toJson());
             },
             iconData: Icons.format_underline),
@@ -129,10 +125,10 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
               isActive: properties.alignment == align,
               size: ElementToolbarWidget.elementToolbarHeight,
               onTap: () {
-                final newProperties =
-                    widget.element.getProperties<LinkElementModel>();
-                editorState.canvas.updateProperties(widget.element,
-                    newProperties.copyWith(alignment: align).toJson());
+                editorState.canvas.updateProperties<LinkElementModel>(
+                    widget.element,
+                    (properties) =>
+                        properties.copyWith(alignment: align).toJson());
               },
               iconData: ElementAlignment.icon(align)),
         RubricVerticleDivider(),
@@ -150,9 +146,9 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
                 );
               });
               if (newColor != null) {
-                editorState.canvas.updateProperties(
+                editorState.canvas.updateProperties<LinkElementModel>(
                   widget.element,
-                  properties.copyWith(color: newColor).toJson(),
+                  (properties) => properties.copyWith(color: newColor).toJson(),
                 );
               }
             },
@@ -161,11 +157,9 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case double newValue) {
-              final newProperties = widget.element
-                  .getProperties<LinkElementModel>()
-                  .copyWith(size: newValue);
-              editorState.canvas
-                  .updateProperties(widget.element, newProperties.toJson());
+              editorState.canvas.updateProperties<LinkElementModel>(
+                  widget.element,
+                  (properties) => properties.copyWith(size: newValue).toJson());
             }
           },
           items: [

@@ -88,29 +88,26 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
         ),
       );
     } else {
-      final properties = widget.element.getProperties<ButtonElementModel>();
-      editorState.canvas.updateProperties(
-        widget.element,
-        properties.copyWith(text: controller.text).toJson(),
-      );
+      if (_changed) {
+        editorState.canvas.commit();
+      }
     }
   }
 
-  double _oldHeight = 0;
-  _onChange(String value) {
-    final box = (context.findRenderObject() as RenderBox);
-    if (_oldHeight != box.size.height) {
-      _oldHeight = box.size.height;
-      final properties = widget.element.getProperties<ButtonElementModel>();
-      editorState.canvas.updateProperties(
-        widget.element,
-        properties.copyWith(text: controller.text).toJson(),
-      );
-    }
+  bool _changed = false;
+  onChange(String value) {
+    _changed = true;
+    editorState.canvas.updateProperties<ButtonElementModel>(
+      widget.element,
+      (properties) {
+        return properties.copyWith(text: value).toJson();
+      },
+      saveStep: false,
+    );
   }
 
   @override
-  void didUpdateWidget(covariant ButtonEditorElement oldWidget) {
+  void didUpdateWidget(ButtonEditorElement oldWidget) {
     final properties = widget.element.getProperties<ButtonElementModel>();
     final oldProperties = oldWidget.element.getProperties<ButtonElementModel>();
     if (properties.text != oldProperties.text) {
@@ -174,7 +171,7 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
                 enableInteractiveSelection: true,
                 readOnly: false,
                 minLines: null,
-                onChanged: _onChange,
+                onChanged: onChange,
                 scrollController: _scrollController,
                 controller: controller,
                 focusNode: focusNode,

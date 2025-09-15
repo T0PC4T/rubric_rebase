@@ -36,9 +36,9 @@ class DividerTooltipWidget extends StatelessWidget {
                 );
               });
               if (newColor != null) {
-                editorState.canvas.updateProperties(
+                editorState.canvas.updateProperties<DividerElementModel>(
                   element,
-                  properties.copyWith(color: newColor).toJson(),
+                  (properties) => properties.copyWith(color: newColor).toJson(),
                 );
               }
             },
@@ -48,11 +48,10 @@ class DividerTooltipWidget extends StatelessWidget {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case double newValue) {
-              final newProperties = element
-                  .getProperties<DividerElementModel>()
-                  .copyWith(weight: newValue);
-              editorState.canvas
-                  .updateProperties(element, newProperties.toJson());
+              editorState.canvas.updateProperties<DividerElementModel>(
+                  element,
+                  (properties) =>
+                      properties.copyWith(weight: newValue).toJson());
             }
           },
           items: [

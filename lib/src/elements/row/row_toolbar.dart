@@ -32,11 +32,11 @@ class RowTooltipWidget extends StatelessWidget {
                   else
                     []
               ];
-              final newProperties = element
-                  .getProperties<RowElementModel>()
-                  .copyWith(elements: newColumns, columns: newValue);
-              editorState.canvas
-                  .updateProperties(element, newProperties.toJson());
+              editorState.canvas.updateProperties<RowElementModel>(
+                  element,
+                  (properties) => properties
+                      .copyWith(elements: newColumns, columns: newValue)
+                      .toJson());
             }
           },
           items: [

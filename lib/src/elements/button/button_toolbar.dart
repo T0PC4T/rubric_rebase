@@ -73,10 +73,9 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
               },
             );
             if (videoUrl case String newUrl) {
-              editorState.canvas.updateProperties(
-                widget.element,
-                properties.copyWith(link: newUrl).toJson(),
-              );
+              editorState.canvas.updateProperties<ButtonElementModel>(
+                  widget.element,
+                  (properties) => properties.copyWith(link: newUrl).toJson());
             }
           },
           iconData: Icons.link,
@@ -87,38 +86,30 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case String newValue) {
-              final newProperties = properties.copyWith(
-                style: newValue,
-              );
-              if (newProperties.style == ButtonStyles.outlined.value) {
-                editorState.canvas.updateProperties(
-                  widget.element,
-                  newProperties
+              editorState.canvas.updateProperties<ButtonElementModel>(
+                  widget.element, (properties) {
+                if (properties.style == ButtonStyles.outlined.value) {
+                  return properties
                       .copyWith(style: newValue, textColor: properties.color)
-                      .toJson(),
-                );
-              } else if (newProperties.style == ButtonStyles.filled.value) {
-                Color textColor;
-                if (properties.color.computeLuminance() > 0.5) {
-                  textColor = Color.lerp(properties.color, Colors.black, 0.5)!;
-                } else {
-                  textColor = Colors.white;
-                }
-                editorState.canvas.updateProperties(
-                  widget.element,
-                  newProperties
+                      .toJson();
+                } else if (properties.style == ButtonStyles.filled.value) {
+                  Color textColor;
+                  if (properties.color.computeLuminance() > 0.5) {
+                    textColor =
+                        Color.lerp(properties.color, Colors.black, 0.5)!;
+                  } else {
+                    textColor = Colors.white;
+                  }
+                  return properties
                       .copyWith(style: newValue, textColor: textColor)
-                      .toJson(),
-                );
-              } else {
-                editorState.canvas.updateProperties(
-                  widget.element,
-                  newProperties
+                      .toJson();
+                } else {
+                  return properties
                       .copyWith(
                           style: newValue, textColor: editorState.style.theme)
-                      .toJson(),
-                );
-              }
+                      .toJson();
+                }
+              });
             }
           },
           items: [
@@ -145,13 +136,18 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
           radius: properties.borderRadius,
           onChanged: (value) {
             if (value case double newValue) {
-              final newProperties = properties.copyWith(
-                borderRadius: newValue,
-              );
-              editorState.canvas.updateProperties(
-                widget.element,
-                newProperties.toJson(),
-              );
+              editorState.canvas.updateProperties<ButtonElementModel>(
+                  widget.element,
+                  (properties) =>
+                      properties.copyWith(borderRadius: newValue).toJson());
+
+              // final newProperties = properties.copyWith(
+              //   borderRadius: newValue,
+              // );
+              // editorState.canvas.updateProperties(
+              //   widget.element,
+              //   newProperties.toJson(),
+              // );
             }
           },
         ),
@@ -170,10 +166,15 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                 );
               });
               if (newColor != null) {
-                editorState.canvas.updateProperties(
+                editorState.canvas.updateProperties<ButtonElementModel>(
                   widget.element,
-                  properties.copyWith(color: newColor).toJson(),
+                  (properties) => properties.copyWith(color: newColor).toJson(),
                 );
+
+                // editorState.canvas.updateProperties(
+                //   widget.element,
+                //   properties.copyWith(color: newColor).toJson(),
+                // );
               }
             },
           ),
@@ -203,10 +204,16 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
                 );
               });
               if (newColor != null) {
-                editorState.canvas.updateProperties(
+                editorState.canvas.updateProperties<ButtonElementModel>(
                   widget.element,
-                  properties.copyWith(textColor: newColor).toJson(),
+                  (properties) =>
+                      properties.copyWith(textColor: newColor).toJson(),
                 );
+
+                // editorState.canvas.updateProperties(
+                //   widget.element,
+                //   properties.copyWith(textColor: newColor).toJson(),
+                // );
               }
             },
           ),

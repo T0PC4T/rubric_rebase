@@ -54,28 +54,32 @@ class TextEditorElementState<T extends TextEditorElement>
       );
       focusNode.requestFocus();
     } else {
-      final properties = widget.element.getProperties<TextElementBaseModel>();
-      switch (properties) {
-        case TextElementModel textElement:
-          {
-            editorState.canvas.updateProperties(
-              widget.element,
-              textElement.copyWith(text: controller.text).toJson(),
-            );
-          }
-        case LinkElementModel linkElement:
-          {
-            editorState.canvas.updateProperties(
-              widget.element,
-              linkElement.copyWith(text: controller.text).toJson(),
-            );
-          }
+      if (_changed) {
+        editorState.canvas.commit();
       }
     }
   }
 
+  bool _changed = false;
+  onChange() {
+    _changed = true;
+    editorState.canvas.updateProperties<TextElementBaseModel>(
+      widget.element,
+      (properties) {
+        return switch (properties) {
+          TextElementModel textElement =>
+            textElement.copyWith(text: controller.text).toJson(),
+          LinkElementModel linkElement =>
+            linkElement.copyWith(text: controller.text).toJson(),
+          _ => throw Exception("Unknown Text Element Type"),
+        };
+      },
+      saveStep: false,
+    );
+  }
+
   @override
-  void didUpdateWidget(covariant TextEditorElement oldWidget) {
+  void didUpdateWidget(TextEditorElement oldWidget) {
     final properties = widget.element.getProperties<TextElementBaseModel>();
 
     final oldProperties =
@@ -117,6 +121,7 @@ class TextEditorElementState<T extends TextEditorElement>
             minLines: null,
             scrollController: _scrollController,
             controller: controller,
+            onChanged: (value) => onChange(),
             focusNode: focusNode,
           )
         : TextReaderWidget(

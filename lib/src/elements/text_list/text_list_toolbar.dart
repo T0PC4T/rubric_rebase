@@ -34,25 +34,20 @@ class TextListToolbarWidget extends StatelessWidget {
             isActive: properties.isBold,
             size: ElementToolbarWidget.elementToolbarHeight,
             onTap: () {
-              final newProperties =
-                  element.getProperties<TextListElementModel>();
-              editorState.canvas.updateProperties(
+              editorState.canvas.updateProperties<TextListElementModel>(
                   element,
-                  newProperties
-                      .copyWith(isBold: !newProperties.isBold)
-                      .toJson());
+                  (properties) =>
+                      properties.copyWith(isBold: !properties.isBold).toJson());
             },
             iconData: Icons.format_bold),
         RubricIconButton(
             isActive: properties.isItalic,
             size: ElementToolbarWidget.elementToolbarHeight,
             onTap: () {
-              final newProperties =
-                  element.getProperties<TextListElementModel>();
-              editorState.canvas.updateProperties(
+              editorState.canvas.updateProperties<TextListElementModel>(
                   element,
-                  newProperties
-                      .copyWith(isItalic: !newProperties.isItalic)
+                  (properties) => properties
+                      .copyWith(isItalic: !properties.isItalic)
                       .toJson());
             },
             iconData: Icons.format_italic),
@@ -60,12 +55,10 @@ class TextListToolbarWidget extends StatelessWidget {
             isActive: properties.isUnderline,
             size: ElementToolbarWidget.elementToolbarHeight,
             onTap: () {
-              final newProperties =
-                  element.getProperties<TextListElementModel>();
-              editorState.canvas.updateProperties(
+              editorState.canvas.updateProperties<TextListElementModel>(
                   element,
-                  newProperties
-                      .copyWith(isUnderline: !newProperties.isUnderline)
+                  (properties) => properties
+                      .copyWith(isUnderline: !properties.isUnderline)
                       .toJson());
             },
             iconData: Icons.format_underline),
@@ -84,9 +77,9 @@ class TextListToolbarWidget extends StatelessWidget {
                 );
               });
               if (newColor != null) {
-                editorState.canvas.updateProperties(
+                editorState.canvas.updateProperties<TextListElementModel>(
                   element,
-                  properties.copyWith(color: newColor).toJson(),
+                  (properties) => properties.copyWith(color: newColor).toJson(),
                 );
               }
             },
@@ -95,11 +88,8 @@ class TextListToolbarWidget extends StatelessWidget {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case double newValue) {
-              final newProperties = element
-                  .getProperties<TextListElementModel>()
-                  .copyWith(size: newValue);
-              editorState.canvas
-                  .updateProperties(element, newProperties.toJson());
+              editorState.canvas.updateProperties<TextListElementModel>(element,
+                  (properties) => properties.copyWith(size: newValue).toJson());
             }
           },
           items: [
@@ -117,11 +107,10 @@ class TextListToolbarWidget extends StatelessWidget {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case TextListTypes newValue) {
-              final newProperties = element
-                  .getProperties<TextListElementModel>()
-                  .copyWith(textListType: newValue);
-              editorState.canvas
-                  .updateProperties(element, newProperties.toJson());
+              editorState.canvas.updateProperties<TextListElementModel>(
+                  element,
+                  (properties) =>
+                      properties.copyWith(textListType: newValue).toJson());
             }
           },
           items: [

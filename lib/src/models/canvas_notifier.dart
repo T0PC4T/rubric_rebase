@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
@@ -62,8 +60,10 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
                 .insert(elementIndexInColumn + 1, insert.toMap());
           }
 
-          updateProperties(
-              parent, rowModel.copyWith(elements: newColumns).toJson());
+          updateProperties<RowElementModel>(
+              parent,
+              (properties) =>
+                  properties.copyWith(elements: newColumns).toJson());
         } else {
           print("Unable to find id ${exiting.id} in row");
         }
@@ -106,28 +106,74 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     return value.elements.firstWhere((element) => element.id == elementID);
   }
 
-  updateProperties(ElementModel element, Map<String, dynamic> properties) {
-    for (var e in value.elements) {
-      if (e.type == ElementType.row) {
-        final rowModel = e.getProperties<RowElementModel>();
+  updateElementDirectly(
+      ElementModel seek, ElementModel Function(ElementModel element) updateFunc,
+      {bool saveStep = true}) {
+    for (var element in value.elements) {
+      if (element.type == ElementType.row) {
+        final rowModel = element.getProperties<RowElementModel>();
         for (var i = 0; i < rowModel.elements.length; i++) {
           for (var j = 0; j < rowModel.elements[i].length; j++) {
             final rowElement = ElementModel.fromMap(rowModel.elements[i][j]);
 
-            if (rowElement.id == element.id) {
-              rowElement.properties = properties;
-              rowModel.elements[i][j] = rowElement.toMap();
-              return updateProperties(e, rowModel.toJson());
+            if (rowElement.id == seek.id) {
+              rowModel.elements[i][j] = updateFunc(rowElement).toMap();
+              // ? Update the whole row with new subelement properties.
+              return updateProperties(
+                  element, (properties) => rowModel.toJson());
             }
           }
         }
       }
-      if (e.id == element.id) {
-        e.properties = properties;
-        commit();
+      if (element.id == seek.id) {
+        element = updateFunc(element);
+        if (saveStep) {
+          commit();
+        }
         return;
       }
     }
+  }
+
+  updateProperties<T>(
+      ElementModel seek, Map<String, dynamic> Function(T properties) updateFunc,
+      {bool saveStep = true}) {
+    updateElementDirectly(
+      seek,
+      (element) {
+        final properties = element.getProperties<T>();
+        final newProperties = updateFunc(properties);
+        element.properties = newProperties;
+        return element;
+      },
+      saveStep: saveStep,
+    );
+    // for (var element in value.elements) {
+    //   if (element.type == ElementType.row) {
+    //     final rowModel = element.getProperties<RowElementModel>();
+    //     for (var i = 0; i < rowModel.elements.length; i++) {
+    //       for (var j = 0; j < rowModel.elements[i].length; j++) {
+    //         final rowElement = ElementModel.fromMap(rowModel.elements[i][j]);
+
+    //         if (rowElement.id == seek.id) {
+    //           final properties = updateFunc(rowElement.getProperties<T>());
+    //           rowElement.properties = properties;
+    //           rowModel.elements[i][j] = rowElement.toMap();
+    //           // ? Update the whole row with new subelement properties.
+    //           return updateProperties(
+    //               element, (properties) => rowModel.toJson());
+    //         }
+    //       }
+    //     }
+    //   }
+    //   if (element.id == seek.id) {
+    //     final newestProperties = element.getProperties<T>();
+    //     final properties = updateFunc(newestProperties);
+    //     element.properties = properties;
+    //     commit();
+    //     return;
+    //   }
+    // }
   }
 
   reorderElements(
@@ -177,11 +223,11 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     final List<ElementModel> newElements = [];
     for (var element in value.elements) {
       if (element.type == ElementType.row) {
-        final rowModel = element.getProperties<RowElementModel>();
+        final rowProperties = element.getProperties<RowElementModel>();
         for (var columnIndex = 0;
-            columnIndex < rowModel.columns;
+            columnIndex < rowProperties.columns;
             columnIndex++) {
-          final column = rowModel.elements[columnIndex];
+          final column = rowProperties.elements[columnIndex];
           for (var elementIndex = 0;
               elementIndex < column.length;
               elementIndex++) {
@@ -191,10 +237,12 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
               final newColumn = List<Map<String, dynamic>>.from(column);
               newColumn.removeAt(elementIndex);
               final newElements =
-                  List<List<Map<String, dynamic>>>.from(rowModel.elements);
+                  List<List<Map<String, dynamic>>>.from(rowProperties.elements);
               newElements[columnIndex] = newColumn;
-              updateProperties(
-                  element, rowModel.copyWith(elements: newElements).toJson());
+              updateProperties<RowElementModel>(
+                  element,
+                  (properties) =>
+                      properties.copyWith(elements: newElements).toJson());
               notifyListeners();
               return;
             }

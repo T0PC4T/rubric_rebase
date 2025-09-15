@@ -67,16 +67,24 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
 
       focusNode.requestFocus();
     } else {
-      final properties = widget.element.getProperties<TextListElementModel>();
-
-      final newTextList = List<String>.from(textList);
-      editorState.canvas.updateProperties(
-        widget.element,
-        properties.copyWith(textList: newTextList).toJson(),
-      );
-
       editingPoint = -1;
     }
+    if (_changed) {
+      editorState.canvas.commit();
+    }
+  }
+
+  final bool _changed = false;
+  onChange(String value) {
+    setState(() {
+      textList[editingPoint] = value;
+    });
+    final newTextList = List<String>.from(textList);
+    editorState.canvas.updateProperties<TextListElementModel>(
+      widget.element,
+      (properties) => properties.copyWith(textList: newTextList).toJson(),
+      saveStep: false,
+    );
   }
 
   @override
@@ -235,11 +243,7 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
           child: TextField(
             key: textListKey,
             decoration: null,
-            onChanged: (value) {
-              setState(() {
-                textList[editingPoint] = value;
-              });
-            },
+            onChanged: onChange,
             autofocus: true,
             undoController: undoController,
             style: textStyle.copyWith(height: 1.2),

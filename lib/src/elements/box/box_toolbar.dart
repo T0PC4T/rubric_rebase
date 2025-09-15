@@ -38,10 +38,15 @@ class BoxTooltipWidget extends StatelessWidget {
                 );
               });
               if (newColor != null) {
-                editorState.canvas.updateProperties(
+                editorState.canvas.updateProperties<BoxElementModel>(
                   element,
-                  properties.copyWith(color: newColor).toJson(),
+                  (properties) => properties.copyWith(color: newColor).toJson(),
                 );
+
+                // editorState.canvas.updateProperties(
+                //   element,
+                //   properties.copyWith(color: newColor).toJson(),
+                // );
               }
             },
           ),
@@ -51,13 +56,10 @@ class BoxTooltipWidget extends StatelessWidget {
           radius: properties.borderRadius,
           onChanged: (value) {
             if (value case double newValue) {
-              final newProperties = properties.copyWith(
-                borderRadius: newValue,
-              );
-              editorState.canvas.updateProperties(
-                element,
-                newProperties.toJson(),
-              );
+              editorState.canvas.updateProperties<BoxElementModel>(
+                  element,
+                  (properties) =>
+                      properties.copyWith(borderRadius: newValue).toJson());
             }
           },
         ),
@@ -65,12 +67,19 @@ class BoxTooltipWidget extends StatelessWidget {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case double newValue) {
-              final newProperties = element
-                  .getProperties<BoxElementModel>()
-                  .copyWith(aspectRatio: newValue);
-              editorState.canvas
-                  .updateProperties(element, newProperties.toJson());
+              editorState.canvas.updateProperties<BoxElementModel>(
+                  element,
+                  (properties) =>
+                      properties.copyWith(aspectRatio: newValue).toJson());
             }
+
+            // if (value case double newValue) {
+            //   final newProperties = element
+            //       .getProperties<BoxElementModel>()
+            //       .copyWith(aspectRatio: newValue);
+            //   editorState.canvas
+            //       .updateProperties(element, newProperties.toJson());
+            // }
           },
           items: [
             for (var ratio in AspectRatios.values)

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/rubric_editor/models/preview.dart';
@@ -36,7 +38,7 @@ class _RubricReaderState extends State<RubricReader> {
           addRepaintBoundaries: false,
           addSemanticIndexes: false,
           padding: EdgeInsets.symmetric(
-              vertical: widget.canvasModel.settings.spacing / 2,
+              vertical: max(widget.canvasModel.settings.spacing / 2, 50),
               horizontal: (constraints.maxWidth - viewMode.width) / 2 +
                   widget.canvasModel.settings.spacing / 2),
           itemBuilder: (context, index) {

@@ -79,10 +79,11 @@ class ToolbarUniversalIcons extends StatelessWidget {
                         RubricToolbarDropdown(
                           onUpdate: (value) {
                             if (value case double newValue) {
-                              // quite botchy
-                              element.padding = newValue;
-                              editorState.canvas.updateProperties(
-                                  element, element.properties);
+                              editorState.canvas.updateElementDirectly(
+                                element,
+                                (element) =>
+                                    element.copyWith(padding: newValue),
+                              );
                             }
                           },
                           items: [

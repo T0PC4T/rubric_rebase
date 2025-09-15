@@ -41,7 +41,6 @@ class NavbarWidget extends StatelessWidget {
               children: [
                 // todo add mobile support.
                 RubricIconButton(
-                  hasNotification: editorState.mobileDirty,
                   style: RBStyles.alt,
                   isActive:
                       editorState.edits.value.viewMode == ViewModes.mobile,
@@ -53,7 +52,6 @@ class NavbarWidget extends StatelessWidget {
                   },
                 ),
                 RubricIconButton(
-                  hasNotification: false,
                   style: RBStyles.alt,
                   isActive:
                       editorState.edits.value.viewMode == ViewModes.desktop,
