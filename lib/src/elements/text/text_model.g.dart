@@ -6,9 +6,8 @@ part of 'text_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TextElementModelImpl _$$TextElementModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$TextElementModelImpl(
+_TextElementModel _$TextElementModelFromJson(Map<String, dynamic> json) =>
+    _TextElementModel(
       text: json['text'] as String,
       isBold: json['isBold'] as bool? ?? false,
       isItalic: json['isItalic'] as bool? ?? false,
@@ -18,8 +17,7 @@ _$TextElementModelImpl _$$TextElementModelImplFromJson(
       color: colorFromJson((json['color'] as num).toInt()),
     );
 
-Map<String, dynamic> _$$TextElementModelImplToJson(
-        _$TextElementModelImpl instance) =>
+Map<String, dynamic> _$TextElementModelToJson(_TextElementModel instance) =>
     <String, dynamic>{
       'text': instance.text,
       'isBold': instance.isBold,
@@ -27,5 +25,5 @@ Map<String, dynamic> _$$TextElementModelImplToJson(
       'isUnderline': instance.isUnderline,
       'alignment': instance.alignment,
       'size': instance.size,
-      'color': colorToJson(instance.color),
+      'color': ?colorToJson(instance.color),
     };

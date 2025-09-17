@@ -6,8 +6,8 @@ part of 'canvas.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CanvasSettingsImpl _$$CanvasSettingsImplFromJson(Map<String, dynamic> json) =>
-    _$CanvasSettingsImpl(
+_CanvasSettings _$CanvasSettingsFromJson(Map<String, dynamic> json) =>
+    _CanvasSettings(
       name: json['name'] as String,
       backgroundColor: colorFromJson((json['backgroundColor'] as num).toInt()),
       canvasColor: colorFromJson((json['canvasColor'] as num).toInt()),
@@ -16,12 +16,11 @@ _$CanvasSettingsImpl _$$CanvasSettingsImplFromJson(Map<String, dynamic> json) =>
       icon: json['icon'] as String,
     );
 
-Map<String, dynamic> _$$CanvasSettingsImplToJson(
-        _$CanvasSettingsImpl instance) =>
+Map<String, dynamic> _$CanvasSettingsToJson(_CanvasSettings instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'backgroundColor': colorToJson(instance.backgroundColor),
-      'canvasColor': colorToJson(instance.canvasColor),
+      'backgroundColor': ?colorToJson(instance.backgroundColor),
+      'canvasColor': ?colorToJson(instance.canvasColor),
       'spacing': instance.spacing,
       'fontFamily': instance.fontFamily,
       'icon': instance.icon,

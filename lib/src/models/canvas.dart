@@ -14,7 +14,10 @@ part 'canvas.freezed.dart';
 part 'canvas.g.dart';
 
 @freezed
-class CanvasSettings with _$CanvasSettings {
+abstract class CanvasSettings with _$CanvasSettings {
+  const CanvasSettings._();
+
+  @JsonSerializable()
   const factory CanvasSettings({
     required String name,
     @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
@@ -47,7 +50,7 @@ class CanvasModel {
 
   ElementModel element(String id) {
     for (var element in elements) {
-      if (element.type == ElementType.row) {
+      if (element.type.category == ElementCategories.flex) {
         if (element.getProperties<RowElementModel>().elements.isNotEmpty) {
           for (var column
               in element.getProperties<RowElementModel>().elements) {
@@ -64,9 +67,7 @@ class CanvasModel {
         return element;
       }
     }
-    return elements.firstWhere(
-      (element) => element.id == id,
-    );
+    return elements.firstWhere((element) => element.id == id);
   }
 
   // ! DEEP COPY had to be manually implemented.

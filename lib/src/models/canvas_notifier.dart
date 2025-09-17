@@ -10,20 +10,21 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
 
   // these actions do not actually change the state of canvas
 
-  addElement(element, {int index = 0}) {
+  void addElement(element, {int index = 0}) {
     List<ElementModel> newElements = List.from(value.elements);
     newElements.insert(index, element);
     value = value.copyWith(elements: newElements);
     commit();
   }
 
-  dragInElement(
-      {required ElementModel insert,
-      required ElementModel exiting,
-      required bool above,
-      ElementModel? parent}) {
+  void dragInElement({
+    required ElementModel insert,
+    required ElementModel exiting,
+    required bool above,
+    ElementModel? parent,
+  }) {
     if (parent != null) {
-      if (parent.type == ElementType.row) {
+      if (parent.type.category == ElementCategories.flex) {
         final rowModel = parent.getProperties<RowElementModel>();
 
         // Find the column and index of the exiting element
@@ -48,22 +49,28 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
         }
 
         if (columnIndex != -1) {
-          final newColumns = List<List<Map<String, dynamic>>>.from(rowModel
-              .elements
-              .map((col) => List<Map<String, dynamic>>.from(col)));
+          final newColumns = List<List<Map<String, dynamic>>>.from(
+            rowModel.elements.map(
+              (col) => List<Map<String, dynamic>>.from(col),
+            ),
+          );
 
           if (above) {
-            newColumns[columnIndex]
-                .insert(elementIndexInColumn, insert.toMap());
+            newColumns[columnIndex].insert(
+              elementIndexInColumn,
+              insert.toMap(),
+            );
           } else {
-            newColumns[columnIndex]
-                .insert(elementIndexInColumn + 1, insert.toMap());
+            newColumns[columnIndex].insert(
+              elementIndexInColumn + 1,
+              insert.toMap(),
+            );
           }
 
           updateProperties<RowElementModel>(
-              parent,
-              (properties) =>
-                  properties.copyWith(elements: newColumns).toJson());
+            parent,
+            (properties) => properties.copyWith(elements: newColumns).toJson(),
+          );
         } else {
           print("Unable to find id ${exiting.id} in row");
         }
@@ -71,7 +78,7 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     } else {
       int index = value.elements.indexOf(exiting);
       if (index == -1) {
-        index = 0;
+        index = value.elements.length;
       }
       addElement(insert, index: index + (above ? 0 : 1));
     }
@@ -86,18 +93,18 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     return value.copyWith();
   }
 
-  commit() {
+  void commit() {
     notifyListeners();
   }
 
-  commitIfChange(CanvasModel? canvas) {
+  void commitIfChange(CanvasModel? canvas) {
     if (value != canvas) {
       commit();
     }
   }
 
   // updateSettings
-  updateSettings(CanvasSettings settings) {
+  void updateSettings(CanvasSettings settings) {
     value.settings = settings;
     commit();
   }
@@ -106,11 +113,13 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     return value.elements.firstWhere((element) => element.id == elementID);
   }
 
-  updateElementDirectly(
-      ElementModel seek, ElementModel Function(ElementModel element) updateFunc,
-      {bool saveStep = true}) {
+  dynamic updateElement(
+    ElementModel seek,
+    ElementModel Function(ElementModel element) updateFunc, {
+    bool saveStep = true,
+  }) {
     for (var element in value.elements) {
-      if (element.type == ElementType.row) {
+      if (element.type.category == ElementCategories.flex) {
         final rowModel = element.getProperties<RowElementModel>();
         for (var i = 0; i < rowModel.elements.length; i++) {
           for (var j = 0; j < rowModel.elements[i].length; j++) {
@@ -120,13 +129,17 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
               rowModel.elements[i][j] = updateFunc(rowElement).toMap();
               // ? Update the whole row with new subelement properties.
               return updateProperties(
-                  element, (properties) => rowModel.toJson());
+                element,
+                (properties) => rowModel.toJson(),
+              );
             }
           }
         }
       }
       if (element.id == seek.id) {
-        element = updateFunc(element);
+        final newElements = List<ElementModel>.from(value.elements);
+        newElements[newElements.indexOf(element)] = updateFunc(element);
+        value = value.copyWith(elements: newElements);
         if (saveStep) {
           commit();
         }
@@ -135,21 +148,19 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     }
   }
 
-  updateProperties<T>(
-      ElementModel seek, Map<String, dynamic> Function(T properties) updateFunc,
-      {bool saveStep = true}) {
-    updateElementDirectly(
-      seek,
-      (element) {
-        final properties = element.getProperties<T>();
-        final newProperties = updateFunc(properties);
-        element.properties = newProperties;
-        return element;
-      },
-      saveStep: saveStep,
-    );
+  void updateProperties<T>(
+    ElementModel seek,
+    Map<String, dynamic> Function(T properties) updateFunc, {
+    bool saveStep = true,
+  }) {
+    updateElement(seek, (element) {
+      final properties = element.getProperties<T>();
+      final newProperties = updateFunc(properties);
+      element.properties = newProperties;
+      return element;
+    }, saveStep: saveStep);
     // for (var element in value.elements) {
-    //   if (element.type == ElementType.row) {
+    //   if (element.type.category == ElementCategories.flex) {
     //     final rowModel = element.getProperties<RowElementModel>();
     //     for (var i = 0; i < rowModel.elements.length; i++) {
     //       for (var j = 0; j < rowModel.elements[i].length; j++) {
@@ -176,8 +187,11 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     // }
   }
 
-  reorderElements(
-      List<ElementModel>? cachedElements, int oldIndex, int newIndex) {
+  void reorderElements(
+    List<ElementModel>? cachedElements,
+    int oldIndex,
+    int newIndex,
+  ) {
     // ? I switched this around because the list is reverse beware.
     if (cachedElements != null) {
       value.elements = cachedElements;
@@ -191,7 +205,7 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     commit();
   }
 
-  sendTo(ElementModel element, {bool front = true}) {
+  void sendTo(ElementModel element, {bool front = true}) {
     var oldIndex = value.elements.indexOf(element);
     var newIndex = front ? value.elements.length : 0;
 
@@ -203,9 +217,9 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     commit();
   }
 
-  duplicateElement(ElementModel element) {
+  void duplicateElement(ElementModel element) {
     ElementModel newElement = element.copyWith(id: newID());
-    if (element.type == ElementType.row) {
+    if (element.type.category == ElementCategories.flex) {
       final properties = element.getProperties<RowElementModel>();
       final newElements = properties.elements.map((column) {
         return column.map((e) {
@@ -213,36 +227,43 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
         }).toList();
       }).toList();
       newElement = newElement.copyWith(
-          properties: properties.copyWith(elements: newElements).toJson());
+        properties: properties.copyWith(elements: newElements).toJson(),
+      );
     }
 
     dragInElement(insert: newElement, exiting: element, above: false);
   }
 
-  deleteElement(ElementModel deleteElement) {
+  void deleteElement(ElementModel deleteElement) {
     final List<ElementModel> newElements = [];
     for (var element in value.elements) {
-      if (element.type == ElementType.row) {
+      if (element.type.category == ElementCategories.flex) {
         final rowProperties = element.getProperties<RowElementModel>();
-        for (var columnIndex = 0;
-            columnIndex < rowProperties.columns;
-            columnIndex++) {
+        for (
+          var columnIndex = 0;
+          columnIndex < rowProperties.columns;
+          columnIndex++
+        ) {
           final column = rowProperties.elements[columnIndex];
-          for (var elementIndex = 0;
-              elementIndex < column.length;
-              elementIndex++) {
+          for (
+            var elementIndex = 0;
+            elementIndex < column.length;
+            elementIndex++
+          ) {
             final rowElement = ElementModel.fromMap(column[elementIndex]);
             if (rowElement.id == deleteElement.id) {
               // DELETE THIS ITEM AND REPACKAGE PROPERTIES DO AN UPDATE INSTEAD
               final newColumn = List<Map<String, dynamic>>.from(column);
               newColumn.removeAt(elementIndex);
-              final newElements =
-                  List<List<Map<String, dynamic>>>.from(rowProperties.elements);
+              final newElements = List<List<Map<String, dynamic>>>.from(
+                rowProperties.elements,
+              );
               newElements[columnIndex] = newColumn;
               updateProperties<RowElementModel>(
-                  element,
-                  (properties) =>
-                      properties.copyWith(elements: newElements).toJson());
+                element,
+                (properties) =>
+                    properties.copyWith(elements: newElements).toJson(),
+              );
               notifyListeners();
               return;
             }

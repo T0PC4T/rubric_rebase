@@ -16,6 +16,7 @@ class RubricEditorStyle {
   final double elevation;
   // final Color theme;
   final Color theme;
+  final Color themealt;
   final Color fore;
   final Color back;
   final Color altBack;
@@ -25,37 +26,43 @@ class RubricEditorStyle {
 
   final List<Color> brandColors;
 
-  const RubricEditorStyle(
-      {this.logoUrl = "assets/logo.png",
-      this.radius = 8,
-      this.fontSize = 14,
-      this.fontWeight = FontWeight.w500,
-      this.elevation = 6,
-      this.theme = const Color.fromARGB(255, 0, 162, 255),
-      this.fore = const Color.fromARGB(255, 0, 0, 0),
-      this.back = const Color.fromARGB(255, 255, 255, 255),
-      this.altBack = const Color.fromARGB(255, 0, 0, 0),
-      this.altFore = const Color.fromARGB(255, 255, 255, 255),
-      this.brandColors = const [
-        // Grey Shades
-        Color.fromARGB(255, 255, 255, 255), // Light Grey
-        Color.fromARGB(255, 195, 195, 195), // Medium Grey
-        Color.fromARGB(255, 84, 86, 87), // Dark Grey
-        Color.fromARGB(255, 0, 0, 0),
-        // Primary Blue
-        Color.fromARGB(255, 0, 162, 255),
+  const RubricEditorStyle({
+    this.logoUrl = "assets/logo.png",
+    this.radius = 8,
+    this.fontSize = 14,
+    this.fontWeight = FontWeight.w500,
+    this.elevation = 6,
+    this.theme = const Color.fromARGB(255, 0, 162, 255),
+    this.themealt = const Color.fromARGB(255, 255, 147, 250),
+    this.fore = const Color.fromARGB(255, 0, 0, 0),
+    this.back = const Color.fromARGB(255, 255, 255, 255),
+    this.altBack = const Color.fromARGB(255, 0, 0, 0),
+    this.altFore = const Color.fromARGB(255, 255, 255, 255),
+    this.brandColors = const [
+      // Grey Shades
+      Color.fromARGB(255, 255, 255, 255), // Light Grey
+      Color.fromARGB(255, 195, 195, 195), // Medium Grey
+      Color.fromARGB(255, 84, 86, 87), // Dark Grey
+      Color.fromARGB(255, 0, 0, 0),
+      // Primary Blue
+      Color.fromARGB(255, 0, 162, 255),
 
-        // Secondary Teal
-        Color.fromARGB(255, 57, 210, 192),
+      // Secondary Teal
+      Color.fromARGB(255, 57, 210, 192),
 
-        // Tertiary Coral
-        Color.fromARGB(255, 238, 139, 96),
-      ],
-      this.danger = Colors.red});
+      // Tertiary Coral
+      Color.fromARGB(255, 238, 139, 96),
+    ],
+    this.danger = Colors.red,
+  });
 
   // Danger color lerp
   Color get danger4 => Color.lerp(danger, back, 0.4)!;
   Color get danger8 => Color.lerp(danger, back, 0.8)!;
+
+  Color get themealt2 => Color.lerp(themealt, back, 0.2)!;
+  Color get themealt4 => Color.lerp(themealt, back, 0.1)!;
+  Color get themealt7 => Color.lerp(themealt, back, 0.7)!;
 
   Color get theme8 => Color.lerp(theme, back, 0.8)!;
   Color get theme7 => Color.lerp(theme, back, 0.7)!;

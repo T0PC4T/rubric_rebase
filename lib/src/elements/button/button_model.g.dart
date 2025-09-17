@@ -6,9 +6,8 @@ part of 'button_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ButtonElementModelImpl _$$ButtonElementModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ButtonElementModelImpl(
+_ButtonElementModel _$ButtonElementModelFromJson(Map<String, dynamic> json) =>
+    _ButtonElementModel(
       text: json['text'] as String,
       style: json['style'] as String,
       link: json['link'] as String,
@@ -17,13 +16,12 @@ _$ButtonElementModelImpl _$$ButtonElementModelImplFromJson(
       color: colorFromJson((json['color'] as num).toInt()),
     );
 
-Map<String, dynamic> _$$ButtonElementModelImplToJson(
-        _$ButtonElementModelImpl instance) =>
+Map<String, dynamic> _$ButtonElementModelToJson(_ButtonElementModel instance) =>
     <String, dynamic>{
       'text': instance.text,
       'style': instance.style,
       'link': instance.link,
       'borderRadius': instance.borderRadius,
-      'textColor': colorToJson(instance.textColor),
-      'color': colorToJson(instance.color),
+      'textColor': ?colorToJson(instance.textColor),
+      'color': ?colorToJson(instance.color),
     };

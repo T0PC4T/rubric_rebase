@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:rubric/src/elements/base/enums.dart';
-import 'package:rubric/src/elements/box/box_elements.dart';
-import 'package:rubric/src/elements/box/box_model.dart';
 import 'package:rubric/src/elements/button/button_elements.dart';
 import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/elements/divider/divider_elements.dart';
@@ -24,39 +22,46 @@ import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/models/style.dart';
 import 'package:rubric/src/utilities/uuid.dart';
 
-typedef ElementEditorBuilderFunction = Widget Function(
-    {Key? key, required ElementModel element});
+typedef ElementEditorBuilderFunction = Widget Function({Key? key, required ElementModel element});
 
-typedef ElementBuilderFunction = Widget Function(
-    {Key? key, required ElementModel element, required CanvasModel canvas});
+typedef ElementBuilderFunction =
+    Widget Function({Key? key, required ElementModel element, required CanvasModel canvas});
+
+enum ElementCategories { text, interactive, media, flex, divider, other }
 
 enum ElementType {
   heading(
     "Heading",
+    ElementCategories.text,
+
     Icons.text_fields_rounded,
     editorBuilder: TextEditorElement.header,
     readerBuilder: TextReaderWidget.new,
   ),
   text(
     "Body",
+    ElementCategories.text,
     Icons.text_snippet_outlined,
     editorBuilder: TextEditorElement.new,
     readerBuilder: TextReaderWidget.new,
   ),
   textList(
     "List",
+    ElementCategories.text,
     Icons.list,
     editorBuilder: TextListEditorElement.new,
     readerBuilder: TextListReaderWidget.new,
   ),
   link(
     "Link",
+    ElementCategories.interactive,
     Icons.link,
     editorBuilder: LinkEditorElement.new,
     readerBuilder: LinkReaderWidget.new,
   ),
   button(
     "Button",
+    ElementCategories.interactive,
     Icons.ads_click_rounded,
     editorBuilder: ButtonEditorElement.new,
     readerBuilder: ButtonReaderWidget.new,
@@ -64,6 +69,7 @@ enum ElementType {
 
   image(
     "Image",
+    ElementCategories.media,
     Icons.image_outlined,
     editorBuilder: ImageEditorElement.new,
     readerBuilder: ImageReaderElement.new,
@@ -71,43 +77,46 @@ enum ElementType {
 
   video(
     "Video",
+    ElementCategories.media,
+
     Icons.ondemand_video_outlined,
     editorBuilder: VideoEditorElement.new,
     readerBuilder: VideoReaderElement.new,
   ),
 
-  box(
-    "Box",
-    Icons.check_box_outline_blank_rounded,
-    editorBuilder: BoxEditorElement.new,
-    readerBuilder: BoxReaderElement.new,
-  ),
+  divider(
+    "Divider",
 
-  row(
-    "Row",
-    Icons.view_week_outlined,
+    ElementCategories.divider,
+
+    Icons.vertical_align_center_sharp,
+
+    editorBuilder: DividerEditorElement.new,
+    readerBuilder: DividerReaderElement.new,
+  ),
+  box(
+    "Container",
+    ElementCategories.flex,
+    Icons.check_box_outline_blank_rounded,
     editorBuilder: RowEditorElement.new,
     readerBuilder: RowReaderElement.new,
   ),
 
-  divider(
-    "Divider",
-    Icons.vertical_align_center_sharp,
-    editorBuilder: DividerEditorElement.new,
-    readerBuilder: DividerReaderElement.new,
+  row(
+    "Row",
+    ElementCategories.flex,
+    Icons.view_week_outlined,
+    editorBuilder: RowEditorElement.new,
+    readerBuilder: RowReaderElement.new,
   );
 
   final String title;
+  final ElementCategories category;
   final IconData icon;
   final ElementEditorBuilderFunction editorBuilder;
-
   final ElementBuilderFunction readerBuilder;
-  const ElementType(
-    this.title,
-    this.icon, {
-    required this.editorBuilder,
-    required this.readerBuilder,
-  });
+
+  const ElementType(this.title, this.category, this.icon, {required this.editorBuilder, required this.readerBuilder});
 
   // from name function
   static ElementType fromName(String name) {
@@ -120,12 +129,7 @@ enum ElementType {
   }
 
   ElementModel generateNewModel([String? id]) {
-    return ElementModel(
-      id: id ?? newID(),
-      type: this,
-      properties: generateDefaultProperties(this),
-      padding: 0,
-    );
+    return ElementModel(id: id ?? newID(), type: this, properties: generateDefaultProperties(this), padding: 0);
   }
 }
 
@@ -138,78 +142,65 @@ enum BorderRadiusPresets {
   const BorderRadiusPresets(this.radius);
 }
 
-Map<String, dynamic> generateDefaultProperties(
-  ElementType elementType,
-) {
+Map<String, dynamic> generateDefaultProperties(ElementType elementType) {
   return switch (elementType) {
-    ElementType.box => BoxElementModel(
-            color: Colors.green,
-            borderRadius: 0,
-            aspectRatio: AspectRatios.widescreen)
-        .toJson(),
-    ElementType.divider =>
-      const DividerElementModel(color: Colors.black, weight: 1).toJson(),
+    ElementType.row => RowElementModel(color: Colors.transparent, elements: [[], []], columns: 2).toJson(),
+    ElementType.box => RowElementModel(
+      color: const Color.fromARGB(255, 228, 230, 232),
+      elements: [[]],
+      columns: 1,
+    ).toJson(),
+    ElementType.divider => const DividerElementModel(color: Colors.black, weight: 1).toJson(),
     ElementType.heading => TextElementModel(
-            text: "",
-            size: HeadingFontSizes.h3.value.toDouble(),
-            isBold: false,
-            isUnderline: false,
-            alignment: "center",
-            color: Colors.black)
-        .toJson(),
+      text: "",
+      size: HeadingFontSizes.h3.value.toDouble(),
+      isBold: false,
+      isUnderline: false,
+      alignment: "center",
+      color: Colors.black,
+    ).toJson(),
     ElementType.text => TextElementModel(
-            text: "",
-            size: FontSizes.medium.value.toDouble(),
-            isBold: false,
-            isItalic: false,
-            isUnderline: false,
-            color: Colors.black)
-        .toJson(),
+      text: "",
+      size: FontSizes.medium.value.toDouble(),
+      isBold: false,
+      isItalic: false,
+      isUnderline: false,
+      color: Colors.black,
+    ).toJson(),
     ElementType.textList => TextListElementModel(
-            textList: [""],
-            size: RubricEditorStyle.minimumFontSize.toDouble(),
-            isBold: false,
-            isItalic: false,
-            isUnderline: false,
-            color: Colors.black)
-        .toJson(),
+      textList: [""],
+      size: RubricEditorStyle.minimumFontSize.toDouble(),
+      isBold: false,
+      isItalic: false,
+      isUnderline: false,
+      color: Colors.black,
+    ).toJson(),
     ElementType.link => LinkElementModel(
-            text: "",
-            link: "",
-            size: FontSizes.medium.value.toDouble(),
-            isBold: false,
-            isItalic: false,
-            isUnderline: true,
-            color: const Color.fromARGB(255, 0, 99, 181))
-        .toJson(),
+      text: "",
+      link: "",
+      size: FontSizes.medium.value.toDouble(),
+      isBold: false,
+      isItalic: false,
+      isUnderline: true,
+      color: const Color.fromARGB(255, 0, 99, 181),
+    ).toJson(),
     ElementType.button => ButtonElementModel(
-        text: "Click Me",
-        link: "",
-        style: ButtonStyles.filled.name,
-        color: const Color.fromARGB(255, 0, 99, 181),
-        borderRadius: BorderRadiusPresets.rounded.radius,
-        textColor: Colors.white,
-      ).toJson(),
-    ElementType.row => RowElementModel(
-        elements: [
-          [],
-          [],
-        ],
-        columns: 2,
-      ).toJson(),
-
-    // ElementTypes.richtext => RichTextElementModel(
-    //     document: Document(),
-    //   ).toJson(),
+      text: "Click Me",
+      link: "",
+      style: ButtonStyles.filled.name,
+      color: const Color.fromARGB(255, 0, 99, 181),
+      borderRadius: BorderRadiusPresets.rounded.radius,
+      textColor: Colors.white,
+    ).toJson(),
     ElementType.image => ImageElementModel(
-            aspectRatio: AspectRatios.widescreen,
-            borderRadius: 0,
-            imageUrl: "https://t0pc4t.github.io/public/default_image.webp",
-            fit: "cover")
-        .toJson(),
+      aspectRatio: AspectRatios.widescreen,
+      borderRadius: 0,
+      imageUrl: "https://t0pc4t.github.io/public/default_image.webp",
+      fit: "cover",
+    ).toJson(),
     ElementType.video => VideoElementModel(
-        isYoutube: false,
-        videoUrl: "https://t0pc4t.github.io/public/default_video.mp4",
-      ).toJson(),
+      isYoutube: false,
+      videoUrl: "https://t0pc4t.github.io/public/default_video.mp4",
+    ).toJson(),
   };
 }

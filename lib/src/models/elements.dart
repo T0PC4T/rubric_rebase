@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:rubric/src/elements/box/box_model.dart';
 import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/elements.dart';
@@ -28,19 +27,20 @@ class ElementModel {
 
   T getProperties<T>() {
     return switch (type) {
-      ElementType.text => TextElementModel.fromJson(properties),
-      ElementType.heading => TextElementModel.fromJson(properties),
-      ElementType.textList => TextListElementModel.fromJson(properties),
-      ElementType.link => LinkElementModel.fromJson(properties),
-      ElementType.button => ButtonElementModel.fromJson(properties),
-      ElementType.box => BoxElementModel.fromJson(properties),
-      ElementType.row => RowElementModel.fromJson(properties),
-      ElementType.image => ImageElementModel.fromJson(properties),
-      ElementType.video => VideoElementModel.fromJson(properties),
-      ElementType.divider => DividerElementModel.fromJson(properties),
+          ElementType.text => TextElementModel.fromJson(properties),
+          ElementType.heading => TextElementModel.fromJson(properties),
+          ElementType.textList => TextListElementModel.fromJson(properties),
+          ElementType.link => LinkElementModel.fromJson(properties),
+          ElementType.button => ButtonElementModel.fromJson(properties),
+          ElementType.box => RowElementModel.fromJson(properties),
+          ElementType.row => RowElementModel.fromJson(properties),
+          ElementType.image => ImageElementModel.fromJson(properties),
+          ElementType.video => VideoElementModel.fromJson(properties),
+          ElementType.divider => DividerElementModel.fromJson(properties),
 
-      // ElementTypes.richtext => RichTextElementModel.fromJson(properties),
-    } as T;
+          // ElementTypes.richtext => RichTextElementModel.fromJson(properties),
+        }
+        as T;
   }
 
   ElementModel copyWith({
@@ -73,7 +73,7 @@ class ElementModel {
       ElementType.textList => TextListElementModel.toHTML(properties),
       ElementType.link => LinkElementModel.toHTML(properties),
       ElementType.button => ButtonElementModel.toHTML(properties),
-      ElementType.box => BoxElementModel.toHTML(properties),
+      ElementType.box => RowElementModel.toHTML(properties),
       ElementType.row => RowElementModel.toHTML(properties),
       ElementType.image => ImageElementModel.toHTML(properties),
       ElementType.video => VideoElementModel.toHTML(properties),
@@ -89,7 +89,8 @@ class ElementModel {
       type: ElementType.fromName(map["type"]),
       padding: map['padding'] as double,
       properties: Map<String, dynamic>.from(
-          (map['properties'] as Map<String, dynamic>)),
+        (map['properties'] as Map<String, dynamic>),
+      ),
     );
   }
 

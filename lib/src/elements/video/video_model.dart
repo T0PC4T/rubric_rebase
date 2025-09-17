@@ -4,7 +4,9 @@ part 'video_model.freezed.dart';
 part 'video_model.g.dart';
 
 @freezed
-class VideoElementModel with _$VideoElementModel {
+abstract class VideoElementModel with _$VideoElementModel {
+  const VideoElementModel._();
+
   @JsonSerializable()
   const factory VideoElementModel({
     required String videoUrl,

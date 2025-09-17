@@ -1,13 +1,19 @@
+import 'dart:ui';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rubric/src/models/elements.dart';
+import 'package:rubric/src/utilities/color.dart';
 
 part 'row_model.freezed.dart';
 part 'row_model.g.dart';
 
 @freezed
-class RowElementModel with _$RowElementModel {
+abstract class RowElementModel with _$RowElementModel {
+  const RowElementModel._();
+
   @JsonSerializable()
   const factory RowElementModel({
+    @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color color,
     required List<List<Map<String, dynamic>>> elements,
     required int columns,
   }) = _RowElementModel;
@@ -24,7 +30,8 @@ class RowElementModel with _$RowElementModel {
         final element = ElementModel.fromMap(elementMap);
         elementsHtml += element.toHTML();
       }
-      columnHtml += '''
+      columnHtml +=
+          '''
         <tr style="vertical-align: top; width: ${100 / model.columns}%;">
           $elementsHtml
         </tr>

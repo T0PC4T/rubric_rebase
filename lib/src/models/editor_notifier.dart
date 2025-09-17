@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
-import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/models/canvas.dart';
 import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
@@ -23,17 +22,17 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
     super.dispose();
   }
 
-  focusElement([ElementModel? element]) {
+  void focusElement([ElementModel? element]) {
     value = value.copyWith(focused: element);
     focusNotifier.focus = element;
     notifyListeners();
   }
 
-  setPreview(bool preview) {
+  void setPreview(bool preview) {
     value = value.copyWith(focused: value.focused, previewing: preview);
   }
 
-  changeViewMode(ViewModes newValue) {
+  void changeViewMode(ViewModes newValue) {
     value = value.copyWith(focused: value.focused, viewMode: newValue);
   }
 
@@ -41,17 +40,13 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
     return value.focused?.id == element.id;
   }
 
-  setDrag(ElementType type) {
-    value = value.copyWith(focused: value.focused, dragging: type);
-  }
-
   double scrollOffset = 0;
-  setScrollOffset(double newOffset) {
+  void setScrollOffset(double newOffset) {
     scrollOffset = newOffset;
   }
 
   static const int maxSteps = 5;
-  saveStep(CanvasModel step) {
+  void saveStep(CanvasModel step) {
     List<CanvasModel> steps;
     if (value.undoIndex != value.steps.length) {
       // we have started to use unto so we need to burn the tree forward.
@@ -77,19 +72,13 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
   bool get canRedo => value.undoIndex < value.steps.length - 1;
 
   CanvasModel redo() {
-    value = value.copyWith(
-      focused: null,
-      undoIndex: value.undoIndex + 1,
-    );
+    value = value.copyWith(focused: null, undoIndex: value.undoIndex + 1);
 
     return value.steps[value.undoIndex];
   }
 
   CanvasModel undo() {
-    value = value.copyWith(
-      focused: null,
-      undoIndex: value.undoIndex - 1,
-    );
+    value = value.copyWith(focused: null, undoIndex: value.undoIndex - 1);
 
     return value.steps[value.undoIndex];
   }

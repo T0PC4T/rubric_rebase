@@ -1,4 +1,12 @@
 targets:
   $default:
     sources:
+      # This is the line that was missing
+      - "$package$"
       - "lib/**"
+    builders:
+      json_serializable:
+        options:
+          include_if_null: false
+          explicit_to_json: true
+

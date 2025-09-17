@@ -4,7 +4,7 @@ version: 0.0.2
 homepage:
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
   flutter: ">=3.27.0"
 
 dependencies:
@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_colorpicker: ^1.1.0
-  freezed_annotation: ^2.4.4
+  freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   url_launcher: ^6.3.1
   uuid: ^4.5.1
@@ -25,9 +25,17 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
-  build_runner: ^2.4.14
-  freezed: ^2.5.8
-  json_serializable: ^6.9.3
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.15
+  custom_lint: ^0.8.0
+  json_serializable: ^6.9.0
+  freezed: ^3.0.6
+  envied_generator: ^1.1.1
+  mocktail: ^1.0.4
+  firebase_auth_platform_interface: ^8.1.1
+  firebase_core_platform_interface: ^6.0.0
+  plugin_platform_interface: ^2.1.8
+  analyzer: ^8.1.1
+  analyzer_plugin: ^0.13.7
 
 flutter:

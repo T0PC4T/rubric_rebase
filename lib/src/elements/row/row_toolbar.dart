@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
-import 'package:rubric/src/components/atoms/text.dart';
+import 'package:rubric/src/components/atoms/popup.dart';
+import 'package:rubric/src/components/molecules/color_picker.dart';
+import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
@@ -19,8 +21,28 @@ class RowTooltipWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          width: style.radius,
+        SizedBox(width: style.radius),
+        Padding(
+          padding: RubricEditorStyle.padding,
+          child: RubricColorButton(
+            color: properties.color,
+            onTap: () async {
+              final newColor = await PopupWidget.showPopup<Color>(context, (
+                closeWith,
+              ) {
+                return RubricColorPicker(
+                  onComplete: closeWith,
+                  color: properties.color,
+                );
+              });
+              if (newColor != null) {
+                editorState.canvas.updateProperties<RowElementModel>(
+                  element,
+                  (properties) => properties.copyWith(color: newColor).toJson(),
+                );
+              }
+            },
+          ),
         ),
         RubricToolbarDropdown<int>(
           onUpdate: (value) {
@@ -30,27 +52,23 @@ class RowTooltipWidget extends StatelessWidget {
                   if (properties.elements.length > i)
                     properties.elements[i]
                   else
-                    []
+                    [],
               ];
               editorState.canvas.updateProperties<RowElementModel>(
-                  element,
-                  (properties) => properties
-                      .copyWith(elements: newColumns, columns: newValue)
-                      .toJson());
+                element,
+                (properties) => properties
+                    .copyWith(elements: newColumns, columns: newValue)
+                    .toJson(),
+              );
             }
           },
           items: [
-            for (var i = 2; i < 5; i++)
-              RubricDropdownMenuItem(
-                value: i,
-                text: "$i Columns",
-              ),
+            for (var i = 1; i < 5; i++)
+              RubricDropdownMenuItem(value: i, text: "$i Columns"),
           ],
           child: RubricText("Number of Columns"),
         ),
-        ToolbarUniversalIcons(
-          element: element,
-        ),
+        ToolbarUniversalIcons(element: element),
       ],
     );
   }

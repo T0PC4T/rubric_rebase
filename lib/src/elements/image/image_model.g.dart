@@ -6,9 +6,8 @@ part of 'image_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ImageElementModelImpl _$$ImageElementModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ImageElementModelImpl(
+_ImageElementModel _$ImageElementModelFromJson(Map<String, dynamic> json) =>
+    _ImageElementModel(
       imageUrl: json['imageUrl'] as String,
       borderRadius: (json['borderRadius'] as num?)?.toDouble() ?? 0,
       fit: json['fit'] as String? ?? ImageFits.contain,
@@ -16,8 +15,7 @@ _$ImageElementModelImpl _$$ImageElementModelImplFromJson(
           (json['aspectRatio'] as num?)?.toDouble() ?? AspectRatios.widescreen,
     );
 
-Map<String, dynamic> _$$ImageElementModelImplToJson(
-        _$ImageElementModelImpl instance) =>
+Map<String, dynamic> _$ImageElementModelToJson(_ImageElementModel instance) =>
     <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'borderRadius': instance.borderRadius,

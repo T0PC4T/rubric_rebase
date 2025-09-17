@@ -73,7 +73,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
               }
             },
             child: ListView.builder(
-              itemCount: max(canvas.elements.length, 1),
+              itemCount: canvas.elements.length + 1,
               shrinkWrap: true,
               addAutomaticKeepAlives: false,
               addRepaintBoundaries: false,
@@ -85,7 +85,7 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
                   horizontal: (constraints.maxWidth - viewMode.width) / 2 +
                       canvas.settings.spacing / 2),
               itemBuilder: (context, index) {
-                if (canvas.elements.isEmpty && index == 0) {
+                if (index == canvas.elements.length) {
                   return EditorEmptyInserterWidget();
                 }
                 return EditorElementWidget(

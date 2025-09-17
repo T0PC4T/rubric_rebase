@@ -6,16 +6,15 @@ part of 'divider_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DividerElementModelImpl _$$DividerElementModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$DividerElementModelImpl(
+_DividerElementModel _$DividerElementModelFromJson(Map<String, dynamic> json) =>
+    _DividerElementModel(
       color: colorFromJson((json['color'] as num).toInt()),
       weight: (json['weight'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$$DividerElementModelImplToJson(
-        _$DividerElementModelImpl instance) =>
-    <String, dynamic>{
-      'color': colorToJson(instance.color),
-      'weight': instance.weight,
-    };
+Map<String, dynamic> _$DividerElementModelToJson(
+  _DividerElementModel instance,
+) => <String, dynamic>{
+  'color': ?colorToJson(instance.color),
+  'weight': instance.weight,
+};

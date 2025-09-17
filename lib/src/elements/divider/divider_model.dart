@@ -7,7 +7,9 @@ part 'divider_model.freezed.dart';
 part 'divider_model.g.dart';
 
 @freezed
-class DividerElementModel with _$DividerElementModel {
+abstract class DividerElementModel with _$DividerElementModel {
+  const DividerElementModel._();
+
   @JsonSerializable()
   const factory DividerElementModel({
     @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color color,

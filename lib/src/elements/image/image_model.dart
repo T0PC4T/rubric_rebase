@@ -5,7 +5,9 @@ part 'image_model.freezed.dart';
 part 'image_model.g.dart';
 
 @freezed
-class ImageElementModel with _$ImageElementModel {
+abstract class ImageElementModel with _$ImageElementModel {
+  const ImageElementModel._();
+
   @JsonSerializable()
   const factory ImageElementModel({
     required String imageUrl,

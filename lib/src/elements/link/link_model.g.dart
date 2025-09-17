@@ -6,9 +6,8 @@ part of 'link_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$LinkElementModelImpl _$$LinkElementModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$LinkElementModelImpl(
+_LinkElementModel _$LinkElementModelFromJson(Map<String, dynamic> json) =>
+    _LinkElementModel(
       text: json['text'] as String,
       isBold: json['isBold'] as bool? ?? false,
       isItalic: json['isItalic'] as bool? ?? false,
@@ -19,8 +18,7 @@ _$LinkElementModelImpl _$$LinkElementModelImplFromJson(
       link: json['link'] as String,
     );
 
-Map<String, dynamic> _$$LinkElementModelImplToJson(
-        _$LinkElementModelImpl instance) =>
+Map<String, dynamic> _$LinkElementModelToJson(_LinkElementModel instance) =>
     <String, dynamic>{
       'text': instance.text,
       'isBold': instance.isBold,
@@ -28,6 +26,6 @@ Map<String, dynamic> _$$LinkElementModelImplToJson(
       'isUnderline': instance.isUnderline,
       'alignment': instance.alignment,
       'size': instance.size,
-      'color': colorToJson(instance.color),
+      'color': ?colorToJson(instance.color),
       'link': instance.link,
     };
