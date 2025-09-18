@@ -7,10 +7,7 @@ import 'package:rubric/src/rubric_editor/viewer/items/handler.dart';
 
 class RubricReader extends StatefulWidget {
   final CanvasModel canvasModel;
-  const RubricReader({
-    super.key,
-    required this.canvasModel,
-  });
+  const RubricReader({super.key, required this.canvasModel});
 
   @override
   State<RubricReader> createState() => _RubricReaderState();
@@ -26,41 +23,26 @@ class _RubricReaderState extends State<RubricReader> {
   Widget build(BuildContext context) {
     return Container(
       color: widget.canvasModel.settings.canvasColor,
-      child: LayoutBuilder(builder: (context, constraints) {
-        final viewMode = constraints.maxWidth <= ViewModes.mobile.width
-            ? ViewModes.mobile
-            : ViewModes.desktop;
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final viewMode = constraints.maxWidth <= ViewModes.mobile.width ? ViewModes.mobile : ViewModes.desktop;
 
-        return ListView.builder(
-          itemCount: widget.canvasModel.elements.length,
-          shrinkWrap: true,
-          addAutomaticKeepAlives: false,
-          addRepaintBoundaries: false,
-          addSemanticIndexes: false,
-          padding: EdgeInsets.symmetric(
+          return ListView.builder(
+            itemCount: widget.canvasModel.elements.length,
+            shrinkWrap: true,
+            addAutomaticKeepAlives: false,
+            addRepaintBoundaries: false,
+            addSemanticIndexes: false,
+            padding: EdgeInsets.symmetric(
               vertical: max(widget.canvasModel.settings.spacing / 2, 50),
-              horizontal: (constraints.maxWidth - viewMode.width) / 2 +
-                  widget.canvasModel.settings.spacing / 2),
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return Padding(
-                padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: widget.canvasModel.settings.spacing,
-                    vertical: widget.canvasModel.settings.spacing),
-                child: ReaderElementWidget(
-                  canvas: widget.canvasModel,
-                  element: widget.canvasModel.elements[index],
-                ),
-              );
-            }
-
-            return ReaderElementWidget(
-              canvas: widget.canvasModel,
-              element: widget.canvasModel.elements[index],
-            );
-          },
-        );
-      }),
+              horizontal: (constraints.maxWidth - viewMode.width) / 2 + widget.canvasModel.settings.spacing / 2,
+            ),
+            itemBuilder: (context, index) {
+              return ReaderElementWidget(canvas: widget.canvasModel, element: widget.canvasModel.elements[index]);
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -146,7 +146,7 @@ Map<String, dynamic> generateDefaultProperties(ElementType elementType) {
   return switch (elementType) {
     ElementType.row => RowElementModel(color: Colors.transparent, elements: [[], []], columns: 2).toJson(),
     ElementType.box => RowElementModel(
-      color: const Color.fromARGB(255, 228, 230, 232),
+      color: const Color.fromARGB(255, 0, 76, 138),
       elements: [[]],
       columns: 1,
     ).toJson(),

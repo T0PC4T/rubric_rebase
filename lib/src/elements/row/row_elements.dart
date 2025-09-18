@@ -80,7 +80,7 @@ class RowReaderElement extends StatelessWidget {
               for (var column in columns)
                 Flexible(
                   child: Column(
-                    spacing: canvas.settings.spacing,
+                    // spacing: canvas.settings.spacing,
                     children: [
                       for (var element in column)
                         ReaderElementWidget(canvas: canvas, element: ElementModel.fromMap(element)),

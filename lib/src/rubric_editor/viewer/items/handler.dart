@@ -48,8 +48,8 @@ class _EditorElementWidgetState extends State<EditorElementWidget> {
   }
 
   Widget renderWidget() {
-    return Padding(
-      padding: EdgeInsets.all(widget.element.padding + editorState.canvas.value.settings.spacing / 2),
+    return ElementPadder(
+      element: widget.element,
       child: widget.element.type.editorBuilder(element: widget.element),
     );
   }
@@ -238,6 +238,7 @@ class _EditorEmptyInserterWidgetState extends State<EditorEmptyInserterWidget> {
               if (candidateData.isNotEmpty) {
                 return Container(
                   height: 250,
+                  margin: EdgeInsets.all(borderWidth),
                   width: double.infinity,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
@@ -248,12 +249,13 @@ class _EditorEmptyInserterWidgetState extends State<EditorEmptyInserterWidget> {
               }
               return Container(
                 decoration: BoxDecoration(
-                  border: Border.all(width: borderWidth, color: editorState.style.fore7),
+                  border: Border.all(width: borderWidth, color: editorState.style.fore9),
                 ),
+                margin: EdgeInsets.all(borderWidth),
                 height: 250,
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: Text("Drag Element Here", style: TextStyle(fontSize: 32, color: editorState.style.fore7)),
+                child: Text("Drag element here", style: TextStyle(fontSize: 32, color: editorState.style.fore9)),
               );
             },
           ),
@@ -271,9 +273,27 @@ class ReaderElementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(element.padding + canvas.settings.spacing / 2),
+    return ElementPadder(
+      element: element,
       child: element.type.readerBuilder(element: element, canvas: canvas),
+    );
+  }
+}
+
+class ElementPadder extends StatelessWidget {
+  final Widget child;
+  final ElementModel element;
+  const ElementPadder({super.key, required this.child, required this.element});
+
+  @override
+  Widget build(BuildContext context) {
+    final editorState = RubricEditorState.of(context);
+
+    return Padding(
+      padding: element.type.category == ElementCategories.flex
+          ? EdgeInsets.zero
+          : EdgeInsets.symmetric(vertical: element.padding + editorState.canvas.value.settings.spacing / 2),
+      child: child,
     );
   }
 }
