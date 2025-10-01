@@ -22,8 +22,7 @@ class RubricEditor extends StatefulWidget {
   final CanvasModel? canvas;
   final Function([CanvasModel? canvas]) onSave;
   final Function() onDiscard;
-  final Future<String> Function(Uint8List bytes, {String? name, String? type})
-      bytesToURL;
+  final Future<String> Function(Uint8List bytes, {String? name, String? type}) bytesToURL;
   const RubricEditor({
     super.key,
     required this.style,
@@ -65,7 +64,7 @@ class RubricEditorState extends State<RubricEditor> {
   }
 
   ScrollController? _scrollController;
-  registerScrollController(ScrollController controller) {
+  void registerScrollController(ScrollController controller) {
     _scrollController = controller;
   }
 
@@ -83,79 +82,74 @@ class RubricEditorState extends State<RubricEditor> {
     super.dispose();
   }
 
-  _editorListener() {
+  void _editorListener() {
     if (edits.value.focused == null) {
       clearOverlays();
       keyboardFocus.requestFocus();
     }
   }
 
-  save() {
+  void save() {
     widget.onSave(canvas.value);
   }
 
-  discard() {
+  void discard() {
     widget.onDiscard();
   }
 
-  undo() {
+  void undo() {
     if (edits.canUndo) {
       canvas.value = edits.undo().copyWith();
     }
   }
 
-  redo() {
+  void redo() {
     if (edits.canRedo) {
       canvas.value = edits.redo().copyWith();
     }
   }
 
-  _canvasListener() {
+  void _canvasListener() {
     // ? if this is false, the the last change was from an undo.
     if (edits.currentUndo != canvas.value) {
       edits.saveStep(canvas.clone());
     }
   }
 
-  pushOverlay(Widget child, {int? removeToLength}) {
+  void pushOverlay(Widget child, {int? removeToLength}) {
     setState(() {
-      overlays = [
-        ...overlays.sublist(
-            0, math.min(overlays.length, removeToLength ?? overlays.length)),
-        child
-      ];
+      overlays = [...overlays.sublist(0, math.min(overlays.length, removeToLength ?? overlays.length)), child];
     });
   }
 
-  popToLength(int length) {
+  void popToLength(int length) {
     setState(() {
       overlays = overlays.sublist(0, length);
     });
   }
 
-  popOverlay() {
+  void popOverlay() {
     popToLength(overlays.length - 1);
   }
 
-  clearOverlays() {
+  void clearOverlays() {
     setState(() {
       overlays = <Widget>[];
     });
   }
 
-  downloadHTML() {
+  void downloadHTML() {
     final htmlContent = canvas.value.toHTML();
-    downloadFile(Uint8List.fromList(htmlContent.codeUnits), 'text/html',
-        '${canvas.value.settings.name}.html');
+    downloadFile(Uint8List.fromList(htmlContent.codeUnits), 'text/html', '${canvas.value.settings.name}.html');
   }
 
   // ? VIEW MODES
-  setPreview(bool preview) {
+  void setPreview(bool preview) {
     edits.setPreview(preview);
     clearOverlays();
   }
 
-  changeViewMode(ViewModes newValue) {
+  void changeViewMode(ViewModes newValue) {
     if (edits.value.viewMode == newValue) {
       return;
     }
@@ -164,20 +158,15 @@ class RubricEditorState extends State<RubricEditor> {
     });
   }
 
-  showToolbar(
-      ElementModel element, Widget Function(ElementModel element) builder) {
-    pushOverlay(
-      ElementToolbarWidget(element: element, builder: builder),
-      removeToLength: 0,
-    );
+  void showToolbar(ElementModel element, Widget Function(ElementModel element) builder) {
+    pushOverlay(ElementToolbarWidget(element: element, builder: builder), removeToLength: 0);
   }
 
   static RubricEditorState of(BuildContext ctx) {
-    if (ctx.findAncestorStateOfType<RubricEditorState>()
-        case RubricEditorState state) {
+    if (ctx.findAncestorStateOfType<RubricEditorState>() case RubricEditorState state) {
       return state;
     }
-    throw AssertionError("RubricEditorState not found");
+    throw AssertionError("There was an error: search => RubricEditorState not found");
   }
 
   @override
@@ -188,29 +177,20 @@ class RubricEditorState extends State<RubricEditor> {
         fit: StackFit.expand,
         children: [
           DefaultTextStyle(
-            style: TextStyle(
-              color: style.fore,
-              fontSize: style.fontSize,
-              fontWeight: style.fontWeight,
-            ),
+            style: TextStyle(color: style.fore, fontSize: style.fontSize, fontWeight: style.fontWeight),
             child: Column(
               children: [
                 NavbarWidget(),
                 if (edits.value.previewing)
                   Expanded(
                     child: Container(
-                        color: edits.value.viewMode == ViewModes.mobile
-                            ? style.fore
-                            : canvas.value.settings.canvasColor,
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          width: edits.value.viewMode == ViewModes.mobile
-                              ? ViewModes.mobile.width
-                              : double.infinity,
-                          child: RubricReader(
-                            canvasModel: canvas.value,
-                          ),
-                        )),
+                      color: edits.value.viewMode == ViewModes.mobile ? style.fore : canvas.value.settings.canvasColor,
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: edits.value.viewMode == ViewModes.mobile ? ViewModes.mobile.width : double.infinity,
+                        child: RubricReader(canvasModel: canvas.value),
+                      ),
+                    ),
                   )
                 else
                   Expanded(

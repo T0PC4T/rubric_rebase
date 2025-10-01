@@ -49,6 +49,7 @@ class _EditorElementWidgetState extends State<EditorElementWidget> {
 
   Widget renderWidget() {
     return ElementPadder(
+      canvas: editorState.canvas.value,
       element: widget.element,
       child: widget.element.type.editorBuilder(element: widget.element),
     );
@@ -274,6 +275,7 @@ class ReaderElementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElementPadder(
+      canvas: canvas,
       element: element,
       child: element.type.readerBuilder(element: element, canvas: canvas),
     );
@@ -281,18 +283,17 @@ class ReaderElementWidget extends StatelessWidget {
 }
 
 class ElementPadder extends StatelessWidget {
+  final CanvasModel canvas;
   final Widget child;
   final ElementModel element;
-  const ElementPadder({super.key, required this.child, required this.element});
+  const ElementPadder({super.key, required this.child, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {
-    final editorState = RubricEditorState.of(context);
-
     return Padding(
       padding: element.type.category == ElementCategories.flex
           ? EdgeInsets.zero
-          : EdgeInsets.symmetric(vertical: element.padding + editorState.canvas.value.settings.spacing / 2),
+          : EdgeInsets.symmetric(vertical: element.padding + canvas.settings.spacing / 2),
       child: child,
     );
   }

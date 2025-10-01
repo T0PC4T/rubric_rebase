@@ -26,12 +26,18 @@ class RowEditorElementState extends FocusableState<RowEditorElement> {
   @override
   Widget build(BuildContext context) {
     final editor = RubricEditorState.of(context);
+    final canvas = editor.canvas.value;
     final rowElement = editor.canvas.getElement(widget.element.id);
     final properties = rowElement.getProperties<RowElementModel>();
     final columns = properties.elements;
 
-    return ColoredBox(
+    return Container(
       color: properties.color,
+      margin: EdgeInsets.symmetric(vertical: properties.color == Colors.transparent ? 0 : canvas.settings.spacing / 2),
+      padding: EdgeInsets.symmetric(
+        horizontal: properties.color == Colors.transparent ? 0 : canvas.settings.spacing,
+        vertical: properties.color == Colors.transparent ? 0 : canvas.settings.spacing / 2,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: editor.canvas.value.settings.spacing,
@@ -68,8 +74,15 @@ class RowReaderElement extends StatelessWidget {
     final columns = properties.elements;
     return LayoutBuilder(
       builder: (context, constraints) {
-        return ColoredBox(
+        return Container(
           color: properties.color,
+          margin: EdgeInsets.symmetric(
+            vertical: properties.color == Colors.transparent ? 0 : canvas.settings.spacing / 2,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: properties.color == Colors.transparent ? 0 : canvas.settings.spacing,
+            vertical: properties.color == Colors.transparent ? 0 : canvas.settings.spacing / 2,
+          ),
           child: Flex(
             spacing: canvas.settings.spacing,
             direction: constraints.maxWidth <= ViewModes.mobile.width + 100 ? Axis.vertical : Axis.horizontal,

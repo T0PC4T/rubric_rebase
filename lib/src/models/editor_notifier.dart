@@ -45,26 +45,19 @@ class EditorNotifier extends ValueNotifier<CanvasEditingModel> {
     scrollOffset = newOffset;
   }
 
-  static const int maxSteps = 5;
+  static const int maxSteps = 8;
   void saveStep(CanvasModel step) {
     List<CanvasModel> steps;
     if (value.undoIndex != value.steps.length) {
       // we have started to use unto so we need to burn the tree forward.
       steps = [...value.steps.sublist(0, value.undoIndex + 1), step];
     } else {
-      steps = [
-        ...value.steps.sublist(0, math.min(value.steps.length, 3)),
-        step,
-      ];
+      steps = [...value.steps.sublist(0, math.min(value.steps.length, 3)), step];
     }
     if (steps.length > maxSteps) {
       steps = steps.sublist(steps.length - maxSteps);
     }
-    value = value.copyWith(
-      focused: value.focused,
-      steps: steps,
-      undoIndex: steps.length - 1,
-    );
+    value = value.copyWith(focused: value.focused, steps: steps, undoIndex: steps.length - 1);
   }
 
   CanvasModel get currentUndo => value.steps[value.undoIndex];
