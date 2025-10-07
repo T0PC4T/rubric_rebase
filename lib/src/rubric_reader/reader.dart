@@ -35,7 +35,8 @@ class _RubricReaderState extends State<RubricReader> {
             addSemanticIndexes: false,
             padding: EdgeInsets.symmetric(
               vertical: max(widget.canvasModel.settings.spacing / 2, 50),
-              horizontal: (constraints.maxWidth - viewMode.width) / 2 + widget.canvasModel.settings.spacing / 2,
+              horizontal:
+                  max(25, (constraints.maxWidth - viewMode.width) / 2) + widget.canvasModel.settings.spacing / 2,
             ),
             itemBuilder: (context, index) {
               return ReaderElementWidget(canvas: widget.canvasModel, element: widget.canvasModel.elements[index]);

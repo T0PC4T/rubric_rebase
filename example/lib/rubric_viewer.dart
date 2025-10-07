@@ -29,7 +29,7 @@ class RubricLessonReaderWidget extends StatefulWidget {
 final _textStyle = TextStyle(
   color: light,
   fontSize: 18,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.normal,
 );
 
 class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
@@ -64,7 +64,7 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
                     children: [
                       Flexible(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: const EdgeInsets.only(left: 26.0, right: 16),
                           child: Text(
                             map?["name"] ?? "Untitled",
                             style: _textStyle,
