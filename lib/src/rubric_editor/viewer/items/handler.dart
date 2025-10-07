@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/elements/elements.dart';
+import 'package:rubric/src/models/editor_models.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/viewer/items/right_click_menu.dart';
 
 const borderWidth = 5.0;
+
+final globalKeyStore = {};
+dynamic getKey(ElementModel element) {
+  if (globalKeyStore.containsKey(element.id)) {
+    return globalKeyStore[element.id];
+  }
+  final key = GlobalKey();
+  globalKeyStore[element.id] = key;
+  return key;
+}
 
 class ElementDraggingWidth extends StatelessWidget {
   final ElementType elementType;
@@ -58,129 +69,136 @@ class _EditorElementWidgetState extends State<EditorElementWidget> {
   @override
   Widget build(BuildContext context) {
     editorState = RubricEditorState.of(context);
+    final draggable = !(widget.element.type.focusable && editorState.edits.isFocused(widget.element));
+    return draggable
+        ? Draggable(
+            dragAnchorStrategy: pointerDragAnchorStrategy,
+            data: widget.element,
+            feedback: ElementDraggingWidth(elementType: widget.element.type, style: editorState.style),
+            onDragStarted: () {},
+            child: buildWidget(),
+          )
+        : buildWidget();
+  }
 
-    return Draggable(
-      dragAnchorStrategy: pointerDragAnchorStrategy,
-      data: widget.element,
-      feedback: ElementDraggingWidth(elementType: widget.element.type, style: editorState.style),
-      onDragStarted: () {},
-      child: ValueListenableBuilder(
-        valueListenable: editorState.edits,
-        builder: (context, value, child) {
-          bool focused = editorState.edits.value.focused == widget.element;
-          return MouseRegion(
-            onEnter: (event) {
-              setState(() {
-                _hovered = true;
+  ValueListenableBuilder<CanvasEditingModel> buildWidget() {
+    return ValueListenableBuilder(
+      key: getKey(widget.element),
+      valueListenable: editorState.edits,
+      builder: (context, value, child) {
+        bool focused = editorState.edits.value.focused == widget.element;
+        return MouseRegion(
+          onEnter: (event) {
+            setState(() {
+              _hovered = true;
+            });
+          },
+          onExit: (event) {
+            setState(() {
+              _hovered = false;
+            });
+          },
+          child: DragTarget<ElementModel>(
+            onMove: (details) {
+              final box = context.findRenderObject() as RenderBox;
+              final offset = box.localToGlobal(Offset.zero);
+              if (details.offset.dy < (offset.dy + box.size.height / 2)) {
+                if (above == false) {
+                  setState(() {
+                    above = true;
+                  });
+                }
+              } else {
+                if (above == true) {
+                  setState(() {
+                    above = false;
+                  });
+                }
+              }
+            },
+            onWillAcceptWithDetails: (details) {
+              // You cannot nest rows
+              if (widget.parent != null && details.data.type.category == ElementCategories.flex) {
+                return false;
+              }
+              if (widget.element.id == details.data.id) {
+                return false;
+              }
+              return true;
+            },
+            onAcceptWithDetails: (details) {
+              editorState.canvas.deleteElement(details.data);
+              editorState.canvas.dragInElement(
+                insert: details.data,
+                exiting: widget.element,
+                above: above,
+                parent: widget.parent,
+              );
+              // Select new element after a few frames have passed
+              Future.delayed(Duration(milliseconds: 10)).then((value) {
+                editorState.edits.focusElement(details.data);
               });
             },
-            onExit: (event) {
-              setState(() {
-                _hovered = false;
-              });
-            },
-            child: DragTarget<ElementModel>(
-              onMove: (details) {
-                final box = context.findRenderObject() as RenderBox;
-                final offset = box.localToGlobal(Offset.zero);
-                if (details.offset.dy < (offset.dy + box.size.height / 2)) {
-                  if (above == false) {
-                    setState(() {
-                      above = true;
-                    });
-                  }
-                } else {
-                  if (above == true) {
-                    setState(() {
-                      above = false;
-                    });
-                  }
-                }
-              },
-              onWillAcceptWithDetails: (details) {
-                // You cannot nest rows
-                if (widget.parent != null && details.data.type.category == ElementCategories.flex) {
-                  return false;
-                }
-                if (widget.element.id == details.data.id) {
-                  return false;
-                }
-                return true;
-              },
-              onAcceptWithDetails: (details) {
-                editorState.canvas.deleteElement(details.data);
-                editorState.canvas.dragInElement(
-                  insert: details.data,
-                  exiting: widget.element,
-                  above: above,
-                  parent: widget.parent,
-                );
-                // Select new element after a few frames have passed
-                Future.delayed(Duration(milliseconds: 10)).then((value) {
-                  editorState.edits.focusElement(details.data);
-                });
-              },
-              builder: (context, candidateData, rejectedData) {
-                if (candidateData.isNotEmpty) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        left: BorderSide(width: borderWidth, color: Colors.transparent),
-                        right: BorderSide(width: borderWidth, color: Colors.transparent),
-                        top: above
-                            ? BorderSide(width: borderWidth, color: editorState.style.theme)
-                            : BorderSide(width: borderWidth, color: Colors.transparent),
-                        bottom: above
-                            ? BorderSide(width: borderWidth, color: Colors.transparent)
-                            : BorderSide(width: borderWidth, color: editorState.style.theme),
-                      ),
+            builder: (context, candidateData, rejectedData) {
+              if (candidateData.isNotEmpty) {
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(width: borderWidth, color: Colors.transparent),
+                      right: BorderSide(width: borderWidth, color: Colors.transparent),
+                      top: above
+                          ? BorderSide(width: borderWidth, color: editorState.style.theme)
+                          : BorderSide(width: borderWidth, color: Colors.transparent),
+                      bottom: above
+                          ? BorderSide(width: borderWidth, color: Colors.transparent)
+                          : BorderSide(width: borderWidth, color: editorState.style.theme),
                     ),
-                    child: renderWidget(),
-                  );
-                }
-                return GestureDetector(
-                  onTap: () {
-                    editorState.edits.focusElement(widget.element);
-                  },
-                  // on Right click
-                  onSecondaryTapUp: (details) {
-                    editorState.pushOverlay(
-                      RightClickMenu(offset: details.globalPosition, editorState: editorState, element: widget.element),
-                      removeToLength: 1,
-                    );
-                  },
-
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: switch ((focused, _hovered, widget.element.type.category)) {
-                        (_, true, ElementCategories.flex) => editorState.style.themealt4.withAlpha(25),
-                        (_, false, ElementCategories.flex) => Colors.transparent,
-                        (_, true, _) => editorState.style.theme4.withAlpha(25),
-                        (_, false, _) => Colors.transparent,
-                      },
-                      border: Border.all(
-                        color: switch ((focused, _hovered, widget.element.type.category)) {
-                          (true, true, ElementCategories.flex) => editorState.style.themealt,
-                          (true, false, ElementCategories.flex) => editorState.style.themealt2,
-                          (false, true, ElementCategories.flex) => editorState.style.themealt7,
-                          (false, false, ElementCategories.flex) => Colors.transparent,
-                          (true, true, _) => editorState.style.theme,
-                          (true, false, _) => editorState.style.theme2,
-                          (false, true, _) => editorState.style.theme7,
-                          (false, false, _) => Colors.transparent,
-                        },
-                        width: borderWidth,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    child: renderWidget(),
                   ),
+                  child: renderWidget(),
                 );
-              },
-            ),
-          );
-        },
-      ),
+              }
+              return GestureDetector(
+                onTap: () {
+                  editorState.edits.focusElement(widget.element);
+                },
+                // on Right click
+                onSecondaryTapUp: (details) {
+                  editorState.pushOverlay(
+                    RightClickMenu(offset: details.globalPosition, editorState: editorState, element: widget.element),
+                    removeToLength: 1,
+                  );
+                },
+
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: switch ((focused, _hovered, widget.element.type.category)) {
+                      (_, true, ElementCategories.flex) => editorState.style.themealt4.withAlpha(25),
+                      (_, false, ElementCategories.flex) => Colors.transparent,
+                      (_, true, _) => editorState.style.theme4.withAlpha(25),
+                      (_, false, _) => Colors.transparent,
+                    },
+                    border: Border.all(
+                      color: switch ((focused, _hovered, widget.element.type.category)) {
+                        (true, true, ElementCategories.flex) => editorState.style.themealt,
+                        (true, false, ElementCategories.flex) => editorState.style.themealt2,
+                        (false, true, ElementCategories.flex) => editorState.style.themealt7,
+                        (false, false, ElementCategories.flex) => Colors.transparent,
+                        (true, true, _) => editorState.style.theme,
+                        (true, false, _) => editorState.style.theme2,
+                        (false, true, _) => editorState.style.theme7,
+                        (false, false, _) => Colors.transparent,
+                      },
+                      width: borderWidth,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  child: renderWidget(),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

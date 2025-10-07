@@ -33,8 +33,8 @@ enum ElementType {
   heading(
     "Heading",
     ElementCategories.text,
-
     Icons.text_fields_rounded,
+    focusable: true,
     editorBuilder: TextEditorElement.header,
     readerBuilder: TextReaderWidget.new,
   ),
@@ -42,6 +42,7 @@ enum ElementType {
     "Body",
     ElementCategories.text,
     Icons.text_snippet_outlined,
+    focusable: true,
     editorBuilder: TextEditorElement.new,
     readerBuilder: TextReaderWidget.new,
   ),
@@ -56,6 +57,7 @@ enum ElementType {
     "Link",
     ElementCategories.interactive,
     Icons.link,
+    focusable: true,
     editorBuilder: LinkEditorElement.new,
     readerBuilder: LinkReaderWidget.new,
   ),
@@ -63,6 +65,7 @@ enum ElementType {
     "Button",
     ElementCategories.interactive,
     Icons.ads_click_rounded,
+    focusable: true,
     editorBuilder: ButtonEditorElement.new,
     readerBuilder: ButtonReaderWidget.new,
   ),
@@ -111,12 +114,20 @@ enum ElementType {
   );
 
   final String title;
+  final bool focusable;
   final ElementCategories category;
   final IconData icon;
   final ElementEditorBuilderFunction editorBuilder;
   final ElementBuilderFunction readerBuilder;
 
-  const ElementType(this.title, this.category, this.icon, {required this.editorBuilder, required this.readerBuilder});
+  const ElementType(
+    this.title,
+    this.category,
+    this.icon, {
+    this.focusable = false,
+    required this.editorBuilder,
+    required this.readerBuilder,
+  });
 
   // from name function
   static ElementType fromName(String name) {
