@@ -135,7 +135,7 @@ class _CompleteButtonWidgetState extends State<CompleteButtonWidget> {
           width: size.width > 600 ? 200 : 60,
           child: size.width > 600
               ? Text("Complete Lesson", style: _textStyle)
-              : Icon(Icons.done, color: Colors.white, size: 25),
+              : Icon(Icons.done, color: Colors.white, size: 23),
         ),
       ),
     );
