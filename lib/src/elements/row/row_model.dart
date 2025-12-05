@@ -16,6 +16,7 @@ abstract class RowElementModel with _$RowElementModel {
     @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color color,
     required List<List<Map<String, dynamic>>> elements,
     required int columns,
+    @Default('start') String crossAxisAlignment,
   }) = _RowElementModel;
 
   factory RowElementModel.fromJson(Map<String, dynamic> json) =>

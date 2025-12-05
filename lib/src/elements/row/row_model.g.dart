@@ -17,6 +17,7 @@ _RowElementModel _$RowElementModelFromJson(Map<String, dynamic> json) =>
           )
           .toList(),
       columns: (json['columns'] as num).toInt(),
+      crossAxisAlignment: json['crossAxisAlignment'] as String? ?? 'start',
     );
 
 Map<String, dynamic> _$RowElementModelToJson(_RowElementModel instance) =>
@@ -24,4 +25,5 @@ Map<String, dynamic> _$RowElementModelToJson(_RowElementModel instance) =>
       'color': ?colorToJson(instance.color),
       'elements': instance.elements,
       'columns': instance.columns,
+      'crossAxisAlignment': instance.crossAxisAlignment,
     };

@@ -39,6 +39,7 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
   void initState() {
     final firestore = FirebaseFirestore.instance;
     future = firestore.collection("modules").doc(widget.moduleID).snapshots();
+
     super.initState();
   }
 
@@ -82,6 +83,18 @@ class RubricLessonReaderWidgetState extends State<RubricLessonReaderWidget> {
                     canvasModel: map?["lesson_data"] == null
                         ? CanvasModel()
                         : CanvasModel.fromJson(map!["lesson_data"]),
+
+                    onFinished: Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      height: 62,
+
+                      child: CompleteButtonWidget(
+                        onComplete: widget.onComplete,
+                      ),
+                    ),
                   ),
                 ),
               ],

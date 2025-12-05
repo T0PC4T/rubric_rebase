@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
+import 'package:rubric/src/components/atoms/divider.dart';
 import 'package:rubric/src/components/atoms/popup.dart';
 import 'package:rubric/src/components/molecules/color_picker.dart';
 import 'package:rubric/src/components/shared.dart';
+import 'package:rubric/src/elements/base/enums.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_editor/toolbar/dropdown.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
+import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class RowTooltipWidget extends StatelessWidget {
   final ElementModel element;
@@ -67,6 +70,35 @@ class RowTooltipWidget extends StatelessWidget {
               RubricDropdownMenuItem(value: i, text: "$i Columns"),
           ],
           child: RubricText("Number of Columns"),
+        ),
+        RubricVerticleDivider(),
+        RubricToolbarDropdown<String>(
+          onUpdate: (value) {
+            if (value case String newValue) {
+              editorState.canvas.updateProperties<RowElementModel>(
+                element,
+                (properties) =>
+                    properties.copyWith(crossAxisAlignment: newValue).toJson(),
+              );
+            }
+          },
+          items: [
+            for (var alignment in RowCrossAxisAlignment.all)
+              RubricDropdownMenuItem(
+                value: alignment,
+                text: RowCrossAxisAlignment.toDisplayName(alignment),
+              ),
+          ],
+          child: Row(
+            spacing: RubricEditorStyle.paddingUnit * 0.5,
+            children: [
+              RubricIcon(
+                RowCrossAxisAlignment.toIcon(properties.crossAxisAlignment),
+                size: ElementToolbarWidget.iconSize,
+              ),
+              RubricText("Align Items"),
+            ],
+          ),
         ),
         ToolbarUniversalIcons(element: element),
       ],

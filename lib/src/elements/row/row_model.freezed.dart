@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RowElementModel {
 
-@JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color get color; List<List<Map<String, dynamic>>> get elements; int get columns;
+@JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color get color; List<List<Map<String, dynamic>>> get elements; int get columns; String get crossAxisAlignment;
 /// Create a copy of RowElementModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $RowElementModelCopyWith<RowElementModel> get copyWith => _$RowElementModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RowElementModel&&(identical(other.color, color) || other.color == color)&&const DeepCollectionEquality().equals(other.elements, elements)&&(identical(other.columns, columns) || other.columns == columns));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RowElementModel&&(identical(other.color, color) || other.color == color)&&const DeepCollectionEquality().equals(other.elements, elements)&&(identical(other.columns, columns) || other.columns == columns)&&(identical(other.crossAxisAlignment, crossAxisAlignment) || other.crossAxisAlignment == crossAxisAlignment));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,color,const DeepCollectionEquality().hash(elements),columns);
+int get hashCode => Object.hash(runtimeType,color,const DeepCollectionEquality().hash(elements),columns,crossAxisAlignment);
 
 @override
 String toString() {
-  return 'RowElementModel(color: $color, elements: $elements, columns: $columns)';
+  return 'RowElementModel(color: $color, elements: $elements, columns: $columns, crossAxisAlignment: $crossAxisAlignment)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $RowElementModelCopyWith<$Res>  {
   factory $RowElementModelCopyWith(RowElementModel value, $Res Function(RowElementModel) _then) = _$RowElementModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color, List<List<Map<String, dynamic>>> elements, int columns
+@JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color, List<List<Map<String, dynamic>>> elements, int columns, String crossAxisAlignment
 });
 
 
@@ -65,12 +65,13 @@ class _$RowElementModelCopyWithImpl<$Res>
 
 /// Create a copy of RowElementModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? color = null,Object? elements = null,Object? columns = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? color = null,Object? elements = null,Object? columns = null,Object? crossAxisAlignment = null,}) {
   return _then(_self.copyWith(
 color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as Color,elements: null == elements ? _self.elements : elements // ignore: cast_nullable_to_non_nullable
 as List<List<Map<String, dynamic>>>,columns: null == columns ? _self.columns : columns // ignore: cast_nullable_to_non_nullable
-as int,
+as int,crossAxisAlignment: null == crossAxisAlignment ? _self.crossAxisAlignment : crossAxisAlignment // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(toJson: colorToJson, fromJson: colorFromJson)  Color color,  List<List<Map<String, dynamic>>> elements,  int columns)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(toJson: colorToJson, fromJson: colorFromJson)  Color color,  List<List<Map<String, dynamic>>> elements,  int columns,  String crossAxisAlignment)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RowElementModel() when $default != null:
-return $default(_that.color,_that.elements,_that.columns);case _:
+return $default(_that.color,_that.elements,_that.columns,_that.crossAxisAlignment);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.color,_that.elements,_that.columns);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(toJson: colorToJson, fromJson: colorFromJson)  Color color,  List<List<Map<String, dynamic>>> elements,  int columns)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(toJson: colorToJson, fromJson: colorFromJson)  Color color,  List<List<Map<String, dynamic>>> elements,  int columns,  String crossAxisAlignment)  $default,) {final _that = this;
 switch (_that) {
 case _RowElementModel():
-return $default(_that.color,_that.elements,_that.columns);case _:
+return $default(_that.color,_that.elements,_that.columns,_that.crossAxisAlignment);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.color,_that.elements,_that.columns);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(toJson: colorToJson, fromJson: colorFromJson)  Color color,  List<List<Map<String, dynamic>>> elements,  int columns)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(toJson: colorToJson, fromJson: colorFromJson)  Color color,  List<List<Map<String, dynamic>>> elements,  int columns,  String crossAxisAlignment)?  $default,) {final _that = this;
 switch (_that) {
 case _RowElementModel() when $default != null:
-return $default(_that.color,_that.elements,_that.columns);case _:
+return $default(_that.color,_that.elements,_that.columns,_that.crossAxisAlignment);case _:
   return null;
 
 }
@@ -211,7 +212,7 @@ return $default(_that.color,_that.elements,_that.columns);case _:
 
 @JsonSerializable()
 class _RowElementModel extends RowElementModel {
-  const _RowElementModel({@JsonKey(toJson: colorToJson, fromJson: colorFromJson) required this.color, required final  List<List<Map<String, dynamic>>> elements, required this.columns}): _elements = elements,super._();
+  const _RowElementModel({@JsonKey(toJson: colorToJson, fromJson: colorFromJson) required this.color, required final  List<List<Map<String, dynamic>>> elements, required this.columns, this.crossAxisAlignment = 'start'}): _elements = elements,super._();
   factory _RowElementModel.fromJson(Map<String, dynamic> json) => _$RowElementModelFromJson(json);
 
 @override@JsonKey(toJson: colorToJson, fromJson: colorFromJson) final  Color color;
@@ -223,6 +224,7 @@ class _RowElementModel extends RowElementModel {
 }
 
 @override final  int columns;
+@override@JsonKey() final  String crossAxisAlignment;
 
 /// Create a copy of RowElementModel
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RowElementModel&&(identical(other.color, color) || other.color == color)&&const DeepCollectionEquality().equals(other._elements, _elements)&&(identical(other.columns, columns) || other.columns == columns));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RowElementModel&&(identical(other.color, color) || other.color == color)&&const DeepCollectionEquality().equals(other._elements, _elements)&&(identical(other.columns, columns) || other.columns == columns)&&(identical(other.crossAxisAlignment, crossAxisAlignment) || other.crossAxisAlignment == crossAxisAlignment));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,color,const DeepCollectionEquality().hash(_elements),columns);
+int get hashCode => Object.hash(runtimeType,color,const DeepCollectionEquality().hash(_elements),columns,crossAxisAlignment);
 
 @override
 String toString() {
-  return 'RowElementModel(color: $color, elements: $elements, columns: $columns)';
+  return 'RowElementModel(color: $color, elements: $elements, columns: $columns, crossAxisAlignment: $crossAxisAlignment)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$RowElementModelCopyWith<$Res> implements $RowElementModel
   factory _$RowElementModelCopyWith(_RowElementModel value, $Res Function(_RowElementModel) _then) = __$RowElementModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color, List<List<Map<String, dynamic>>> elements, int columns
+@JsonKey(toJson: colorToJson, fromJson: colorFromJson) Color color, List<List<Map<String, dynamic>>> elements, int columns, String crossAxisAlignment
 });
 
 
@@ -274,12 +276,13 @@ class __$RowElementModelCopyWithImpl<$Res>
 
 /// Create a copy of RowElementModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? color = null,Object? elements = null,Object? columns = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? color = null,Object? elements = null,Object? columns = null,Object? crossAxisAlignment = null,}) {
   return _then(_RowElementModel(
 color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as Color,elements: null == elements ? _self._elements : elements // ignore: cast_nullable_to_non_nullable
 as List<List<Map<String, dynamic>>>,columns: null == columns ? _self.columns : columns // ignore: cast_nullable_to_non_nullable
-as int,
+as int,crossAxisAlignment: null == crossAxisAlignment ? _self.crossAxisAlignment : crossAxisAlignment // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

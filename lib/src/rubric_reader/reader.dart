@@ -7,7 +7,8 @@ import 'package:rubric/src/rubric_editor/viewer/items/handler.dart';
 
 class RubricReader extends StatefulWidget {
   final CanvasModel canvasModel;
-  const RubricReader({super.key, required this.canvasModel});
+  final Widget? onFinished;
+  const RubricReader({super.key, required this.canvasModel, this.onFinished});
 
   @override
   State<RubricReader> createState() => _RubricReaderState();
@@ -28,7 +29,9 @@ class _RubricReaderState extends State<RubricReader> {
           final viewMode = constraints.maxWidth <= ViewModes.mobile.width ? ViewModes.mobile : ViewModes.desktop;
 
           return ListView.builder(
-            itemCount: widget.canvasModel.elements.length,
+            itemCount: widget.onFinished != null
+                ? widget.canvasModel.elements.length + 1
+                : widget.canvasModel.elements.length,
             shrinkWrap: true,
             addAutomaticKeepAlives: false,
             addRepaintBoundaries: false,
@@ -39,6 +42,9 @@ class _RubricReaderState extends State<RubricReader> {
                   max(25, (constraints.maxWidth - viewMode.width) / 2) + widget.canvasModel.settings.spacing / 2,
             ),
             itemBuilder: (context, index) {
+              if (index == widget.canvasModel.elements.length) {
+                return widget.onFinished!;
+              }
               return ReaderElementWidget(canvas: widget.canvasModel, element: widget.canvasModel.elements[index]);
             },
           );

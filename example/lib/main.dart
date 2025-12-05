@@ -1,4 +1,4 @@
-import 'package:example/rubric_viewer.dart';
+import 'package:example/rubric_editor.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Firebase, sign in to my account using username and password
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -32,18 +33,18 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: Scaffold(
-        // body: RubricLessonEditorWidget(
-        //   moduleID: "cx4A3jEN6dc3uSwFlqaX",
-        //   onSaved: () async {
-        //     print("saving");
-        //   },
-        // ),
-        body: RubricLessonReaderWidget(
-          moduleID: "M7cOoCF4uy8rb9zG7ntL",
-          onComplete: () async {
-            print("test");
+        body: RubricLessonEditorWidget(
+          moduleID: "0bC4yQOEc1vTHcoKzOp8",
+          onSaved: () async {
+            print("saving");
           },
         ),
+        // body: RubricLessonReaderWidget(
+        //   moduleID: "0bC4yQOEc1vTHcoKzOp8",
+        //   onComplete: () async {
+        //     print("test");
+        //   },
+        // ),
         // body: Column(
         //   crossAxisAlignment: CrossAxisAlignment.stretch,
         //   children: [

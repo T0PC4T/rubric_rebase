@@ -30,7 +30,7 @@ abstract class ElementAlignment {
   static const center = "center";
   static const right = "right";
   static const all = [left, center, right];
-  static icon(String alignment) {
+  static IconData icon(String alignment) {
     return switch (alignment) {
       left => Icons.format_align_left_rounded,
       center => Icons.format_align_center_rounded,
@@ -90,4 +90,42 @@ enum HeadingFontSizes {
   final String display;
   final int value;
   const HeadingFontSizes(this.display, this.value);
+}
+
+abstract class RowCrossAxisAlignment {
+  static const start = "start";
+  static const center = "center";
+  static const end = "end";
+
+  static const all = [start, center, end];
+
+  static CrossAxisAlignment toCrossAxisAlignment(String alignment) {
+    return switch (alignment) {
+      start => CrossAxisAlignment.start,
+      center => CrossAxisAlignment.center,
+      end => CrossAxisAlignment.end,
+
+      _ => CrossAxisAlignment.start,
+    };
+  }
+
+  static IconData toIcon(String alignment) {
+    return switch (alignment) {
+      start => Icons.align_vertical_top_rounded,
+      center => Icons.align_vertical_center_rounded,
+      end => Icons.align_vertical_bottom_rounded,
+
+      _ => Icons.align_vertical_top_rounded,
+    };
+  }
+
+  static String toDisplayName(String alignment) {
+    return switch (alignment) {
+      start => "Start",
+      center => "Center",
+      end => "End",
+
+      _ => "Start",
+    };
+  }
 }
