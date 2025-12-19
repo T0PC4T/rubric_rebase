@@ -9,6 +9,8 @@ import 'package:rubric/src/elements/image/image_elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/link/link_elements.dart';
 import 'package:rubric/src/elements/link/link_model.dart';
+import 'package:rubric/src/elements/pdf/pdf_elements.dart';
+import 'package:rubric/src/elements/pdf/pdf_model.dart';
 import 'package:rubric/src/elements/row/row_elements.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/elements/text/text_elements.dart';
@@ -85,6 +87,14 @@ enum ElementType {
     Icons.ondemand_video_outlined,
     editorBuilder: VideoEditorElement.new,
     readerBuilder: VideoReaderElement.new,
+  ),
+
+  pdf(
+    "Pdf",
+    ElementCategories.media,
+    Icons.picture_as_pdf,
+    editorBuilder: PdfEditorElement.new,
+    readerBuilder: PdfReaderElement.new,
   ),
 
   divider(
@@ -206,12 +216,18 @@ Map<String, dynamic> generateDefaultProperties(ElementType elementType) {
     ElementType.image => ImageElementModel(
       aspectRatio: AspectRatios.widescreen,
       borderRadius: 0,
-      imageUrl: "https://t0pc4t.github.io/public/default_image.webp",
+      imageUrl:
+          "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Fdefault_image.webp?alt=media",
       fit: "cover",
     ).toJson(),
     ElementType.video => VideoElementModel(
       isYoutube: false,
-      videoUrl: "https://t0pc4t.github.io/public/default_video.mp4",
+      videoUrl:
+          "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Fdefault_video.mp4?alt=media",
+    ).toJson(),
+    ElementType.pdf => PdfElementModel(
+      pdfUrl:
+          "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Fdefault_pdf.pdf?alt=media",
     ).toJson(),
   };
 }

@@ -7,6 +7,7 @@ import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/link/link_model.dart';
+import 'package:rubric/src/elements/pdf/pdf_model.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/text_list/text_list_model.dart';
@@ -18,12 +19,7 @@ class ElementModel {
   double padding;
   Map<String, dynamic> properties;
 
-  ElementModel({
-    required this.id,
-    required this.type,
-    required this.padding,
-    required this.properties,
-  });
+  ElementModel({required this.id, required this.type, required this.padding, required this.properties});
 
   T getProperties<T>() {
     return switch (type) {
@@ -37,18 +33,14 @@ class ElementModel {
           ElementType.image => ImageElementModel.fromJson(properties),
           ElementType.video => VideoElementModel.fromJson(properties),
           ElementType.divider => DividerElementModel.fromJson(properties),
+          ElementType.pdf => PdfElementModel.fromJson(properties),
 
           // ElementTypes.richtext => RichTextElementModel.fromJson(properties),
         }
         as T;
   }
 
-  ElementModel copyWith({
-    String? id,
-    ElementType? type,
-    double? padding,
-    Map<String, dynamic>? properties,
-  }) {
+  ElementModel copyWith({String? id, ElementType? type, double? padding, Map<String, dynamic>? properties}) {
     return ElementModel(
       id: id ?? this.id,
       type: type ?? this.type,
@@ -58,12 +50,7 @@ class ElementModel {
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'type': type.name,
-      'padding': padding,
-      'properties': properties,
-    };
+    return <String, dynamic>{'id': id, 'type': type.name, 'padding': padding, 'properties': properties};
   }
 
   String toHTML() {
@@ -78,6 +65,7 @@ class ElementModel {
       ElementType.image => ImageElementModel.toHTML(properties),
       ElementType.video => VideoElementModel.toHTML(properties),
       ElementType.divider => DividerElementModel.toHTML(properties),
+      ElementType.pdf => PdfElementModel.toHTML(properties),
     };
     // add padding
     return """<div style="padding: ${padding}px;">$html</div>""";
@@ -88,16 +76,13 @@ class ElementModel {
       id: map['id'] as String,
       type: ElementType.fromName(map["type"]),
       padding: map['padding'] as double,
-      properties: Map<String, dynamic>.from(
-        (map['properties'] as Map<String, dynamic>),
-      ),
+      properties: Map<String, dynamic>.from((map['properties'] as Map<String, dynamic>)),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ElementModel.fromJson(String source) =>
-      ElementModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ElementModel.fromJson(String source) => ElementModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -108,10 +93,7 @@ class ElementModel {
   bool operator ==(covariant ElementModel other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
-        other.type == type &&
-        other.padding == padding &&
-        mapEquals(other.properties, properties);
+    return other.id == id && other.type == type && other.padding == padding && mapEquals(other.properties, properties);
   }
 
   @override
