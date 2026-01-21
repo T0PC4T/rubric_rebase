@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
-import 'package:rubric/src/components/atoms/divider.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/pdf/pdf_model.dart';
 import 'package:rubric/src/models/elements.dart';
@@ -70,7 +69,7 @@ class _PdfTooltipWidgetState extends State<PdfTooltipWidget> {
         //   iconData: Icons.link,
         //   text: "Pdf Link",
         // ),
-        RubricVerticleDivider(),
+        // RubricVerticleDivider(),
         RubricIconTextButton(
           onTap: () async {
             FilePickerResult? result = await FilePicker.platform.pickFiles(
