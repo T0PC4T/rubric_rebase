@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/elements/divider/divider_model.dart';
 import 'package:rubric/src/elements/elements.dart';
+import 'package:rubric/src/elements/html_text/html_text_model.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/link/link_model.dart';
 import 'package:rubric/src/elements/pdf/pdf_model.dart';
@@ -24,6 +25,7 @@ class ElementModel {
   T getProperties<T>() {
     return switch (type) {
           ElementType.text => TextElementModel.fromJson(properties),
+          ElementType.htmlText => HtmlTextElementModel.fromJson(properties),
           ElementType.heading => TextElementModel.fromJson(properties),
           ElementType.textList => TextListElementModel.fromJson(properties),
           ElementType.link => LinkElementModel.fromJson(properties),
@@ -56,6 +58,7 @@ class ElementModel {
   String toHTML() {
     final html = switch (type) {
       ElementType.text => TextElementModel.toHTML(properties),
+      ElementType.htmlText => HtmlTextElementModel.toHTML(properties),
       ElementType.heading => TextElementModel.toHTML(properties),
       ElementType.textList => TextListElementModel.toHTML(properties),
       ElementType.link => LinkElementModel.toHTML(properties),

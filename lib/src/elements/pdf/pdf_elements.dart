@@ -22,26 +22,18 @@ class PdfEditorElementState extends FocusableState<PdfEditorElement> {
   @override
   onFocus(bool focused) {
     if (focused) {
-      editorState.showToolbar(
-        widget.element,
-        (element) => PdfTooltipWidget(element: element),
-      );
+      editorState.showToolbar(widget.element, (element) => PdfTooltipWidget(element: element));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 16 / 9,
+      aspectRatio: 16 / 12,
       child: Container(
-        color: Colors.black,
+        color: const Color.fromARGB(255, 89, 89, 89),
         alignment: Alignment.center,
-        child: FittedBox(
-            child: RubricIcon(
-          Icons.picture_as_pdf,
-          color: editorState.style.back,
-          size: 50,
-        )),
+        child: FittedBox(child: RubricIcon(Icons.picture_as_pdf, color: editorState.style.back, size: 50)),
       ),
     );
   }
@@ -50,8 +42,7 @@ class PdfEditorElementState extends FocusableState<PdfEditorElement> {
 class PdfReaderElement extends StatefulWidget {
   final ElementModel element;
   final CanvasModel canvas;
-  const PdfReaderElement(
-      {super.key, required this.element, required this.canvas});
+  const PdfReaderElement({super.key, required this.element, required this.canvas});
 
   @override
   State<PdfReaderElement> createState() => PdfReaderElementState();
@@ -66,13 +57,13 @@ class PdfReaderElementState extends State<PdfReaderElement> {
     final properties = widget.element.getProperties<PdfElementModel>();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(properties.pdfUrl));
+      ..loadRequest(Uri.parse("${properties.pdfUrl}#toolbar=0"));
   }
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 16 / 9,
+      aspectRatio: 16 / 12,
       child: WebViewWidget(controller: controller),
     );
   }

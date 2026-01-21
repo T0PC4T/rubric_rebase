@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:rubric/rubric.dart';
 import 'package:rubric/src/components/atoms/divider.dart';
-import 'package:rubric/src/components/atoms/popup.dart';
 import 'package:rubric/src/components/shared.dart';
 import 'package:rubric/src/elements/pdf/pdf_model.dart';
 import 'package:rubric/src/models/elements.dart';
@@ -27,50 +26,50 @@ class _PdfTooltipWidgetState extends State<PdfTooltipWidget> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        RubricIconTextButton(
-          onTap: () async {
-            final pdfUrl = await PopupWidget.showPopup<String>(
-              context,
-              (closeWith) {
-                return SizedBox(
-                  width: PopupWidget.popWidth,
-                  child: Column(
-                    children: [
-                      RubricText(
-                        "Enter Pdf Link",
-                        textType: TextType.title,
-                      ),
-                      Padding(
-                        padding: RubricEditorStyle.padding,
-                        child: RubricTextField(
-                          onComplete: closeWith,
-                          onChanged: (value) {
-                            lastValue = value;
-                          },
-                          helpText: "https://example.com/document.pdf",
-                          initialValue: properties.pdfUrl,
-                        ),
-                      ),
-                      RubricButton.light(editorState.style,
-                          width: 150,
-                          height: 30,
-                          onTap: () => closeWith(lastValue),
-                          child: Text("Save Link"))
-                    ],
-                  ),
-                );
-              },
-            );
-            if (pdfUrl case String newUrl) {
-              editorState.canvas.updateProperties<PdfElementModel>(
-                  widget.element, (properties) {
-                return properties.copyWith(pdfUrl: newUrl).toJson();
-              });
-            }
-          },
-          iconData: Icons.link,
-          text: "Pdf Link",
-        ),
+        // RubricIconTextButton(
+        //   onTap: () async {
+        //     final pdfUrl = await PopupWidget.showPopup<String>(
+        //       context,
+        //       (closeWith) {
+        //         return SizedBox(
+        //           width: PopupWidget.popWidth,
+        //           child: Column(
+        //             children: [
+        //               RubricText(
+        //                 "Enter Pdf Link",
+        //                 textType: TextType.title,
+        //               ),
+        //               Padding(
+        //                 padding: RubricEditorStyle.padding,
+        //                 child: RubricTextField(
+        //                   onComplete: closeWith,
+        //                   onChanged: (value) {
+        //                     lastValue = value;
+        //                   },
+        //                   helpText: "https://example.com/document.pdf",
+        //                   initialValue: properties.pdfUrl,
+        //                 ),
+        //               ),
+        //               RubricButton.light(editorState.style,
+        //                   width: 150,
+        //                   height: 30,
+        //                   onTap: () => closeWith(lastValue),
+        //                   child: Text("Save Link"))
+        //             ],
+        //           ),
+        //         );
+        //       },
+        //     );
+        //     if (pdfUrl case String newUrl) {
+        //       editorState.canvas.updateProperties<PdfElementModel>(
+        //           widget.element, (properties) {
+        //         return properties.copyWith(pdfUrl: newUrl).toJson();
+        //       });
+        //     }
+        //   },
+        //   iconData: Icons.link,
+        //   text: "Pdf Link",
+        // ),
         RubricVerticleDivider(),
         RubricIconTextButton(
           onTap: () async {
@@ -82,12 +81,8 @@ class _PdfTooltipWidgetState extends State<PdfTooltipWidget> {
             if (result case FilePickerResult result) {
               Uint8List? fileBytes = result.files.first.bytes;
               if (fileBytes != null) {
-                final pdfUrl = await editorState.widget.bytesToURL(
-                  fileBytes,
-                  name: result.files.first.name,
-                );
-                editorState.canvas.updateProperties<PdfElementModel>(
-                    widget.element, (properties) {
+                final pdfUrl = await editorState.widget.bytesToURL(fileBytes, name: result.files.first.name);
+                editorState.canvas.updateProperties<PdfElementModel>(widget.element, (properties) {
                   return properties.copyWith(pdfUrl: pdfUrl).toJson();
                 });
               }

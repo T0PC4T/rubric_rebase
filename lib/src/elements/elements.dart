@@ -5,6 +5,8 @@ import 'package:rubric/src/elements/button/button_elements.dart';
 import 'package:rubric/src/elements/button/button_model.dart';
 import 'package:rubric/src/elements/divider/divider_elements.dart';
 import 'package:rubric/src/elements/divider/divider_model.dart';
+import 'package:rubric/src/elements/html_text/html_text_elements.dart';
+import 'package:rubric/src/elements/html_text/html_text_model.dart';
 import 'package:rubric/src/elements/image/image_elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/link/link_elements.dart';
@@ -47,6 +49,15 @@ enum ElementType {
     focusable: true,
     editorBuilder: TextEditorElement.new,
     readerBuilder: TextReaderWidget.new,
+  ),
+
+  htmlText(
+    "Text",
+    ElementCategories.text,
+    Icons.notes,
+    focusable: true,
+    editorBuilder: HtmlTextEditorElement.new,
+    readerBuilder: HtmlTextReaderWidget.new,
   ),
   textList(
     "List",
@@ -188,6 +199,7 @@ Map<String, dynamic> generateDefaultProperties(ElementType elementType) {
       isUnderline: false,
       color: Colors.black,
     ).toJson(),
+    ElementType.htmlText => const HtmlTextElementModel(text: '').toJson(),
     ElementType.textList => TextListElementModel(
       textList: [""],
       size: RubricEditorStyle.minimumFontSize.toDouble(),

@@ -21,7 +21,8 @@ dependencies:
   web: ^1.1.1
   youtube_parser: ^2.1.4
   youtube_player_iframe: ">=5.0.0"
-  webview_flutter: ^4.7.0
+  html: ^0.15.6
+  flutter_widget_from_html: ^0.17.1
 
 dev_dependencies:
   flutter_test:

@@ -10,44 +10,33 @@ class ElementPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final editorState = RubricEditorState.of(context);
-    final buttonSize =
-        RubricSideBar.sideBarSize * 0.5 - RubricEditorStyle.paddingUnit * 1.5;
+    final buttonSize = RubricSideBar.sideBarSize * 0.5 - RubricEditorStyle.paddingUnit * 1.5;
 
     return Padding(
       padding: EdgeInsets.all(RubricEditorStyle.paddingUnit * 0.5),
       child: Wrap(
         children: [
           for (var element in ElementType.values)
-            SidebarButton(
-              element: element,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                spacing: RubricEditorStyle.paddingUnit * 0.5,
-                children: [
-                  Icon(
-                    element.icon,
-                    size: buttonSize * 0.4,
-                    color: editorState.style.fore1,
-                  ),
-                  Text(
-                    element.title,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: editorState.style.fore1,
-                    ),
-                  ),
-                ],
+            if (element != ElementType.text && element != ElementType.heading)
+              SidebarButton(
+                element: element,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: RubricEditorStyle.paddingUnit * 0.5,
+                  children: [
+                    Icon(element.icon, size: buttonSize * 0.4, color: editorState.style.fore1),
+                    Text(element.title, style: TextStyle(fontSize: 12, color: editorState.style.fore1)),
+                  ],
+                ),
               ),
-            ),
         ],
       ),
     );
   }
 }
 
-const sizeBarButtonSize =
-    RubricSideBar.sideBarSize * 0.5 - RubricEditorStyle.paddingUnit * 1.5;
+const sizeBarButtonSize = RubricSideBar.sideBarSize * 0.5 - RubricEditorStyle.paddingUnit * 1.5;
 
 class SidebarButton extends StatefulWidget {
   final Widget child;
@@ -76,10 +65,7 @@ class _SidebarButtonState extends State<SidebarButton> {
       decoration: BoxDecoration(
         color: color,
         borderRadius: editorState.style.borderRadius,
-        border: Border.all(
-          color: styles.fore4,
-          width: 1,
-        ),
+        border: Border.all(color: styles.fore4, width: 1),
       ),
       child: widget.child,
     );
@@ -90,29 +76,25 @@ class _SidebarButtonState extends State<SidebarButton> {
     final editorState = RubricEditorState.of(context);
     final style = RubricEditorStyle.of(context);
     return Draggable(
-        dragAnchorStrategy: pointerDragAnchorStrategy,
-        data: widget.element.generateNewModel(),
-        feedback:
-            ElementDraggingWidth(elementType: widget.element, style: style),
-        childWhenDragging: Material(child: getButton(style.back)),
-        onDragStarted: () {},
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          onEnter: (event) {
-            setState(() {
-              hovered = true;
-            });
-          },
-          onExit: (event) {
-            setState(() {
-              hovered = false;
-            });
-          },
-          child: hovered
-              ? getButton(style.fore95)
-              : getButton(
-                  style.back,
-                ),
-        ));
+      dragAnchorStrategy: pointerDragAnchorStrategy,
+      data: widget.element.generateNewModel(),
+      feedback: ElementDraggingWidth(elementType: widget.element, style: style),
+      childWhenDragging: Material(child: getButton(style.back)),
+      onDragStarted: () {},
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (event) {
+          setState(() {
+            hovered = true;
+          });
+        },
+        onExit: (event) {
+          setState(() {
+            hovered = false;
+          });
+        },
+        child: hovered ? getButton(style.fore95) : getButton(style.back),
+      ),
+    );
   }
 }
