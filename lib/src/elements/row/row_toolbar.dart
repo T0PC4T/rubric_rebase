@@ -30,13 +30,8 @@ class RowTooltipWidget extends StatelessWidget {
           child: RubricColorButton(
             color: properties.color,
             onTap: () async {
-              final newColor = await PopupWidget.showPopup<Color>(context, (
-                closeWith,
-              ) {
-                return RubricColorPicker(
-                  onComplete: closeWith,
-                  color: properties.color,
-                );
+              final newColor = await PopupWidget.showPopup<Color>(context, (closeWith) {
+                return RubricColorPicker(onComplete: closeWith, color: properties.color);
               });
               if (newColor != null) {
                 editorState.canvas.updateProperties<RowElementModel>(
@@ -52,23 +47,15 @@ class RowTooltipWidget extends StatelessWidget {
             if (value case int newValue) {
               final newColumns = <List<Map<String, dynamic>>>[
                 for (var i = 0; i < newValue; i++)
-                  if (properties.elements.length > i)
-                    properties.elements[i]
-                  else
-                    [],
+                  if (properties.elements.length > i) properties.elements[i] else [],
               ];
               editorState.canvas.updateProperties<RowElementModel>(
                 element,
-                (properties) => properties
-                    .copyWith(elements: newColumns, columns: newValue)
-                    .toJson(),
+                (properties) => properties.copyWith(elements: newColumns, columns: newValue).toJson(),
               );
             }
           },
-          items: [
-            for (var i = 1; i < 5; i++)
-              RubricDropdownMenuItem(value: i, text: "$i Columns"),
-          ],
+          items: [for (var i = 1; i < 5; i++) RubricDropdownMenuItem(value: i, text: "$i Columns")],
           child: RubricText("Number of Columns"),
         ),
         RubricVerticleDivider(),
@@ -77,17 +64,13 @@ class RowTooltipWidget extends StatelessWidget {
             if (value case String newValue) {
               editorState.canvas.updateProperties<RowElementModel>(
                 element,
-                (properties) =>
-                    properties.copyWith(crossAxisAlignment: newValue).toJson(),
+                (properties) => properties.copyWith(crossAxisAlignment: newValue).toJson(),
               );
             }
           },
           items: [
             for (var alignment in RowCrossAxisAlignment.all)
-              RubricDropdownMenuItem(
-                value: alignment,
-                text: RowCrossAxisAlignment.toDisplayName(alignment),
-              ),
+              RubricDropdownMenuItem(value: alignment, text: RowCrossAxisAlignment.toDisplayName(alignment)),
           ],
           child: Row(
             spacing: RubricEditorStyle.paddingUnit * 0.5,

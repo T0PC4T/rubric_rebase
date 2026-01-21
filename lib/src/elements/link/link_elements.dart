@@ -37,8 +37,7 @@ class LinkEditorElementState extends TextEditorElementState<LinkEditorElement> {
 class LinkReaderWidget extends StatelessWidget {
   final ElementModel element;
   final CanvasModel canvas;
-  const LinkReaderWidget(
-      {super.key, required this.element, required this.canvas});
+  const LinkReaderWidget({super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +51,7 @@ class LinkReaderWidget extends StatelessWidget {
         if (!link.startsWith("http")) {
           link = "https://$link";
         }
-        await launchUrl(
-          Uri.parse(link),
-          webOnlyWindowName: '_blank',
-        );
+        await launchUrl(Uri.parse(link), webOnlyWindowName: '_blank');
       },
       child: Text(
         overflow: TextOverflow.visible,

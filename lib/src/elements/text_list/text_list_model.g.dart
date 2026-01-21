@@ -6,25 +6,17 @@ part of 'text_list_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_TextListElementModel _$TextListElementModelFromJson(
-  Map<String, dynamic> json,
-) => _TextListElementModel(
-  textList: (json['textList'] as List<dynamic>)
-      .map((e) => e as String)
-      .toList(),
+_TextListElementModel _$TextListElementModelFromJson(Map<String, dynamic> json) => _TextListElementModel(
+  textList: (json['textList'] as List<dynamic>).map((e) => e as String).toList(),
   isBold: json['isBold'] as bool? ?? false,
   isItalic: json['isItalic'] as bool? ?? false,
   isUnderline: json['isUnderline'] ?? false,
-  textListType:
-      $enumDecodeNullable(_$TextListTypesEnumMap, json['textListType']) ??
-      TextListTypes.bulleted,
+  textListType: $enumDecodeNullable(_$TextListTypesEnumMap, json['textListType']) ?? TextListTypes.bulleted,
   size: (json['size'] as num).toDouble(),
   color: colorFromJson((json['color'] as num).toInt()),
 );
 
-Map<String, dynamic> _$TextListElementModelToJson(
-  _TextListElementModel instance,
-) => <String, dynamic>{
+Map<String, dynamic> _$TextListElementModelToJson(_TextListElementModel instance) => <String, dynamic>{
   'textList': instance.textList,
   'isBold': instance.isBold,
   'isItalic': instance.isItalic,
@@ -34,7 +26,4 @@ Map<String, dynamic> _$TextListElementModelToJson(
   'color': ?colorToJson(instance.color),
 };
 
-const _$TextListTypesEnumMap = {
-  TextListTypes.bulleted: 'bulleted',
-  TextListTypes.numbered: 'numbered',
-};
+const _$TextListTypesEnumMap = {TextListTypes.bulleted: 'bulleted', TextListTypes.numbered: 'numbered'};

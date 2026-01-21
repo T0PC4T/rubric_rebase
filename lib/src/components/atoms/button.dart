@@ -153,10 +153,7 @@ class RubricButtonState extends State<RubricButton> {
             borderRadius: BorderRadius.circular(widget.radius ?? 0),
             border: widget.borderWidth == null
                 ? null
-                : Border.all(
-                    color: widget.borderColor ?? styles.fore7,
-                    width: widget.borderWidth!,
-                  ),
+                : Border.all(color: widget.borderColor ?? styles.fore7, width: widget.borderWidth!),
           ),
           child: widget.child,
         ),

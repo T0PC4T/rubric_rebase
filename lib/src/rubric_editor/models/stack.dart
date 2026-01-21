@@ -18,13 +18,9 @@ class StackEventResult {
     this.cancel = false,
   });
 
-  get isScaler => scalarIndex != null;
+  bool get isScaler => scalarIndex != null;
 
-  StackEventResult copyWith({
-    ElementModel? mouseDownHit,
-    Offset? relativeHitOffset,
-    Offset? stackClickOffset,
-  }) {
+  StackEventResult copyWith({ElementModel? mouseDownHit, Offset? relativeHitOffset, Offset? stackClickOffset}) {
     return StackEventResult(
       element: mouseDownHit ?? element,
       elementHitOffset: relativeHitOffset ?? elementHitOffset,
@@ -46,6 +42,5 @@ class StackEventResult {
   }
 
   @override
-  int get hashCode =>
-      element.hashCode ^ elementHitOffset.hashCode ^ stackHitOffset.hashCode;
+  int get hashCode => element.hashCode ^ elementHitOffset.hashCode ^ stackHitOffset.hashCode;
 }

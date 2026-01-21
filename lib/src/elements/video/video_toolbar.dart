@@ -29,45 +29,37 @@ class _VideoTooltipWidgetState extends State<VideoTooltipWidget> {
       children: [
         RubricIconTextButton(
           onTap: () async {
-            final videoUrl = await PopupWidget.showPopup<String>(
-              context,
-              (closeWith) {
-                return SizedBox(
-                  width: PopupWidget.popWidth,
-                  child: Column(
-                    children: [
-                      RubricText(
-                        "Enter Youtube Link",
-                        textType: TextType.title,
+            final videoUrl = await PopupWidget.showPopup<String>(context, (closeWith) {
+              return SizedBox(
+                width: PopupWidget.popWidth,
+                child: Column(
+                  children: [
+                    RubricText("Enter Youtube Link", textType: TextType.title),
+                    Padding(
+                      padding: RubricEditorStyle.padding,
+                      child: RubricTextField(
+                        onComplete: closeWith,
+                        onChanged: (value) {
+                          lastValue = value;
+                        },
+                        helpText: "https://www.youtube.com/watch?v=abcdefgh",
+                        initialValue: properties.isYoutube ? properties.videoUrl : "",
                       ),
-                      Padding(
-                        padding: RubricEditorStyle.padding,
-                        child: RubricTextField(
-                          onComplete: closeWith,
-                          onChanged: (value) {
-                            lastValue = value;
-                          },
-                          helpText: "https://www.youtube.com/watch?v=abcdefgh",
-                          initialValue:
-                              properties.isYoutube ? properties.videoUrl : "",
-                        ),
-                      ),
-                      RubricButton.light(editorState.style,
-                          width: 150,
-                          height: 30,
-                          onTap: () => closeWith(lastValue),
-                          child: Text("Save Link"))
-                    ],
-                  ),
-                );
-              },
-            );
+                    ),
+                    RubricButton.light(
+                      editorState.style,
+                      width: 150,
+                      height: 30,
+                      onTap: () => closeWith(lastValue),
+                      child: Text("Save Link"),
+                    ),
+                  ],
+                ),
+              );
+            });
             if (videoUrl case String newUrl) {
-              editorState.canvas.updateProperties<VideoElementModel>(
-                  widget.element, (properties) {
-                return properties
-                    .copyWith(videoUrl: newUrl, isYoutube: true)
-                    .toJson();
+              editorState.canvas.updateProperties<VideoElementModel>(widget.element, (properties) {
+                return properties.copyWith(videoUrl: newUrl, isYoutube: true).toJson();
               });
             }
           },
@@ -77,22 +69,13 @@ class _VideoTooltipWidgetState extends State<VideoTooltipWidget> {
         RubricVerticleDivider(),
         RubricIconTextButton(
           onTap: () async {
-            FilePickerResult? result = await FilePicker.platform.pickFiles(
-              allowMultiple: false,
-              type: FileType.video,
-            );
+            FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.video);
             if (result case FilePickerResult result) {
               Uint8List? fileBytes = result.files.first.bytes;
               if (fileBytes != null) {
-                final videoUrl = await editorState.widget.bytesToURL(
-                  fileBytes,
-                  name: result.files.first.name,
-                );
-                editorState.canvas.updateProperties<VideoElementModel>(
-                    widget.element, (properties) {
-                  return properties
-                      .copyWith(videoUrl: videoUrl, isYoutube: false)
-                      .toJson();
+                final videoUrl = await editorState.widget.bytesToURL(fileBytes, name: result.files.first.name);
+                editorState.canvas.updateProperties<VideoElementModel>(widget.element, (properties) {
+                  return properties.copyWith(videoUrl: videoUrl, isYoutube: false).toJson();
                 });
               }
             }

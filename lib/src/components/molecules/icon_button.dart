@@ -4,12 +4,7 @@ import 'package:rubric/src/rubric_editor/models/style.dart';
 import 'package:rubric/src/rubric_editor/toolbar/element_toolbar.dart';
 import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
-enum RBStyles {
-  light,
-  theme,
-  dark,
-  alt,
-}
+enum RBStyles { light, theme, dark, alt }
 
 class RubricIconButton extends StatelessWidget {
   final double size;
@@ -21,17 +16,18 @@ class RubricIconButton extends StatelessWidget {
   final bool disabled;
   final bool hasNotification;
   final double? iconSize;
-  const RubricIconButton(
-      {super.key,
-      required this.size,
-      required this.onTap,
-      this.iconData = const IconData(0xf04b6, fontFamily: 'MaterialIcons'),
-      this.isActive = false,
-      this.disabled = false,
-      this.style = RBStyles.light,
-      this.hasNotification = false,
-      this.icon,
-      this.iconSize});
+  const RubricIconButton({
+    super.key,
+    required this.size,
+    required this.onTap,
+    this.iconData = const IconData(0xf04b6, fontFamily: 'MaterialIcons'),
+    this.isActive = false,
+    this.disabled = false,
+    this.style = RBStyles.light,
+    this.hasNotification = false,
+    this.icon,
+    this.iconSize,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +59,15 @@ class RubricIconButton extends StatelessWidget {
       child: Stack(
         children: [
           Center(
-            child: icon ??
+            child:
+                icon ??
                 RubricIcon(
                   iconData,
                   color: switch ((disabled, isActive, style)) {
                     (true, _, _) => rubricStyle.fore4,
-                    (
-                      _,
-                      true,
-                      RBStyles.alt || RBStyles.dark || RBStyles.theme
-                    ) =>
-                      rubricStyle.theme,
+                    (_, true, RBStyles.alt || RBStyles.dark || RBStyles.theme) => rubricStyle.theme,
                     (_, true, RBStyles.light) => rubricStyle.theme,
-                    (_, false, RBStyles.dark || RBStyles.theme) =>
-                      rubricStyle.back,
+                    (_, false, RBStyles.dark || RBStyles.theme) => rubricStyle.back,
                     (_, false, RBStyles.alt) => rubricStyle.altFore,
                     (_, false, RBStyles.light) => rubricStyle.fore,
                   },
@@ -90,12 +81,9 @@ class RubricIconButton extends StatelessWidget {
                 margin: EdgeInsets.only(top: 2, right: 2),
                 width: 10,
                 height: 10,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: rubricStyle.danger,
-                ),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: rubricStyle.danger),
               ),
-            )
+            ),
         ],
       ),
     );
@@ -124,17 +112,11 @@ class RubricIconTextButton extends StatelessWidget {
       style,
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: RubricEditorStyle.paddingUnit * 0.5,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: RubricEditorStyle.paddingUnit * 0.5),
         child: Row(
           spacing: RubricEditorStyle.paddingUnit * 0.5,
           children: [
-            RubricIcon(
-              iconData,
-              color: isDark ? style.back : style.fore,
-              size: ElementToolbarWidget.iconSize,
-            ),
+            RubricIcon(iconData, color: isDark ? style.back : style.fore, size: ElementToolbarWidget.iconSize),
             RubricText(text),
           ],
         ),
@@ -147,12 +129,7 @@ class RubricColorButton extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
   final Widget Function(Color color)? builder;
-  const RubricColorButton({
-    super.key,
-    required this.color,
-    required this.onTap,
-    this.builder,
-  });
+  const RubricColorButton({super.key, required this.color, required this.onTap, this.builder});
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +138,8 @@ class RubricColorButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: FittedBox(
-        child: builder?.call(color) ??
+        child:
+            builder?.call(color) ??
             Container(
               decoration: BoxDecoration(
                 color: color,

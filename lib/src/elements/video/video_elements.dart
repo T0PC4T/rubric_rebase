@@ -26,10 +26,7 @@ class VideoEditorElementState extends FocusableState<VideoEditorElement> {
   @override
   onFocus(bool focused) {
     if (focused) {
-      editorState.showToolbar(
-        widget.element,
-        (element) => VideoTooltipWidget(element: element),
-      );
+      editorState.showToolbar(widget.element, (element) => VideoTooltipWidget(element: element));
     }
   }
 
@@ -42,12 +39,7 @@ class VideoEditorElementState extends FocusableState<VideoEditorElement> {
         child: Container(
           color: Colors.black,
           alignment: Alignment.center,
-          child: FittedBox(
-              child: RubricIcon(
-            Icons.video_file,
-            color: editorState.style.back,
-            size: 50,
-          )),
+          child: FittedBox(child: RubricIcon(Icons.video_file, color: editorState.style.back, size: 50)),
         ),
       );
     } else {
@@ -55,10 +47,7 @@ class VideoEditorElementState extends FocusableState<VideoEditorElement> {
       final youtubeID = getIdFromUrl(properties.videoUrl) ?? "c21QZnQtGqo";
       return AspectRatio(
         aspectRatio: 16 / 9,
-        child: Image.network(
-          "https://img.youtube.com/vi/$youtubeID/sddefault.jpg",
-          fit: BoxFit.cover,
-        ),
+        child: Image.network("https://img.youtube.com/vi/$youtubeID/sddefault.jpg", fit: BoxFit.cover),
       );
     }
   }
@@ -67,8 +56,7 @@ class VideoEditorElementState extends FocusableState<VideoEditorElement> {
 class VideoReaderElement extends StatefulWidget {
   final ElementModel element;
   final CanvasModel canvas;
-  const VideoReaderElement(
-      {super.key, required this.element, required this.canvas});
+  const VideoReaderElement({super.key, required this.element, required this.canvas});
 
   @override
   State<VideoReaderElement> createState() => VideoReaderElementState();
@@ -87,8 +75,7 @@ class VideoReaderElementState extends State<VideoReaderElement> {
   }
 
   Future<void> initializeChewiePlayer(videoUrl) async {
-    _videoPlayerController1 =
-        VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+    _videoPlayerController1 = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
     await _videoPlayerController1.initialize();
     _createChewieController();
 
@@ -100,23 +87,18 @@ class VideoReaderElementState extends State<VideoReaderElement> {
       videoPlayerController: _videoPlayerController1,
       autoPlay: false,
       looping: false,
-      progressIndicatorDelay:
-          bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
+      progressIndicatorDelay: bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
       hideControlsTimer: const Duration(seconds: 1),
     );
   }
 
-  setOrUpdateControllers() {
+  void setOrUpdateControllers() {
     final properties = widget.element.getProperties<VideoElementModel>();
 
     if (properties.isYoutube) {
       final youtubeID = getIdFromUrl(properties.videoUrl) ?? "c21QZnQtGqo";
       utubeController ??= YoutubePlayerController(
-        params: YoutubePlayerParams(
-          mute: false,
-          showControls: true,
-          showFullscreenButton: true,
-        ),
+        params: YoutubePlayerParams(mute: false, showControls: true, showFullscreenButton: true),
       );
       utubeController!.cueVideoById(videoId: youtubeID);
     } else {
@@ -142,17 +124,13 @@ class VideoReaderElementState extends State<VideoReaderElement> {
   Widget build(BuildContext context) {
     final properties = widget.element.getProperties<VideoElementModel>();
     if (_chewieController case ChewieController controller
-        when controller.videoPlayerController.value.isInitialized &&
-            properties.isYoutube == false) {
+        when controller.videoPlayerController.value.isInitialized && properties.isYoutube == false) {
       return AspectRatio(
         aspectRatio: 16 / 9,
-        child: Chewie(
-          controller: controller,
-        ),
+        child: Chewie(controller: controller),
       );
     }
-    if (utubeController case YoutubePlayerController utubeController
-        when properties.isYoutube == true) {
+    if (utubeController case YoutubePlayerController utubeController when properties.isYoutube == true) {
       return AspectRatio(
         aspectRatio: 16 / 9,
         child: LayoutBuilder(
@@ -168,9 +146,7 @@ class VideoReaderElementState extends State<VideoReaderElement> {
 
     return AspectRatio(
       aspectRatio: 16 / 9,
-      child: SizedBox.expand(
-        child: RubricText("Something went wrong"),
-      ),
+      child: SizedBox.expand(child: RubricText("Something went wrong")),
     );
   }
 }

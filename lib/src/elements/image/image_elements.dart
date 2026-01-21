@@ -20,19 +20,13 @@ class ImageEditorElementState extends FocusableState<ImageEditorElement> {
   @override
   onFocus(bool focused) {
     if (focused) {
-      editorState.showToolbar(
-        widget.element,
-        (element) => ImageTooltipWidget(element: element),
-      );
+      editorState.showToolbar(widget.element, (element) => ImageTooltipWidget(element: element));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ImageReaderElement(
-      canvas: editorState.canvas.value,
-      element: widget.element,
-    );
+    return ImageReaderElement(canvas: editorState.canvas.value, element: widget.element);
   }
 }
 
@@ -50,8 +44,7 @@ class ImageLayerElement extends StatelessWidget {
 class ImageReaderElement extends StatelessWidget {
   final ElementModel element;
   final CanvasModel canvas;
-  const ImageReaderElement(
-      {super.key, required this.element, required this.canvas});
+  const ImageReaderElement({super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {

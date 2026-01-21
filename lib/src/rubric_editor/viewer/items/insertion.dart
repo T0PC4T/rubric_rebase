@@ -16,14 +16,12 @@ class RowInsertionWidget extends StatelessWidget {
         children: [
           for (var i = 0; i < itemsLength; i++)
             Expanded(
-                child: Container(
-              height: double.infinity,
-              color: style.fore8,
-              child: Icon(
-                Icons.add,
-                color: style.back,
+              child: Container(
+                height: double.infinity,
+                color: style.fore8,
+                child: Icon(Icons.add, color: style.back),
               ),
-            )),
+            ),
         ],
       ),
     );

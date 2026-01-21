@@ -7,10 +7,7 @@ import 'package:rubric/src/utilities/color.dart';
 part 'text_list_model.freezed.dart';
 part 'text_list_model.g.dart';
 
-enum TextListTypes {
-  bulleted,
-  numbered,
-}
+enum TextListTypes { bulleted, numbered }
 
 @freezed
 abstract class TextListElementModel with _$TextListElementModel {
@@ -26,19 +23,17 @@ abstract class TextListElementModel with _$TextListElementModel {
     @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color color,
   }) = _TextListElementModel;
 
-  factory TextListElementModel.fromJson(Map<String, dynamic> json) =>
-      _$TextListElementModelFromJson(json);
+  factory TextListElementModel.fromJson(Map<String, dynamic> json) => _$TextListElementModelFromJson(json);
 
   TextStyle textStyle() => TextStyle(
-        color: color,
-        fontSize: size,
-        fontFamily: "Roboto",
-        letterSpacing: 0.1,
-        fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-        fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
-        decoration:
-            isUnderline ? TextDecoration.underline : TextDecoration.none,
-      );
+    color: color,
+    fontSize: size,
+    fontFamily: "Roboto",
+    letterSpacing: 0.1,
+    fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+    fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
+    decoration: isUnderline ? TextDecoration.underline : TextDecoration.none,
+  );
 
   static String toHTML(Map<String, dynamic> properties) {
     final model = TextListElementModel.fromJson(properties);

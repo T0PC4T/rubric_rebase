@@ -19,9 +19,10 @@ class RubricVideoPlayer extends StatelessWidget {
           controller,
           allowScrubbing: true,
           colors: VideoProgressColors(
-              playedColor: style.theme,
-              bufferedColor: style.theme7,
-              backgroundColor: style.fore),
+            playedColor: style.theme,
+            bufferedColor: style.theme7,
+            backgroundColor: style.fore,
+          ),
         ),
       ],
     );
@@ -31,12 +32,7 @@ class RubricVideoPlayer extends StatelessWidget {
 class ControlsOverlay extends StatefulWidget {
   const ControlsOverlay({super.key, required this.controller});
 
-  static const List<double> _examplePlaybackRates = <double>[
-    0.5,
-    1.0,
-    1.5,
-    2.0,
-  ];
+  static const List<double> _examplePlaybackRates = <double>[0.5, 1.0, 1.5, 2.0];
 
   final VideoPlayerController controller;
 
@@ -58,21 +54,14 @@ class _ControlsOverlayState extends State<ControlsOverlay> {
               : ColoredBox(
                   color: Colors.black26,
                   child: Center(
-                    child: Icon(
-                      Icons.play_arrow,
-                      color: style.back,
-                      size: 60.0,
-                      semanticLabel: 'Play',
-                    ),
+                    child: Icon(Icons.play_arrow, color: style.back, size: 60.0, semanticLabel: 'Play'),
                   ),
                 ),
         ),
         GestureDetector(
           onTap: () {
             setState(() {
-              widget.controller.value.isPlaying
-                  ? widget.controller.pause()
-                  : widget.controller.play();
+              widget.controller.value.isPlaying ? widget.controller.pause() : widget.controller.play();
             });
           },
         ),
@@ -86,12 +75,8 @@ class _ControlsOverlayState extends State<ControlsOverlay> {
             },
             itemBuilder: (BuildContext context) {
               return <PopupMenuItem<double>>[
-                for (final double speed
-                    in ControlsOverlay._examplePlaybackRates)
-                  PopupMenuItem<double>(
-                    value: speed,
-                    child: Text('${speed}x'),
-                  )
+                for (final double speed in ControlsOverlay._examplePlaybackRates)
+                  PopupMenuItem<double>(value: speed, child: Text('${speed}x')),
               ];
             },
             child: Padding(

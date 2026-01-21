@@ -42,8 +42,7 @@ class RubricText extends StatelessWidget {
       style: TextStyle(
         color: color ?? styles.fore,
         fontSize: styles.fontSize * textType.sizeMultiplier,
-        fontWeight:
-            textType == TextType.thick ? FontWeight.w600 : FontWeight.normal,
+        fontWeight: textType == TextType.thick ? FontWeight.w600 : FontWeight.normal,
       ),
     );
   }
@@ -100,27 +99,20 @@ class _RubricTextFieldState extends State<RubricTextField> {
         focusNode: focusNode,
         cursorColor: style.fore,
         decoration: InputDecoration(
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: RubricEditorStyle.paddingNum),
+          contentPadding: EdgeInsets.symmetric(horizontal: RubricEditorStyle.paddingNum),
           filled: true,
           fillColor: style.back,
           border: OutlineInputBorder(
             borderRadius: style.borderRadius,
-            borderSide: BorderSide(
-              color: style.fore4,
-            ),
+            borderSide: BorderSide(color: style.fore4),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: style.borderRadius,
-            borderSide: BorderSide(
-              color: style.theme,
-            ),
+            borderSide: BorderSide(color: style.theme),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: style.borderRadius,
-            borderSide: BorderSide(
-              color: style.fore4,
-            ),
+            borderSide: BorderSide(color: style.fore4),
           ),
           hintStyle: TextStyle(color: style.fore4),
           hintText: widget.helpText,
@@ -147,16 +139,10 @@ class RubricBorderlessTextField extends StatefulWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
   final double width;
-  const RubricBorderlessTextField({
-    super.key,
-    required this.initialValue,
-    required this.onChanged,
-    this.width = 150,
-  });
+  const RubricBorderlessTextField({super.key, required this.initialValue, required this.onChanged, this.width = 150});
 
   @override
-  State<RubricBorderlessTextField> createState() =>
-      _RubricBorderlessTextFieldState();
+  State<RubricBorderlessTextField> createState() => _RubricBorderlessTextFieldState();
 }
 
 class _RubricBorderlessTextFieldState extends State<RubricBorderlessTextField> {
@@ -170,7 +156,7 @@ class _RubricBorderlessTextFieldState extends State<RubricBorderlessTextField> {
     super.initState();
   }
 
-  _l() {
+  void _l() {
     if (!focusNode.hasFocus) {
       widget.onChanged(value);
     }

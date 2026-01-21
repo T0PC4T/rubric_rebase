@@ -8,6 +8,5 @@ export 'src/rubric_reader/reader.dart';
 // todo 2: video
 // todo 3: resizing issue
 // todo 4: completion time cloud function
-// todo 5: 
-// Query 
-
+// todo 5:
+// Query

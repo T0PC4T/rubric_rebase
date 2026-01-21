@@ -12,45 +12,35 @@ const buttonPadding = EdgeInsets.all(15);
 class ButtonEditorElement extends StatefulWidget {
   final ElementModel element;
   final bool header;
-  const ButtonEditorElement({super.key, required this.element})
-      : header = false;
+  const ButtonEditorElement({super.key, required this.element}) : header = false;
 
-  const ButtonEditorElement.header({super.key, required this.element})
-      : header = true;
+  const ButtonEditorElement.header({super.key, required this.element}) : header = true;
   @override
   State<ButtonEditorElement> createState() => ButtonEditorElementState();
 }
 
-BoxDecoration? buttonDecoration(ButtonElementModel properties,
-    [bool hovered = false]) {
+BoxDecoration? buttonDecoration(ButtonElementModel properties, [bool hovered = false]) {
   if (properties.style == ButtonStyles.text.value) {
     return null;
   }
   switch (ButtonStyles.fromString(properties.style)) {
     case ButtonStyles.outlined:
       return BoxDecoration(
-        color: Color.lerp(properties.color.withAlpha(0), properties.color,
-            hovered ? 0.05 : 0),
+        color: Color.lerp(properties.color.withAlpha(0), properties.color, hovered ? 0.05 : 0),
         border: Border.all(
-            color: hovered
-                ? Color.lerp(properties.color, Colors.white, 0.25)!
-                : properties.color,
-            width: 2),
+          color: hovered ? Color.lerp(properties.color, Colors.white, 0.25)! : properties.color,
+          width: 2,
+        ),
         borderRadius: BorderRadius.circular(properties.borderRadius),
       );
     case ButtonStyles.filled:
       return BoxDecoration(
-        color: !hovered
-            ? properties.color
-            : Color.lerp(properties.color, Colors.white, 0.25)!,
+        color: !hovered ? properties.color : Color.lerp(properties.color, Colors.white, 0.25)!,
         borderRadius: BorderRadius.circular(properties.borderRadius),
       );
 
     case ButtonStyles.text:
-      return BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(properties.borderRadius),
-      );
+      return BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(properties.borderRadius));
   }
 }
 
@@ -95,15 +85,11 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
   }
 
   bool _changed = false;
-  onChange(String value) {
+  void onChange(String value) {
     _changed = true;
-    editorState.canvas.updateProperties<ButtonElementModel>(
-      widget.element,
-      (properties) {
-        return properties.copyWith(text: value).toJson();
-      },
-      saveStep: false,
-    );
+    editorState.canvas.updateProperties<ButtonElementModel>(widget.element, (properties) {
+      return properties.copyWith(text: value).toJson();
+    }, saveStep: false);
   }
 
   @override
@@ -127,13 +113,12 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
 
   static TextStyle getTextStyle(ButtonElementModel properties) {
     return TextStyle(
-        fontSize: FontSizes.medium.value.toDouble(),
-        color: properties.textColor,
-        fontWeight: FontWeight.bold,
-        decoration: properties.style == ButtonStyles.text.value
-            ? TextDecoration.underline
-            : null,
-        decorationColor: properties.textColor);
+      fontSize: FontSizes.medium.value.toDouble(),
+      color: properties.textColor,
+      fontWeight: FontWeight.bold,
+      decoration: properties.style == ButtonStyles.text.value ? TextDecoration.underline : null,
+      decorationColor: properties.textColor,
+    );
   }
 
   @override
@@ -149,13 +134,15 @@ class ButtonEditorElementState extends FocusableState<ButtonEditorElement> {
               overflow: TextOverflow.visible,
               properties.text,
               textAlign: TextAlign.center,
-              style: getTextStyle(properties))
+              style: getTextStyle(properties),
+            )
           : Transform.translate(
               offset: Offset(0, -0),
               child: TextField(
                 decoration: InputDecoration.collapsed(
-                    hintText: "Write something here...",
-                    hintStyle: TextStyle(color: Colors.black.withAlpha(100))),
+                  hintText: "Write something here...",
+                  hintStyle: TextStyle(color: Colors.black.withAlpha(100)),
+                ),
                 undoController: undoController,
 
                 // spellCheckConfiguration: SpellCheckConfiguration(),
@@ -189,19 +176,14 @@ class ButtonLayerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = RubricEditorStyle.of(context);
     final textElement = element.getProperties<ButtonElementModel>();
-    return Text(
-      maxLines: 1,
-      textElement.text,
-      overflow: TextOverflow.ellipsis,
-    );
+    return Text(maxLines: 1, textElement.text, overflow: TextOverflow.ellipsis);
   }
 }
 
 class ButtonReaderWidget extends StatefulWidget {
   final ElementModel element;
   final CanvasModel canvas;
-  const ButtonReaderWidget(
-      {super.key, required this.element, required this.canvas});
+  const ButtonReaderWidget({super.key, required this.element, required this.canvas});
 
   @override
   State<ButtonReaderWidget> createState() => ButtonReaderWidgetState();
@@ -231,10 +213,7 @@ class ButtonReaderWidgetState extends State<ButtonReaderWidget> {
           if (!link.startsWith("http")) {
             link = "https://$link";
           }
-          await launchUrl(
-            Uri.parse(link),
-            webOnlyWindowName: '_blank',
-          );
+          await launchUrl(Uri.parse(link), webOnlyWindowName: '_blank');
         },
         child: Container(
           decoration: buttonDecoration(properties, _hovered),

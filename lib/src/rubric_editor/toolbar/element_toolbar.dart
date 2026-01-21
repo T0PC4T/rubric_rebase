@@ -13,11 +13,7 @@ class ElementToolbarWidget extends StatelessWidget {
   final Widget Function(ElementModel element) builder;
   static const double elementToolbarHeight = 40;
   static const double iconSize = 24;
-  const ElementToolbarWidget({
-    super.key,
-    required this.element,
-    required this.builder,
-  });
+  const ElementToolbarWidget({super.key, required this.element, required this.builder});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +25,7 @@ class ElementToolbarWidget extends StatelessWidget {
       builder: (context, canvas, _) {
         final newestElement = canvas.element(element.id);
         return Container(
-          padding: EdgeInsets.only(
-            top: NavbarWidget.navbarHeight,
-            left: RubricSideBar.sideBarSize,
-          ),
+          padding: EdgeInsets.only(top: NavbarWidget.navbarHeight, left: RubricSideBar.sideBarSize),
           alignment: Alignment.topCenter,
           child: Container(
             clipBehavior: Clip.antiAlias,
@@ -45,10 +38,7 @@ class ElementToolbarWidget extends StatelessWidget {
                 BoxShadow(
                   color: style.fore.withAlpha(50),
                   blurRadius: style.elevation,
-                  offset: Offset(
-                    0,
-                    style.elevation,
-                  ), // changes position of shadow
+                  offset: Offset(0, style.elevation), // changes position of shadow
                 ),
               ],
             ),
@@ -85,18 +75,12 @@ class ToolbarUniversalIcons extends StatelessWidget {
                     RubricToolbarDropdown(
                       onUpdate: (value) {
                         if (value case double newValue) {
-                          editorState.canvas.updateElement(
-                            element,
-                            (element) => element.copyWith(padding: newValue),
-                          );
+                          editorState.canvas.updateElement(element, (element) => element.copyWith(padding: newValue));
                         }
                       },
                       items: [
                         for (var value in ElementPadding.values)
-                          RubricDropdownMenuItem(
-                            value: value.value,
-                            text: value.display,
-                          ),
+                          RubricDropdownMenuItem(value: value.value, text: value.display),
                       ],
                       child: Row(
                         spacing: RubricEditorStyle.paddingUnit * 0.5,
@@ -105,10 +89,7 @@ class ToolbarUniversalIcons extends StatelessWidget {
                             children: [
                               Transform.scale(
                                 scaleY: 1.2,
-                                child: Icon(
-                                  Icons.settings_overscan_outlined,
-                                  size: ElementToolbarWidget.iconSize,
-                                ),
+                                child: Icon(Icons.settings_overscan_outlined, size: ElementToolbarWidget.iconSize),
                               ),
                             ],
                           ),

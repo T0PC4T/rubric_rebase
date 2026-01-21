@@ -17,10 +17,7 @@ class DividerEditorElementState extends FocusableState<DividerEditorElement> {
   @override
   onFocus(bool focused) {
     if (focused) {
-      editorState.showToolbar(
-        widget.element,
-        (element) => DividerTooltipWidget(element: element),
-      );
+      editorState.showToolbar(widget.element, (element) => DividerTooltipWidget(element: element));
     }
   }
 
@@ -30,9 +27,7 @@ class DividerEditorElementState extends FocusableState<DividerEditorElement> {
     return Container(
       height: dividerElement.weight,
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: dividerElement.color,
-      ),
+      decoration: BoxDecoration(color: dividerElement.color),
     );
   }
 
@@ -43,8 +38,7 @@ class DividerEditorElementState extends FocusableState<DividerEditorElement> {
 class DividerReaderElement extends StatelessWidget {
   final ElementModel element;
   final CanvasModel canvas;
-  const DividerReaderElement(
-      {super.key, required this.element, required this.canvas});
+  const DividerReaderElement({super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +46,7 @@ class DividerReaderElement extends StatelessWidget {
     return Container(
       height: dividerElement.weight,
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: dividerElement.color,
-      ),
+      decoration: BoxDecoration(color: dividerElement.color),
     );
   }
 }

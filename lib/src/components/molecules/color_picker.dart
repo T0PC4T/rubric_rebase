@@ -8,11 +8,7 @@ import 'package:rubric/src/rubric_icon/icon_widget.dart';
 class RubricColorPicker extends StatefulWidget {
   final Function(Color) onComplete;
   final Color color;
-  const RubricColorPicker({
-    super.key,
-    required this.onComplete,
-    required this.color,
-  });
+  const RubricColorPicker({super.key, required this.onComplete, required this.color});
 
   @override
   State<RubricColorPicker> createState() => RubricColorPickerState();
@@ -48,24 +44,17 @@ class RubricColorPickerState extends State<RubricColorPicker> {
                       });
                     },
                     child: Container(
-                      width: (PopupWidget.popWidth -
-                              RubricEditorStyle.paddingNum *
-                                  numberOfItemsPerRow *
-                                  2) /
+                      width:
+                          (PopupWidget.popWidth - RubricEditorStyle.paddingNum * numberOfItemsPerRow * 2) /
                           numberOfItemsPerRow,
-                      height: (PopupWidget.popWidth -
-                              RubricEditorStyle.paddingNum *
-                                  numberOfItemsPerRow *
-                                  2) /
+                      height:
+                          (PopupWidget.popWidth - RubricEditorStyle.paddingNum * numberOfItemsPerRow * 2) /
                           numberOfItemsPerRow,
                       margin: RubricEditorStyle.padding,
                       decoration: BoxDecoration(
                         color: c,
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: style.fore4,
-                          width: 1,
-                        ),
+                        border: Border.all(color: style.fore4, width: 1),
                       ),
                     ),
                   ),
@@ -76,23 +65,16 @@ class RubricColorPickerState extends State<RubricColorPicker> {
                     });
                   },
                   child: Container(
-                    width: (PopupWidget.popWidth -
-                            RubricEditorStyle.paddingNum *
-                                numberOfItemsPerRow *
-                                2) /
+                    width:
+                        (PopupWidget.popWidth - RubricEditorStyle.paddingNum * numberOfItemsPerRow * 2) /
                         numberOfItemsPerRow,
-                    height: (PopupWidget.popWidth -
-                            RubricEditorStyle.paddingNum *
-                                numberOfItemsPerRow *
-                                2) /
+                    height:
+                        (PopupWidget.popWidth - RubricEditorStyle.paddingNum * numberOfItemsPerRow * 2) /
                         numberOfItemsPerRow,
                     margin: RubricEditorStyle.padding,
                     decoration: BoxDecoration(
                       // radial gradient
-                      border: Border.all(
-                        color: style.fore4,
-                        width: 1,
-                      ),
+                      border: Border.all(color: style.fore4, width: 1),
 
                       gradient: LinearGradient(
                         // center: Alignment.center,

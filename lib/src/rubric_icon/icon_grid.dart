@@ -58,23 +58,18 @@ class _RubricIconGridState extends State<RubricIconGrid> {
               child: Container(
                 padding: EdgeInsets.all(widget.marginNum * 2),
                 decoration: BoxDecoration(
-                  color: hovered == iconName.key
-                      ? widget.hoverColor
-                      : widget.buttonColor,
+                  color: hovered == iconName.key ? widget.hoverColor : widget.buttonColor,
                   border: Border.all(
-                      color: widget.currentIcon != iconName.key
-                          ? widget.iconColor
-                          : widget.iconSelectedColor,
-                      width: 1),
+                    color: widget.currentIcon != iconName.key ? widget.iconColor : widget.iconSelectedColor,
+                    width: 1,
+                  ),
                   borderRadius: BorderRadius.circular(widget.borderRadius),
                 ),
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Icon(
                     iconName.value,
-                    color: widget.currentIcon != iconName.key
-                        ? widget.iconColor
-                        : widget.iconSelectedColor,
+                    color: widget.currentIcon != iconName.key ? widget.iconColor : widget.iconSelectedColor,
                   ),
                 ),
               ),

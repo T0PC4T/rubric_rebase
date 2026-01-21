@@ -19,8 +19,7 @@ abstract class RowElementModel with _$RowElementModel {
     @Default('start') String crossAxisAlignment,
   }) = _RowElementModel;
 
-  factory RowElementModel.fromJson(Map<String, dynamic> json) =>
-      _$RowElementModelFromJson(json);
+  factory RowElementModel.fromJson(Map<String, dynamic> json) => _$RowElementModelFromJson(json);
 
   static String toHTML(Map<String, dynamic> properties) {
     final model = RowElementModel.fromJson(properties);

@@ -10,8 +10,10 @@ abstract class FocusableState<T extends StatefulWidget> extends State<T> {
       _editorState = RubricEditorState.of(context);
       _editorState!.edits.focusNotifier.addListener(element.id, onFocus);
     }
-    assert(_editorState != null,
-        "Editor State not found, make sure you are using RubricEditorState.of(context) after the widget is mounted");
+    assert(
+      _editorState != null,
+      "Editor State not found, make sure you are using RubricEditorState.of(context) after the widget is mounted",
+    );
     return _editorState!;
   }
 
@@ -21,7 +23,7 @@ abstract class FocusableState<T extends StatefulWidget> extends State<T> {
     super.initState();
   }
 
-  postFrame(_) {
+  void postFrame(_) {
     editorState;
   }
 

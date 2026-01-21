@@ -59,42 +59,42 @@ class RubricEditorViewerState extends State<RubricEditorViewer> {
             editorState.edits.focusElement();
           });
         },
-        child: LayoutBuilder(builder: (context, constraints) {
-          final viewMode = editorState.edits.value.viewMode;
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final viewMode = editorState.edits.value.viewMode;
 
-          return Listener(
-            onPointerMove: (event) {
-              if (event.localPosition.dy < 100) {
-                _scrollController.jumpTo(max(_scrollController.offset - 10, 0));
-              }
-              if (event.localPosition.dy > constraints.maxHeight - 100) {
-                _scrollController.jumpTo(min(_scrollController.offset + 10,
-                    _scrollController.position.maxScrollExtent));
-              }
-            },
-            child: ListView.builder(
-              itemCount: canvas.elements.length + 1,
-              shrinkWrap: true,
-              addAutomaticKeepAlives: false,
-              addRepaintBoundaries: false,
-              addSemanticIndexes: false,
-              controller: _scrollController,
-              padding: EdgeInsets.symmetric(
-                  vertical:
-                      max(sidebarButtonHeight, canvas.settings.spacing / 2),
-                  horizontal: (constraints.maxWidth - viewMode.width) / 2 +
-                      canvas.settings.spacing / 2),
-              itemBuilder: (context, index) {
-                if (index == canvas.elements.length) {
-                  return EditorEmptyInserterWidget();
+            return Listener(
+              onPointerMove: (event) {
+                if (event.localPosition.dy < 100) {
+                  _scrollController.jumpTo(max(_scrollController.offset - 10, 0));
                 }
-                return EditorElementWidget(
-                  element: canvas.elements[index],
-                );
+                if (event.localPosition.dy > constraints.maxHeight - 100) {
+                  _scrollController.jumpTo(
+                    min(_scrollController.offset + 10, _scrollController.position.maxScrollExtent),
+                  );
+                }
               },
-            ),
-          );
-        }),
+              child: ListView.builder(
+                itemCount: canvas.elements.length + 1,
+                shrinkWrap: true,
+                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
+                addSemanticIndexes: false,
+                controller: _scrollController,
+                padding: EdgeInsets.symmetric(
+                  vertical: max(sidebarButtonHeight, canvas.settings.spacing / 2),
+                  horizontal: (constraints.maxWidth - viewMode.width) / 2 + canvas.settings.spacing / 2,
+                ),
+                itemBuilder: (context, index) {
+                  if (index == canvas.elements.length) {
+                    return EditorEmptyInserterWidget();
+                  }
+                  return EditorElementWidget(element: canvas.elements[index]);
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

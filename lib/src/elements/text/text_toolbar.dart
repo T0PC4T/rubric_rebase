@@ -90,10 +90,7 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
     // but it's good practice to keep it as a safeguard.
 
     if (selection.isCollapsed) {
-      widget.controller.selection = TextSelection(
-        baseOffset: 0,
-        extentOffset: widget.controller.text.length,
-      );
+      widget.controller.selection = TextSelection(baseOffset: 0, extentOffset: widget.controller.text.length);
       selection = widget.controller.selection;
     }
 
@@ -101,22 +98,13 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
     final selectedText = selection.textInside(widget.controller.text);
 
     if (selectedText.contains(char)) {
-      newText = widget.controller.text.replaceRange(
-        selection.start,
-        selection.end,
-        selectedText.replaceAll(char, ""),
-      );
+      newText = widget.controller.text.replaceRange(selection.start, selection.end, selectedText.replaceAll(char, ""));
     } else {
-      newText = widget.controller.text.replaceRange(
-        selection.start,
-        selection.end,
-        '$char$selectedText$char',
-      );
+      newText = widget.controller.text.replaceRange(selection.start, selection.end, '$char$selectedText$char');
     }
 
     widget.controller.text = newText;
-    editorState.canvas.updateProperties<TextElementModel>(widget.element,
-        (properties) {
+    editorState.canvas.updateProperties<TextElementModel>(widget.element, (properties) {
       return properties.copyWith(text: widget.controller.text).toJson();
     });
   }
@@ -133,25 +121,19 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
         // Passing `null` to onTap disables the button.
         RubricIconButton(
           size: ElementToolbarWidget.elementToolbarHeight,
-          onTap: _isStylingEnabled
-              ? () => _toggleWrapSelectionWith('ᵇ', editorState)
-              : null,
+          onTap: _isStylingEnabled ? () => _toggleWrapSelectionWith('ᵇ', editorState) : null,
           iconData: Icons.format_bold,
           disabled: !_isStylingEnabled,
         ),
         RubricIconButton(
           size: ElementToolbarWidget.elementToolbarHeight,
-          onTap: _isStylingEnabled
-              ? () => _toggleWrapSelectionWith('ⁱ', editorState)
-              : null,
+          onTap: _isStylingEnabled ? () => _toggleWrapSelectionWith('ⁱ', editorState) : null,
           iconData: Icons.format_italic,
           disabled: !_isStylingEnabled,
         ),
         RubricIconButton(
           size: ElementToolbarWidget.elementToolbarHeight,
-          onTap: _isStylingEnabled
-              ? () => _toggleWrapSelectionWith('ᵘ', editorState)
-              : null,
+          onTap: _isStylingEnabled ? () => _toggleWrapSelectionWith('ᵘ', editorState) : null,
           iconData: Icons.format_underline,
           disabled: !_isStylingEnabled,
         ),
@@ -160,28 +142,24 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
         RubricVerticleDivider(),
         for (var align in ElementAlignment.all)
           RubricIconButton(
-              isActive: properties.alignment == align,
-              size: ElementToolbarWidget.elementToolbarHeight,
-              onTap: () {
-                editorState.canvas.updateProperties<TextElementModel>(
-                    widget.element,
-                    (properties) =>
-                        properties.copyWith(alignment: align).toJson());
-              },
-              iconData: ElementAlignment.icon(align)),
+            isActive: properties.alignment == align,
+            size: ElementToolbarWidget.elementToolbarHeight,
+            onTap: () {
+              editorState.canvas.updateProperties<TextElementModel>(
+                widget.element,
+                (properties) => properties.copyWith(alignment: align).toJson(),
+              );
+            },
+            iconData: ElementAlignment.icon(align),
+          ),
         RubricVerticleDivider(),
         Padding(
           padding: RubricEditorStyle.padding,
           child: RubricColorButton(
             color: properties.color,
             onTap: () async {
-              final newColor = await PopupWidget.showPopup<Color>(context, (
-                closeWith,
-              ) {
-                return RubricColorPicker(
-                  onComplete: closeWith,
-                  color: properties.color,
-                );
+              final newColor = await PopupWidget.showPopup<Color>(context, (closeWith) {
+                return RubricColorPicker(onComplete: closeWith, color: properties.color);
               });
               if (newColor != null) {
                 editorState.canvas.updateProperties<TextElementModel>(
@@ -196,29 +174,20 @@ class _TextToolbarWidgetState extends State<TextToolbarWidget> {
           onUpdate: (value) {
             if (value case double newValue) {
               editorState.canvas.updateProperties<TextElementModel>(
-                  widget.element,
-                  (properties) => properties.copyWith(size: newValue).toJson());
+                widget.element,
+                (properties) => properties.copyWith(size: newValue).toJson(),
+              );
             }
           },
           items: [
             if (widget.header)
-              for (var value in HeadingFontSizes.values)
-                RubricDropdownMenuItem(
-                  value: value.value,
-                  text: value.display,
-                )
+              for (var value in HeadingFontSizes.values) RubricDropdownMenuItem(value: value.value, text: value.display)
             else
-              for (var value in FontSizes.values)
-                RubricDropdownMenuItem(
-                  value: value.value,
-                  text: value.display,
-                ),
+              for (var value in FontSizes.values) RubricDropdownMenuItem(value: value.value, text: value.display),
           ],
           child: RubricText("Font Size"),
         ),
-        ToolbarUniversalIcons(
-          element: widget.element,
-        ),
+        ToolbarUniversalIcons(element: widget.element),
       ],
     );
   }

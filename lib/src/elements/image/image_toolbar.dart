@@ -27,21 +27,15 @@ class ImageTooltipWidget extends StatelessWidget {
       children: [
         RubricIconTextButton(
           onTap: () async {
-            FilePickerResult? result = await FilePicker.platform.pickFiles(
-              allowMultiple: false,
-              type: FileType.image,
-            );
+            FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.image);
             if (result case FilePickerResult result) {
               Uint8List? fileBytes = result.files.first.bytes;
               if (fileBytes != null) {
-                final imageUrl = await editorState.widget.bytesToURL(
-                  fileBytes,
-                  name: result.files.first.name,
-                );
+                final imageUrl = await editorState.widget.bytesToURL(fileBytes, name: result.files.first.name);
                 editorState.canvas.updateProperties<ImageElementModel>(
-                    element,
-                    (properties) =>
-                        properties.copyWith(imageUrl: imageUrl).toJson());
+                  element,
+                  (properties) => properties.copyWith(imageUrl: imageUrl).toJson(),
+                );
               }
             }
           },
@@ -54,9 +48,9 @@ class ImageTooltipWidget extends StatelessWidget {
           onChanged: (value) {
             if (value case double newValue) {
               editorState.canvas.updateProperties<ImageElementModel>(
-                  element,
-                  (properties) =>
-                      properties.copyWith(borderRadius: newValue).toJson());
+                element,
+                (properties) => properties.copyWith(borderRadius: newValue).toJson(),
+              );
             }
           },
         ),
@@ -64,24 +58,17 @@ class ImageTooltipWidget extends StatelessWidget {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case String newValue) {
-              editorState.canvas.updateProperties<ImageElementModel>(element,
-                  (properties) => properties.copyWith(fit: newValue).toJson());
+              editorState.canvas.updateProperties<ImageElementModel>(
+                element,
+                (properties) => properties.copyWith(fit: newValue).toJson(),
+              );
             }
           },
-          items: [
-            for (var value in ImageFits.all)
-              RubricDropdownMenuItem(
-                value: value,
-                text: value,
-              ),
-          ],
+          items: [for (var value in ImageFits.all) RubricDropdownMenuItem(value: value, text: value)],
           child: Row(
             spacing: RubricEditorStyle.paddingUnit * 0.5,
             children: [
-              RubricIcon(
-                Icons.crop_outlined,
-                size: ElementToolbarWidget.iconSize,
-              ),
+              RubricIcon(Icons.crop_outlined, size: ElementToolbarWidget.iconSize),
               RubricText("Fit"),
             ],
           ),
@@ -93,32 +80,24 @@ class ImageTooltipWidget extends StatelessWidget {
           onUpdate: (value) {
             if (value case double newValue) {
               editorState.canvas.updateProperties<ImageElementModel>(
-                  element,
-                  (properties) =>
-                      properties.copyWith(aspectRatio: newValue).toJson());
+                element,
+                (properties) => properties.copyWith(aspectRatio: newValue).toJson(),
+              );
             }
           },
           items: [
             for (var ratio in AspectRatios.values)
-              RubricDropdownMenuItem(
-                value: ratio,
-                text: AspectRatios.doubleToRatio(ratio),
-              ),
+              RubricDropdownMenuItem(value: ratio, text: AspectRatios.doubleToRatio(ratio)),
           ],
           child: Row(
             spacing: RubricEditorStyle.paddingUnit * 0.5,
             children: [
-              RubricIcon(
-                Icons.aspect_ratio,
-                size: ElementToolbarWidget.iconSize,
-              ),
+              RubricIcon(Icons.aspect_ratio, size: ElementToolbarWidget.iconSize),
               RubricText("Aspect Ratio"),
             ],
           ),
         ),
-        ToolbarUniversalIcons(
-          element: element,
-        ),
+        ToolbarUniversalIcons(element: element),
       ],
     );
   }

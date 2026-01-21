@@ -20,17 +20,14 @@ abstract class CanvasSettings with _$CanvasSettings {
   @JsonSerializable()
   const factory CanvasSettings({
     required String name,
-    @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-    required Color backgroundColor,
-    @JsonKey(toJson: colorToJson, fromJson: colorFromJson)
-    required Color canvasColor,
+    @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color backgroundColor,
+    @JsonKey(toJson: colorToJson, fromJson: colorFromJson) required Color canvasColor,
     @Default(0) double spacing,
     required String fontFamily,
     required String icon,
   }) = _CanvasSettings;
 
-  factory CanvasSettings.fromJson(Map<String, dynamic> json) =>
-      _$CanvasSettingsFromJson(json);
+  factory CanvasSettings.fromJson(Map<String, dynamic> json) => _$CanvasSettingsFromJson(json);
 }
 
 class CanvasModel {
@@ -52,8 +49,7 @@ class CanvasModel {
     for (var element in elements) {
       if (element.type.category == ElementCategories.flex) {
         if (element.getProperties<RowElementModel>().elements.isNotEmpty) {
-          for (var column
-              in element.getProperties<RowElementModel>().elements) {
+          for (var column in element.getProperties<RowElementModel>().elements) {
             for (var rowElement in column) {
               final el = ElementModel.fromMap(rowElement);
               if (el.id == id) {
@@ -71,23 +67,15 @@ class CanvasModel {
   }
 
   // ! DEEP COPY had to be manually implemented.
-  CanvasModel copyWith({
-    List<ElementModel>? elements,
-    CanvasSettings? settings,
-  }) {
+  CanvasModel copyWith({List<ElementModel>? elements, CanvasSettings? settings}) {
     return CanvasModel(
-      elements: (elements ?? this.elements)
-          .map<ElementModel>((e) => e.copyWith())
-          .toList(),
+      elements: (elements ?? this.elements).map<ElementModel>((e) => e.copyWith()).toList(),
       settings: (settings ?? this.settings).copyWith(),
     );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'elements': elements.map((x) => x.toMap()).toList(),
-      'settings': settings.toJson(),
-    };
+    return <String, dynamic>{'elements': elements.map((x) => x.toMap()).toList(), 'settings': settings.toJson()};
   }
 
   String toHTML() {
@@ -139,13 +127,9 @@ class CanvasModel {
   factory CanvasModel.fromMap(Map<String, dynamic> map) {
     return CanvasModel(
       elements: List<ElementModel>.from(
-        (map['elements'] as List<dynamic>).map<ElementModel>(
-          (x) => ElementModel.fromMap(x as Map<String, dynamic>),
-        ),
+        (map['elements'] as List<dynamic>).map<ElementModel>((x) => ElementModel.fromMap(x as Map<String, dynamic>)),
       ),
-      settings: CanvasSettings.fromJson(
-        map['settings'] as Map<String, dynamic>,
-      ),
+      settings: CanvasSettings.fromJson(map['settings'] as Map<String, dynamic>),
     );
   }
 

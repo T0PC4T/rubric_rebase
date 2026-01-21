@@ -8,13 +8,9 @@ abstract class VideoElementModel with _$VideoElementModel {
   const VideoElementModel._();
 
   @JsonSerializable()
-  const factory VideoElementModel({
-    required String videoUrl,
-    required bool isYoutube,
-  }) = _VideoElementModel;
+  const factory VideoElementModel({required String videoUrl, required bool isYoutube}) = _VideoElementModel;
 
-  factory VideoElementModel.fromJson(Map<String, dynamic> json) =>
-      _$VideoElementModelFromJson(json);
+  factory VideoElementModel.fromJson(Map<String, dynamic> json) => _$VideoElementModelFromJson(json);
 
   static String toHTML(Map<String, dynamic> properties) {
     final model = VideoElementModel.fromJson(properties);

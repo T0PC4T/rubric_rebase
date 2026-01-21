@@ -19,15 +19,9 @@ class PagePadderWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: verticalEdgePadding,
-          horizontal: horizontalEdgePadding,
-        ),
+        padding: EdgeInsets.symmetric(vertical: verticalEdgePadding, horizontal: horizontalEdgePadding),
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth:
-                (pageWidth ?? GridSizes.pageSize) + horizontalEdgePadding * 2,
-          ),
+          constraints: BoxConstraints(maxWidth: (pageWidth ?? GridSizes.pageSize) + horizontalEdgePadding * 2),
           child: child,
         ),
       ),

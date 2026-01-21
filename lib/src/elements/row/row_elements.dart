@@ -20,8 +20,7 @@ class RowEditorElementState extends FocusableState<RowEditorElement> {
   @override
   onFocus(bool focused) {
     if (focused) {
-      editorState.showToolbar(
-          widget.element, (element) => RowTooltipWidget(element: element));
+      editorState.showToolbar(widget.element, (element) => RowTooltipWidget(element: element));
     }
   }
 
@@ -35,21 +34,13 @@ class RowEditorElementState extends FocusableState<RowEditorElement> {
 
     return Container(
       color: properties.color,
-      margin: EdgeInsets.symmetric(
-          vertical: properties.color == Colors.transparent
-              ? 0
-              : canvas.settings.spacing / 2),
+      margin: EdgeInsets.symmetric(vertical: properties.color == Colors.transparent ? 0 : canvas.settings.spacing / 2),
       padding: EdgeInsets.symmetric(
-        horizontal: properties.color == Colors.transparent
-            ? 0
-            : canvas.settings.spacing,
-        vertical: properties.color == Colors.transparent
-            ? 0
-            : canvas.settings.spacing / 2,
+        horizontal: properties.color == Colors.transparent ? 0 : canvas.settings.spacing,
+        vertical: properties.color == Colors.transparent ? 0 : canvas.settings.spacing / 2,
       ),
       child: Row(
-        crossAxisAlignment:
-            RowCrossAxisAlignment.toCrossAxisAlignment(properties.crossAxisAlignment),
+        crossAxisAlignment: RowCrossAxisAlignment.toCrossAxisAlignment(properties.crossAxisAlignment),
         spacing: editor.canvas.value.settings.spacing,
         children: [
           for (var i = 0; i < columns.length; i++)
@@ -58,11 +49,9 @@ class RowEditorElementState extends FocusableState<RowEditorElement> {
                 spacing: editor.canvas.value.settings.spacing,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  if (columns[i].isEmpty)
-                    EditorEmptyInserterWidget(parent: element, id: i.toString()),
+                  if (columns[i].isEmpty) EditorEmptyInserterWidget(parent: element, id: i.toString()),
                   for (var item in columns[i])
-                    EditorElementWidget(
-                        element: ElementModel.fromMap(item), parent: element),
+                    EditorElementWidget(element: ElementModel.fromMap(item), parent: element),
                 ],
               ),
             ),
@@ -78,8 +67,7 @@ class RowEditorElementState extends FocusableState<RowEditorElement> {
 class RowReaderElement extends StatelessWidget {
   final ElementModel element;
   final CanvasModel canvas;
-  const RowReaderElement(
-      {super.key, required this.element, required this.canvas});
+  const RowReaderElement({super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {
@@ -90,26 +78,17 @@ class RowReaderElement extends StatelessWidget {
         return Container(
           color: properties.color,
           margin: EdgeInsets.symmetric(
-            vertical: properties.color == Colors.transparent
-                ? 0
-                : canvas.settings.spacing / 2,
+            vertical: properties.color == Colors.transparent ? 0 : canvas.settings.spacing / 2,
           ),
           padding: EdgeInsets.symmetric(
-            horizontal: properties.color == Colors.transparent
-                ? 0
-                : canvas.settings.spacing,
-            vertical: properties.color == Colors.transparent
-                ? 0
-                : canvas.settings.spacing / 2,
+            horizontal: properties.color == Colors.transparent ? 0 : canvas.settings.spacing,
+            vertical: properties.color == Colors.transparent ? 0 : canvas.settings.spacing / 2,
           ),
           child: Flex(
             spacing: canvas.settings.spacing,
-            direction: constraints.maxWidth <= ViewModes.mobile.width + 100
-                ? Axis.vertical
-                : Axis.horizontal,
+            direction: constraints.maxWidth <= ViewModes.mobile.width + 100 ? Axis.vertical : Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: RowCrossAxisAlignment.toCrossAxisAlignment(
-                properties.crossAxisAlignment),
+            crossAxisAlignment: RowCrossAxisAlignment.toCrossAxisAlignment(properties.crossAxisAlignment),
             mainAxisSize: MainAxisSize.min,
             children: [
               for (var column in columns)
@@ -118,9 +97,7 @@ class RowReaderElement extends StatelessWidget {
                     // spacing: canvas.settings.spacing,
                     children: [
                       for (var element in column)
-                        ReaderElementWidget(
-                            canvas: canvas,
-                            element: ElementModel.fromMap(element)),
+                        ReaderElementWidget(canvas: canvas, element: ElementModel.fromMap(element)),
                     ],
                   ),
                 ),

@@ -16,8 +16,7 @@ abstract class ImageElementModel with _$ImageElementModel {
     @Default(AspectRatios.widescreen) double aspectRatio,
   }) = _ImageElementModel;
 
-  factory ImageElementModel.fromJson(Map<String, dynamic> json) =>
-      _$ImageElementModelFromJson(json);
+  factory ImageElementModel.fromJson(Map<String, dynamic> json) => _$ImageElementModelFromJson(json);
 
   static String toHTML(Map<String, dynamic> properties) {
     final model = ImageElementModel.fromJson(properties);

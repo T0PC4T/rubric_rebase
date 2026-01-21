@@ -42,8 +42,7 @@ class NavbarWidget extends StatelessWidget {
                 // todo add mobile support.
                 RubricIconButton(
                   style: RBStyles.alt,
-                  isActive:
-                      editorState.edits.value.viewMode == ViewModes.mobile,
+                  isActive: editorState.edits.value.viewMode == ViewModes.mobile,
                   iconData: Icons.phone_android,
                   size: NavbarWidget.navbarHeight,
                   onTap: () {
@@ -53,8 +52,7 @@ class NavbarWidget extends StatelessWidget {
                 ),
                 RubricIconButton(
                   style: RBStyles.alt,
-                  isActive:
-                      editorState.edits.value.viewMode == ViewModes.desktop,
+                  isActive: editorState.edits.value.viewMode == ViewModes.desktop,
                   iconData: Icons.desktop_mac_rounded,
                   size: NavbarWidget.navbarHeight,
                   onTap: () {
@@ -87,9 +85,7 @@ class NavbarWidget extends StatelessWidget {
           ),
           RubricIconButton(
             style: RBStyles.alt,
-            iconData: editorState.edits.value.previewing
-                ? Icons.edit
-                : Icons.remove_red_eye_rounded,
+            iconData: editorState.edits.value.previewing ? Icons.edit : Icons.remove_red_eye_rounded,
             size: NavbarWidget.navbarHeight,
             onTap: () {
               editorState.edits.focusElement();
@@ -103,11 +99,7 @@ class NavbarWidget extends StatelessWidget {
             style,
             width: NavbarWidget.navbarHeight * 2,
             height: NavbarWidget.navbarHeight,
-            child: RubricText(
-              "Save & Exit",
-              textType: TextType.thick,
-              color: style.back,
-            ),
+            child: RubricText("Save & Exit", textType: TextType.thick, color: style.back),
             onTap: () async {
               editorState.edits.focusElement();
               await Future.delayed(Duration(milliseconds: 1));
@@ -132,19 +124,13 @@ class NavbarWidget extends StatelessWidget {
             height: NavbarWidget.navbarHeight,
             onTap: () {
               editorState.edits.focusElement();
-              if (editorState.overlays.any(
-                (element) => element.runtimeType == SaveDropDownWidget,
-              )) {
+              if (editorState.overlays.any((element) => element.runtimeType == SaveDropDownWidget)) {
                 editorState.popOverlay();
                 return;
               }
               editorState.pushOverlay(SaveDropDownWidget(), removeToLength: 0);
             },
-            child: Icon(
-              Icons.keyboard_arrow_down_rounded,
-              color: style.back,
-              size: ElementToolbarWidget.iconSize,
-            ),
+            child: Icon(Icons.keyboard_arrow_down_rounded, color: style.back, size: ElementToolbarWidget.iconSize),
           ),
         ],
       ),

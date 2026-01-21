@@ -5,10 +5,11 @@ import 'package:rubric/src/rubric_editor/sidebar/sidebar.dart';
 class SizeBlockerWidget extends StatelessWidget {
   final Widget child;
   final double minSize;
-  const SizeBlockerWidget(
-      {super.key,
-      required this.child,
-      this.minSize = GridSizes.pageSize + RubricSideBar.sideBarSize});
+  const SizeBlockerWidget({
+    super.key,
+    required this.child,
+    this.minSize = GridSizes.pageSize + RubricSideBar.sideBarSize,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +42,12 @@ class TooSmallWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             spacing: 10,
             children: [
-              Icon(
-                Icons.desktop_access_disabled_rounded,
-                color: Colors.black,
-                size: 80,
+              Icon(Icons.desktop_access_disabled_rounded, color: Colors.black, size: 80),
+              Text("Your window is too small!", style: TextStyle(fontSize: 18, color: Colors.black)),
+              Text(
+                "Enlarge your window to continue editing your lesson!",
+                style: TextStyle(fontSize: 8, color: Colors.black),
               ),
-              Text("Your window is too small!",
-                  style: TextStyle(fontSize: 18, color: Colors.black)),
-              Text("Enlarge your window to continue editing your lesson!",
-                  style: TextStyle(fontSize: 8, color: Colors.black)),
             ],
           ),
         ),

@@ -8,12 +8,9 @@ abstract class PdfElementModel with _$PdfElementModel {
   const PdfElementModel._();
 
   @JsonSerializable()
-  const factory PdfElementModel({
-    required String pdfUrl,
-  }) = _PdfElementModel;
+  const factory PdfElementModel({required String pdfUrl}) = _PdfElementModel;
 
-  factory PdfElementModel.fromJson(Map<String, dynamic> json) =>
-      _$PdfElementModelFromJson(json);
+  factory PdfElementModel.fromJson(Map<String, dynamic> json) => _$PdfElementModelFromJson(json);
 
   static String toHTML(Map<String, dynamic> properties) {
     final model = PdfElementModel.fromJson(properties);

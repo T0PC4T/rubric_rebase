@@ -40,42 +40,39 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
       children: [
         RubricIconTextButton(
           onTap: () async {
-            final videoUrl = await PopupWidget.showPopup<String>(
-              context,
-              (closeWith) {
-                return SizedBox(
-                  width: PopupWidget.popWidth,
-                  child: Column(
-                    children: [
-                      RubricText(
-                        "Edit Link",
-                        textType: TextType.title,
+            final videoUrl = await PopupWidget.showPopup<String>(context, (closeWith) {
+              return SizedBox(
+                width: PopupWidget.popWidth,
+                child: Column(
+                  children: [
+                    RubricText("Edit Link", textType: TextType.title),
+                    Padding(
+                      padding: RubricEditorStyle.padding,
+                      child: RubricTextField(
+                        initialValue: properties.link,
+                        onComplete: closeWith,
+                        onChanged: (value) {
+                          lastValue = value;
+                        },
+                        helpText: "https://www.google.com",
                       ),
-                      Padding(
-                        padding: RubricEditorStyle.padding,
-                        child: RubricTextField(
-                          initialValue: properties.link,
-                          onComplete: closeWith,
-                          onChanged: (value) {
-                            lastValue = value;
-                          },
-                          helpText: "https://www.google.com",
-                        ),
-                      ),
-                      RubricButton.light(editorState.style,
-                          width: 150,
-                          height: 30,
-                          onTap: () => closeWith(lastValue),
-                          child: Text("Save Link"))
-                    ],
-                  ),
-                );
-              },
-            );
+                    ),
+                    RubricButton.light(
+                      editorState.style,
+                      width: 150,
+                      height: 30,
+                      onTap: () => closeWith(lastValue),
+                      child: Text("Save Link"),
+                    ),
+                  ],
+                ),
+              );
+            });
             if (videoUrl case String newUrl) {
               editorState.canvas.updateProperties<ButtonElementModel>(
-                  widget.element,
-                  (properties) => properties.copyWith(link: newUrl).toJson());
+                widget.element,
+                (properties) => properties.copyWith(link: newUrl).toJson(),
+              );
             }
           },
           iconData: Icons.link,
@@ -86,46 +83,28 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case String newValue) {
-              editorState.canvas.updateProperties<ButtonElementModel>(
-                  widget.element, (properties) {
+              editorState.canvas.updateProperties<ButtonElementModel>(widget.element, (properties) {
                 if (properties.style == ButtonStyles.outlined.value) {
-                  return properties
-                      .copyWith(style: newValue, textColor: properties.color)
-                      .toJson();
+                  return properties.copyWith(style: newValue, textColor: properties.color).toJson();
                 } else if (properties.style == ButtonStyles.filled.value) {
                   Color textColor;
                   if (properties.color.computeLuminance() > 0.5) {
-                    textColor =
-                        Color.lerp(properties.color, Colors.black, 0.5)!;
+                    textColor = Color.lerp(properties.color, Colors.black, 0.5)!;
                   } else {
                     textColor = Colors.white;
                   }
-                  return properties
-                      .copyWith(style: newValue, textColor: textColor)
-                      .toJson();
+                  return properties.copyWith(style: newValue, textColor: textColor).toJson();
                 } else {
-                  return properties
-                      .copyWith(
-                          style: newValue, textColor: editorState.style.theme)
-                      .toJson();
+                  return properties.copyWith(style: newValue, textColor: editorState.style.theme).toJson();
                 }
               });
             }
           },
-          items: [
-            for (var value in ButtonStyles.values)
-              RubricDropdownMenuItem(
-                value: value.value,
-                text: value.name,
-              ),
-          ],
+          items: [for (var value in ButtonStyles.values) RubricDropdownMenuItem(value: value.value, text: value.name)],
           child: Row(
             spacing: RubricEditorStyle.paddingUnit * 0.5,
             children: [
-              RubricIcon(
-                Icons.smart_button_sharp,
-                size: ElementToolbarWidget.iconSize,
-              ),
+              RubricIcon(Icons.smart_button_sharp, size: ElementToolbarWidget.iconSize),
               RubricText("Button Style"),
             ],
           ),
@@ -137,9 +116,9 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
           onChanged: (value) {
             if (value case double newValue) {
               editorState.canvas.updateProperties<ButtonElementModel>(
-                  widget.element,
-                  (properties) =>
-                      properties.copyWith(borderRadius: newValue).toJson());
+                widget.element,
+                (properties) => properties.copyWith(borderRadius: newValue).toJson(),
+              );
 
               // final newProperties = properties.copyWith(
               //   borderRadius: newValue,
@@ -157,13 +136,8 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
           child: RubricColorButton(
             color: properties.color,
             onTap: () async {
-              final newColor = await PopupWidget.showPopup<Color>(context, (
-                closeWith,
-              ) {
-                return RubricColorPicker(
-                  onComplete: closeWith,
-                  color: properties.color,
-                );
+              final newColor = await PopupWidget.showPopup<Color>(context, (closeWith) {
+                return RubricColorPicker(onComplete: closeWith, color: properties.color);
               });
               if (newColor != null) {
                 editorState.canvas.updateProperties<ButtonElementModel>(
@@ -181,33 +155,26 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
         ),
         Padding(
           padding: EdgeInsetsGeometry.only(
-              left: RubricEditorStyle.paddingNum * 0.5,
-              right: RubricEditorStyle.paddingNum),
+            left: RubricEditorStyle.paddingNum * 0.5,
+            right: RubricEditorStyle.paddingNum,
+          ),
           child: RubricColorButton(
             builder: (color) {
               return RubricIcon(
                 Icons.text_fields_outlined,
-                color: color.computeLuminance() > 0.95
-                    ? editorState.style.fore
-                    : color,
+                color: color.computeLuminance() > 0.95 ? editorState.style.fore : color,
                 size: ElementToolbarWidget.iconSize,
               );
             },
             color: properties.textColor,
             onTap: () async {
-              final newColor = await PopupWidget.showPopup<Color>(context, (
-                closeWith,
-              ) {
-                return RubricColorPicker(
-                  onComplete: closeWith,
-                  color: properties.textColor,
-                );
+              final newColor = await PopupWidget.showPopup<Color>(context, (closeWith) {
+                return RubricColorPicker(onComplete: closeWith, color: properties.textColor);
               });
               if (newColor != null) {
                 editorState.canvas.updateProperties<ButtonElementModel>(
                   widget.element,
-                  (properties) =>
-                      properties.copyWith(textColor: newColor).toJson(),
+                  (properties) => properties.copyWith(textColor: newColor).toJson(),
                 );
 
                 // editorState.canvas.updateProperties(
@@ -218,9 +185,7 @@ class _ButtonTooltipWidgetState extends State<ButtonTooltipWidget> {
             },
           ),
         ),
-        ToolbarUniversalIcons(
-          element: widget.element,
-        ),
+        ToolbarUniversalIcons(element: widget.element),
       ],
     );
   }

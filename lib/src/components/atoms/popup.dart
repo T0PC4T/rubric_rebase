@@ -5,32 +5,23 @@ import 'package:rubric/rubric.dart';
 
 class PopupWidget<T> extends StatefulWidget {
   static double popWidth = 380;
-  static Future<T?> showPopup<T>(
-    BuildContext context,
-    Widget Function(Function(T value) closeWith) builder,
-  ) {
+  static Future<T?> showPopup<T>(BuildContext context, Widget Function(Function(T value) closeWith) builder) {
     final completer = Completer<T?>();
 
-    RubricEditorState.of(
-      context,
-    ).pushOverlay(PopupWidget(builder: builder, completer: completer));
+    RubricEditorState.of(context).pushOverlay(PopupWidget(builder: builder, completer: completer));
     return completer.future;
   }
 
   final Widget Function(Function(T value) closeWith) builder;
   final Completer<T?> completer;
-  const PopupWidget({
-    super.key,
-    required this.builder,
-    required this.completer,
-  });
+  const PopupWidget({super.key, required this.builder, required this.completer});
 
   @override
   State<PopupWidget<T>> createState() => _PopupWidgetState<T>();
 }
 
 class _PopupWidgetState<T> extends State<PopupWidget<T>> {
-  onCompleter(T value) {
+  void onCompleter(T value) {
     widget.completer.complete(value);
     RubricEditorState.of(context).popOverlay();
   }
@@ -50,10 +41,7 @@ class _PopupWidgetState<T> extends State<PopupWidget<T>> {
           onTap: () => {},
           child: Container(
             padding: RubricEditorStyle.padding,
-            decoration: BoxDecoration(
-              color: style.back,
-              borderRadius: style.borderRadius,
-            ),
+            decoration: BoxDecoration(color: style.back, borderRadius: style.borderRadius),
             child: SingleChildScrollView(child: widget.builder(onCompleter)),
           ),
         ),

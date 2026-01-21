@@ -30,7 +30,7 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
 
   int editingPoint = -1;
 
-  requestFocus() {
+  void requestFocus() {
     focusNode.requestFocus();
   }
 
@@ -56,10 +56,7 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
     if (focused) {
       editorState.showToolbar(
         widget.element,
-        (element) => TextListToolbarWidget(
-            element: element,
-            controller: controller,
-            undoController: undoController),
+        (element) => TextListToolbarWidget(element: element, controller: controller, undoController: undoController),
       );
       // focusNode.requestFocus();
       editingPoint = 0;
@@ -75,7 +72,7 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
   }
 
   final bool _changed = false;
-  onChange(String value) {
+  void onChange(String value) {
     setState(() {
       textList[editingPoint] = value;
     });
@@ -122,11 +119,7 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
   }
 
   Widget renderText(TextStyle textStyle, String text) {
-    return Text(
-      overflow: TextOverflow.visible,
-      text.isEmpty ? "Write something here..." : text,
-      style: textStyle,
-    );
+    return Text(overflow: TextOverflow.visible, text.isEmpty ? "Write something here..." : text, style: textStyle);
   }
 
   @override
@@ -145,16 +138,11 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: textListRowSpacing,
               children: [
-                BulletNumberList(
-                  properties: properties,
-                  index: i,
-                ),
+                BulletNumberList(properties: properties, index: i),
                 if (!isFocused)
                   Expanded(child: renderText(textStyle, textList[i]))
                 else
-                  editingPoint != i
-                      ? getClickableText(i, textStyle)
-                      : getInputWidget(i, textStyle),
+                  editingPoint != i ? getClickableText(i, textStyle) : getInputWidget(i, textStyle),
               ],
             ),
         ],
@@ -165,21 +153,22 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
   Widget getClickableText(int i, TextStyle textStyle) {
     return Expanded(
       child: GestureDetector(
-          onTap: () {
-            if (editingPoint == -1) {
-              return;
+        onTap: () {
+          if (editingPoint == -1) {
+            return;
+          }
+          setState(() {
+            if (textList[editingPoint] != controller.text) {
+              final newText = List<String>.from(textList);
+              newText[editingPoint] = controller.text;
+              textList = newText;
             }
-            setState(() {
-              if (textList[editingPoint] != controller.text) {
-                final newText = List<String>.from(textList);
-                newText[editingPoint] = controller.text;
-                textList = newText;
-              }
-              editingPoint = i;
-              controller.text = textList[i];
-            });
-          },
-          child: renderText(textStyle, textList[i])),
+            editingPoint = i;
+            controller.text = textList[i];
+          });
+        },
+        child: renderText(textStyle, textList[i]),
+      ),
     );
   }
 
@@ -195,9 +184,7 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
           }
 
           // if delete key is pressed
-          if (value.logicalKey == LogicalKeyboardKey.backspace &&
-              controller.text == "" &&
-              textList.length > 1) {
+          if (value.logicalKey == LogicalKeyboardKey.backspace && controller.text == "" && textList.length > 1) {
             setState(() {
               final newIndex = editingPoint != 0 ? editingPoint - 1 : 0;
               controller.text = textList[newIndex];
@@ -213,8 +200,7 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
               final newTextList = List<String>.from(textList);
 
               // update to be only the text before the selected
-              newTextList[editingPoint] =
-                  controller.text.substring(0, controller.selection.end);
+              newTextList[editingPoint] = controller.text.substring(0, controller.selection.end);
 
               // Create a new point from what is after the selection
               final newPoint = editingPoint + 1;
@@ -230,11 +216,9 @@ class TextListEditorElementState extends FocusableState<TextListEditorElement> {
               editingPoint = newPoint;
 
               controller.text = leftover;
-              Future.delayed(Duration(milliseconds: 1)).then(
-                (value) {
-                  controller.text = leftover;
-                },
-              );
+              Future.delayed(Duration(milliseconds: 1)).then((value) {
+                controller.text = leftover;
+              });
             });
           }
         },
@@ -284,43 +268,36 @@ class TextListLayerWidget extends StatelessWidget {
 class TextListReaderWidget extends StatelessWidget {
   final ElementModel element;
   final CanvasModel canvas;
-  const TextListReaderWidget(
-      {super.key, required this.element, required this.canvas});
+  const TextListReaderWidget({super.key, required this.element, required this.canvas});
 
   @override
   Widget build(BuildContext context) {
     final properties = element.getProperties<TextListElementModel>();
 
     return Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: textListColumnSpacing,
-        children: [
-          for (var i = 0; i < properties.textList.length; i++)
-            Row(
-                spacing: textListRowSpacing,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BulletNumberList(
-                    properties: properties,
-                    index: i,
-                  ),
-                  Expanded(
-                    child: Text(
-                      overflow: TextOverflow.visible,
-                      properties.textList[i],
-                      style: properties.textStyle(),
-                    ),
-                  ),
-                ])
-        ]);
+      mainAxisSize: MainAxisSize.min,
+      spacing: textListColumnSpacing,
+      children: [
+        for (var i = 0; i < properties.textList.length; i++)
+          Row(
+            spacing: textListRowSpacing,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BulletNumberList(properties: properties, index: i),
+              Expanded(
+                child: Text(overflow: TextOverflow.visible, properties.textList[i], style: properties.textStyle()),
+              ),
+            ],
+          ),
+      ],
+    );
   }
 }
 
 class BulletNumberList extends StatelessWidget {
   final TextListElementModel properties;
   final int index;
-  const BulletNumberList(
-      {super.key, required this.properties, required this.index});
+  const BulletNumberList({super.key, required this.properties, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -328,18 +305,12 @@ class BulletNumberList extends StatelessWidget {
     if (properties.textListType == TextListTypes.bulleted) {
       return Padding(
         padding: const EdgeInsets.only(right: 8.0),
-        child: Text(
-          "•",
-          style: textStyle.copyWith(fontSize: textStyle.fontSize),
-        ),
+        child: Text("•", style: textStyle.copyWith(fontSize: textStyle.fontSize)),
       );
     } else {
       return Padding(
         padding: const EdgeInsets.only(right: 8.0),
-        child: Text(
-          "${index + 1}.",
-          style: textStyle,
-        ),
+        child: Text("${index + 1}.", style: textStyle),
       );
     }
   }
@@ -357,10 +328,7 @@ class PointInserter extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            color: theme.theme,
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: theme.theme),
           width: 70,
           height: 30,
           child: RubricIcon(Icons.add, color: theme.back),

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-colorToJson(Color color) {
+int colorToJson(Color color) {
   return color.getValue;
 }
 
@@ -13,11 +13,7 @@ extension on Color {
     return (x * 255.0).round() & 0xff;
   }
 
-  int get getValue =>
-      _floatToInt8(a) << 24 |
-      _floatToInt8(r) << 16 |
-      _floatToInt8(g) << 8 |
-      _floatToInt8(b) << 0;
+  int get getValue => _floatToInt8(a) << 24 | _floatToInt8(r) << 16 | _floatToInt8(g) << 8 | _floatToInt8(b) << 0;
 }
 
 String colorToHex(Color color) {

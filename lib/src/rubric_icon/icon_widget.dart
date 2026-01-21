@@ -10,11 +10,7 @@ class RubricEditorIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      allIcons[name],
-      size: size,
-      color: color,
-    );
+    return Icon(allIcons[name], size: size, color: color);
   }
 }
 
@@ -27,10 +23,6 @@ class RubricIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final editorState = RubricEditorState.of(context);
-    return Icon(
-      icon,
-      size: size,
-      color: color ?? editorState.style.fore,
-    );
+    return Icon(icon, size: size, color: color ?? editorState.style.fore);
   }
 }

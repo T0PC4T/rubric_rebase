@@ -7,12 +7,7 @@ class RubricToolbarDropdown<T> extends StatefulWidget {
   final Widget child;
   final List<RubricDropdownMenuItem<T>> items;
   final Function(T? value) onUpdate;
-  const RubricToolbarDropdown({
-    super.key,
-    required this.child,
-    required this.items,
-    required this.onUpdate,
-  });
+  const RubricToolbarDropdown({super.key, required this.child, required this.items, required this.onUpdate});
 
   @override
   State<RubricToolbarDropdown> createState() => RubricToolbarDropdownState<T>();
@@ -29,14 +24,11 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
     final style = editorState.style;
     final box = (context.findRenderObject() as RenderBox);
     size = box.size;
-    offset = box.localToGlobal(
-      Offset(0, size.height),
-    );
-    if (editorState.overlays
-        case List(
-          isNotEmpty: true,
-          last: Positioned(key: ValueKey key),
-        ) when key.value == openID) {
+    offset = box.localToGlobal(Offset(0, size.height));
+    if (editorState.overlays case List(
+      isNotEmpty: true,
+      last: Positioned(key: ValueKey key),
+    ) when key.value == openID) {
       editorState.popToLength(1);
     } else {
       openID = newID();
@@ -59,10 +51,7 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
                 BoxShadow(
                   color: style.fore.withAlpha(50),
                   blurRadius: style.elevation,
-                  offset: Offset(
-                    0,
-                    style.elevation,
-                  ), // changes position of shadow
+                  offset: Offset(0, style.elevation), // changes position of shadow
                 ),
               ],
             ),
@@ -107,18 +96,13 @@ class RubricToolbarDropdownState<T> extends State<RubricToolbarDropdown<T>> {
 }
 
 class RubricDropdownMenuItem<T> {
-  const RubricDropdownMenuItem({
-    this.onTap,
-    this.enabled = true,
-    required this.value,
-    required this.text,
-  });
+  const RubricDropdownMenuItem({this.onTap, this.enabled = true, required this.value, required this.text});
 
   Widget get child => Container(
-        padding: EdgeInsets.only(left: RubricEditorStyle.paddingNum),
-        alignment: Alignment.centerLeft,
-        child: RubricText(text),
-      );
+    padding: EdgeInsets.only(left: RubricEditorStyle.paddingNum),
+    alignment: Alignment.centerLeft,
+    child: RubricText(text),
+  );
   final String text;
   final VoidCallback? onTap;
   final T? value;

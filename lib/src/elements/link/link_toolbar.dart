@@ -42,42 +42,39 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
       children: [
         RubricIconTextButton(
           onTap: () async {
-            final linkUrl = await PopupWidget.showPopup<String>(
-              context,
-              (closeWith) {
-                return SizedBox(
-                  width: PopupWidget.popWidth,
-                  child: Column(
-                    children: [
-                      RubricText(
-                        "Edit Link",
-                        textType: TextType.title,
+            final linkUrl = await PopupWidget.showPopup<String>(context, (closeWith) {
+              return SizedBox(
+                width: PopupWidget.popWidth,
+                child: Column(
+                  children: [
+                    RubricText("Edit Link", textType: TextType.title),
+                    Padding(
+                      padding: RubricEditorStyle.padding,
+                      child: RubricTextField(
+                        initialValue: properties.link,
+                        onComplete: closeWith,
+                        onChanged: (value) {
+                          lastValue = value;
+                        },
+                        helpText: "https://www.google.com",
                       ),
-                      Padding(
-                        padding: RubricEditorStyle.padding,
-                        child: RubricTextField(
-                          initialValue: properties.link,
-                          onComplete: closeWith,
-                          onChanged: (value) {
-                            lastValue = value;
-                          },
-                          helpText: "https://www.google.com",
-                        ),
-                      ),
-                      RubricButton.light(editorState.style,
-                          width: 150,
-                          height: 30,
-                          onTap: () => closeWith(lastValue),
-                          child: Text("Save Link"))
-                    ],
-                  ),
-                );
-              },
-            );
+                    ),
+                    RubricButton.light(
+                      editorState.style,
+                      width: 150,
+                      height: 30,
+                      onTap: () => closeWith(lastValue),
+                      child: Text("Save Link"),
+                    ),
+                  ],
+                ),
+              );
+            });
             if (linkUrl case String newUrl) {
               editorState.canvas.updateProperties<LinkElementModel>(
-                  widget.element,
-                  (properties) => properties.copyWith(link: newUrl).toJson());
+                widget.element,
+                (properties) => properties.copyWith(link: newUrl).toJson(),
+              );
               // editorState.canvas.updateProperties(
               //   widget.element,
               //   properties.copyWith(link: newUrl).toJson(),
@@ -88,62 +85,59 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
           text: "Edit Link",
         ),
         RubricIconButton(
-            isActive: properties.isBold,
-            size: ElementToolbarWidget.elementToolbarHeight,
-            onTap: () {
-              editorState.canvas.updateProperties<LinkElementModel>(
-                  widget.element,
-                  (properties) =>
-                      properties.copyWith(isBold: !properties.isBold).toJson());
-            },
-            iconData: Icons.format_bold),
+          isActive: properties.isBold,
+          size: ElementToolbarWidget.elementToolbarHeight,
+          onTap: () {
+            editorState.canvas.updateProperties<LinkElementModel>(
+              widget.element,
+              (properties) => properties.copyWith(isBold: !properties.isBold).toJson(),
+            );
+          },
+          iconData: Icons.format_bold,
+        ),
         RubricIconButton(
-            isActive: properties.isItalic,
-            size: ElementToolbarWidget.elementToolbarHeight,
-            onTap: () {
-              editorState.canvas.updateProperties<LinkElementModel>(
-                  widget.element,
-                  (properties) => properties
-                      .copyWith(isItalic: !properties.isItalic)
-                      .toJson());
-            },
-            iconData: Icons.format_italic),
+          isActive: properties.isItalic,
+          size: ElementToolbarWidget.elementToolbarHeight,
+          onTap: () {
+            editorState.canvas.updateProperties<LinkElementModel>(
+              widget.element,
+              (properties) => properties.copyWith(isItalic: !properties.isItalic).toJson(),
+            );
+          },
+          iconData: Icons.format_italic,
+        ),
         RubricIconButton(
-            isActive: properties.isUnderline,
-            size: ElementToolbarWidget.elementToolbarHeight,
-            onTap: () {
-              editorState.canvas.updateProperties<LinkElementModel>(
-                  widget.element,
-                  (properties) => properties
-                      .copyWith(isUnderline: !properties.isUnderline)
-                      .toJson());
-            },
-            iconData: Icons.format_underline),
+          isActive: properties.isUnderline,
+          size: ElementToolbarWidget.elementToolbarHeight,
+          onTap: () {
+            editorState.canvas.updateProperties<LinkElementModel>(
+              widget.element,
+              (properties) => properties.copyWith(isUnderline: !properties.isUnderline).toJson(),
+            );
+          },
+          iconData: Icons.format_underline,
+        ),
         RubricVerticleDivider(),
         for (var align in ElementAlignment.all)
           RubricIconButton(
-              isActive: properties.alignment == align,
-              size: ElementToolbarWidget.elementToolbarHeight,
-              onTap: () {
-                editorState.canvas.updateProperties<LinkElementModel>(
-                    widget.element,
-                    (properties) =>
-                        properties.copyWith(alignment: align).toJson());
-              },
-              iconData: ElementAlignment.icon(align)),
+            isActive: properties.alignment == align,
+            size: ElementToolbarWidget.elementToolbarHeight,
+            onTap: () {
+              editorState.canvas.updateProperties<LinkElementModel>(
+                widget.element,
+                (properties) => properties.copyWith(alignment: align).toJson(),
+              );
+            },
+            iconData: ElementAlignment.icon(align),
+          ),
         RubricVerticleDivider(),
         Padding(
           padding: RubricEditorStyle.padding,
           child: RubricColorButton(
             color: properties.color,
             onTap: () async {
-              final newColor = await PopupWidget.showPopup<Color>(context, (
-                closeWith,
-              ) {
-                return RubricColorPicker(
-                  onComplete: closeWith,
-                  color: properties.color,
-                );
+              final newColor = await PopupWidget.showPopup<Color>(context, (closeWith) {
+                return RubricColorPicker(onComplete: closeWith, color: properties.color);
               });
               if (newColor != null) {
                 editorState.canvas.updateProperties<LinkElementModel>(
@@ -158,29 +152,20 @@ class _LinkTooltipWidgetState extends State<LinkTooltipWidget> {
           onUpdate: (value) {
             if (value case double newValue) {
               editorState.canvas.updateProperties<LinkElementModel>(
-                  widget.element,
-                  (properties) => properties.copyWith(size: newValue).toJson());
+                widget.element,
+                (properties) => properties.copyWith(size: newValue).toJson(),
+              );
             }
           },
           items: [
             if (widget.header)
-              for (var value in HeadingFontSizes.values)
-                RubricDropdownMenuItem(
-                  value: value.value,
-                  text: value.display,
-                )
+              for (var value in HeadingFontSizes.values) RubricDropdownMenuItem(value: value.value, text: value.display)
             else
-              for (var value in FontSizes.values)
-                RubricDropdownMenuItem(
-                  value: value.value,
-                  text: value.display,
-                ),
+              for (var value in FontSizes.values) RubricDropdownMenuItem(value: value.value, text: value.display),
           ],
           child: RubricText("Font Size"),
         ),
-        ToolbarUniversalIcons(
-          element: widget.element,
-        ),
+        ToolbarUniversalIcons(element: widget.element),
       ],
     );
   }

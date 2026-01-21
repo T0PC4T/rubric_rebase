@@ -16,8 +16,7 @@ abstract class DividerElementModel with _$DividerElementModel {
     required double weight,
   }) = _DividerElementModel;
 
-  factory DividerElementModel.fromJson(Map<String, dynamic> json) =>
-      _$DividerElementModelFromJson(json);
+  factory DividerElementModel.fromJson(Map<String, dynamic> json) => _$DividerElementModelFromJson(json);
 
   static String toHTML(Map<String, dynamic> properties) {
     final model = DividerElementModel.fromJson(properties);

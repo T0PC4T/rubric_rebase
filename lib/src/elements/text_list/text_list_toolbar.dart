@@ -31,50 +31,46 @@ class TextListToolbarWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         RubricIconButton(
-            isActive: properties.isBold,
-            size: ElementToolbarWidget.elementToolbarHeight,
-            onTap: () {
-              editorState.canvas.updateProperties<TextListElementModel>(
-                  element,
-                  (properties) =>
-                      properties.copyWith(isBold: !properties.isBold).toJson());
-            },
-            iconData: Icons.format_bold),
+          isActive: properties.isBold,
+          size: ElementToolbarWidget.elementToolbarHeight,
+          onTap: () {
+            editorState.canvas.updateProperties<TextListElementModel>(
+              element,
+              (properties) => properties.copyWith(isBold: !properties.isBold).toJson(),
+            );
+          },
+          iconData: Icons.format_bold,
+        ),
         RubricIconButton(
-            isActive: properties.isItalic,
-            size: ElementToolbarWidget.elementToolbarHeight,
-            onTap: () {
-              editorState.canvas.updateProperties<TextListElementModel>(
-                  element,
-                  (properties) => properties
-                      .copyWith(isItalic: !properties.isItalic)
-                      .toJson());
-            },
-            iconData: Icons.format_italic),
+          isActive: properties.isItalic,
+          size: ElementToolbarWidget.elementToolbarHeight,
+          onTap: () {
+            editorState.canvas.updateProperties<TextListElementModel>(
+              element,
+              (properties) => properties.copyWith(isItalic: !properties.isItalic).toJson(),
+            );
+          },
+          iconData: Icons.format_italic,
+        ),
         RubricIconButton(
-            isActive: properties.isUnderline,
-            size: ElementToolbarWidget.elementToolbarHeight,
-            onTap: () {
-              editorState.canvas.updateProperties<TextListElementModel>(
-                  element,
-                  (properties) => properties
-                      .copyWith(isUnderline: !properties.isUnderline)
-                      .toJson());
-            },
-            iconData: Icons.format_underline),
+          isActive: properties.isUnderline,
+          size: ElementToolbarWidget.elementToolbarHeight,
+          onTap: () {
+            editorState.canvas.updateProperties<TextListElementModel>(
+              element,
+              (properties) => properties.copyWith(isUnderline: !properties.isUnderline).toJson(),
+            );
+          },
+          iconData: Icons.format_underline,
+        ),
         RubricVerticleDivider(),
         Padding(
           padding: RubricEditorStyle.padding,
           child: RubricColorButton(
             color: properties.color,
             onTap: () async {
-              final newColor = await PopupWidget.showPopup<Color>(context, (
-                closeWith,
-              ) {
-                return RubricColorPicker(
-                  onComplete: closeWith,
-                  color: properties.color,
-                );
+              final newColor = await PopupWidget.showPopup<Color>(context, (closeWith) {
+                return RubricColorPicker(onComplete: closeWith, color: properties.color);
               });
               if (newColor != null) {
                 editorState.canvas.updateProperties<TextListElementModel>(
@@ -88,37 +84,29 @@ class TextListToolbarWidget extends StatelessWidget {
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case double newValue) {
-              editorState.canvas.updateProperties<TextListElementModel>(element,
-                  (properties) => properties.copyWith(size: newValue).toJson());
+              editorState.canvas.updateProperties<TextListElementModel>(
+                element,
+                (properties) => properties.copyWith(size: newValue).toJson(),
+              );
             }
           },
-          items: [
-            for (var value in FontSizes.values)
-              RubricDropdownMenuItem(
-                value: value.value,
-                text: value.display,
-              ),
-          ],
+          items: [for (var value in FontSizes.values) RubricDropdownMenuItem(value: value.value, text: value.display)],
           child: RubricText("Font Size"),
         ),
         RubricVerticleDivider(),
-        // List Style
 
+        // List Style
         RubricToolbarDropdown(
           onUpdate: (value) {
             if (value case TextListTypes newValue) {
               editorState.canvas.updateProperties<TextListElementModel>(
-                  element,
-                  (properties) =>
-                      properties.copyWith(textListType: newValue).toJson());
+                element,
+                (properties) => properties.copyWith(textListType: newValue).toJson(),
+              );
             }
           },
           items: [
-            for (var value in TextListTypes.values)
-              RubricDropdownMenuItem(
-                value: value,
-                text: value.name.capitalize(),
-              ),
+            for (var value in TextListTypes.values) RubricDropdownMenuItem(value: value, text: value.name.capitalize()),
           ],
           child: Row(
             spacing: RubricEditorStyle.paddingUnit * 0.5,
@@ -134,9 +122,7 @@ class TextListToolbarWidget extends StatelessWidget {
           ),
         ),
 
-        ToolbarUniversalIcons(
-          element: element,
-        ),
+        ToolbarUniversalIcons(element: element),
       ],
     );
   }

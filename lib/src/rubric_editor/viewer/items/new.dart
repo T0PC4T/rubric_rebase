@@ -16,17 +16,8 @@ class NewElementDragTarget extends StatelessWidget {
         return Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: editorState.style.borderRadius,
-            color: editorState.style.fore95,
-          ),
-          child: Center(
-            child: Icon(
-              Icons.add,
-              color: editorState.style.fore4,
-              size: 50,
-            ),
-          ),
+          decoration: BoxDecoration(borderRadius: editorState.style.borderRadius, color: editorState.style.fore95),
+          child: Center(child: Icon(Icons.add, color: editorState.style.fore4, size: 50)),
         );
       },
     );

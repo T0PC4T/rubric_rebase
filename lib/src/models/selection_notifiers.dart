@@ -28,8 +28,6 @@ class FocusNotifier {
   }
 
   void removeParticularListener(Function(bool focused) listener) {
-    _listeners.removeWhere(
-      (key, value) => value == listener,
-    );
+    _listeners.removeWhere((key, value) => value == listener);
   }
 }

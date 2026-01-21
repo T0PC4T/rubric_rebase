@@ -6,12 +6,7 @@ import 'package:rubric/src/models/elements.dart';
 import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class RightClickMenu extends StatelessWidget {
-  const RightClickMenu({
-    super.key,
-    required this.editorState,
-    required this.element,
-    required this.offset,
-  });
+  const RightClickMenu({super.key, required this.editorState, required this.element, required this.offset});
 
   final RubricEditorState editorState;
   final ElementModel element;
@@ -27,12 +22,11 @@ class RightClickMenu extends StatelessWidget {
         final element = this.element;
         editorState.edits.focusElement();
         editorState.canvas.duplicateElement(element);
-      }
+      },
     ));
 
     const double rightMenuButtonHeight = 40;
-    double rightMenuHeight =
-        rightMenuButtonHeight * (buttons.length + 1) + (buttons.length + 2);
+    double rightMenuHeight = rightMenuButtonHeight * (buttons.length + 1) + (buttons.length + 2);
     const double rightMenuWidth = 150;
 
     final size = MediaQuery.sizeOf(context);
@@ -67,13 +61,7 @@ class RightClickMenu extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               // dropdown shadow
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(50),
-                  blurRadius: 5,
-                  offset: Offset(0, 2),
-                ),
-              ],
+              boxShadow: [BoxShadow(color: Colors.black.withAlpha(50), blurRadius: 5, offset: Offset(0, 2))],
               color: editorState.style.fore9,
               // borderRadius: editorState.style.borderRadius,
             ),
@@ -94,12 +82,7 @@ class RightClickMenu extends StatelessWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           spacing: RubricEditorStyle.paddingNum * .75,
-                          children: [
-                            button.icon,
-                            RubricText(
-                              button.text,
-                            ),
-                          ],
+                          children: [button.icon, RubricText(button.text)],
                         ),
                       ),
                     RubricButton(
@@ -111,13 +94,8 @@ class RightClickMenu extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         spacing: RubricEditorStyle.paddingNum * .75,
                         children: [
-                          RubricIcon(
-                            Icons.delete,
-                            size: rightMenuButtonHeight * 0.45,
-                          ),
-                          RubricText(
-                            "Delete",
-                          ),
+                          RubricIcon(Icons.delete, size: rightMenuButtonHeight * 0.45),
+                          RubricText("Delete"),
                         ],
                       ),
                       onTap: () {

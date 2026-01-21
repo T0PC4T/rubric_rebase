@@ -9,12 +9,7 @@ import 'package:rubric/src/rubric_icon/icon_grid.dart';
 import 'package:rubric/src/rubric_icon/icon_widget.dart';
 
 class Item {
-  Item({
-    required this.title,
-    required this.icon,
-    required this.bodyBuilder,
-    this.isExpanded = false,
-  });
+  Item({required this.title, required this.icon, required this.bodyBuilder, this.isExpanded = false});
 
   String title;
   IconData icon;
@@ -26,8 +21,7 @@ class GeneralSettingsPageWidget extends StatefulWidget {
   const GeneralSettingsPageWidget({super.key});
 
   @override
-  State<GeneralSettingsPageWidget> createState() =>
-      _GeneralSettingsPageWidgetState();
+  State<GeneralSettingsPageWidget> createState() => _GeneralSettingsPageWidgetState();
 }
 
 class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
@@ -47,70 +41,47 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: RubricEditorStyle.paddingNum * 0.5,
             children: [
-              RubricText(
-                "Lesson title",
-                textType: TextType.small,
-              ),
+              RubricText("Lesson title", textType: TextType.small),
               RubricTextField(
                 maxLength: 30,
                 initialValue: editorState!.canvas.value.settings.name,
                 onChanged: (value) {},
                 onComplete: (value) {
-                  editorState!.canvas.updateSettings(
-                    editorState!.canvas.value.settings.copyWith(
-                      name: value,
-                    ),
-                  );
+                  editorState!.canvas.updateSettings(editorState!.canvas.value.settings.copyWith(name: value));
                 },
               ),
               SizedBox(height: RubricEditorStyle.paddingNum),
               // statuses dropdown
-              RubricText(
-                "Lesson icon",
-                textType: TextType.small,
-              ),
+              RubricText("Lesson icon", textType: TextType.small),
               GestureDetector(
                 onTap: () {
                   final settings = editorState!.canvas.value.settings;
-                  final newIcon = PopupWidget.showPopup<String>(
-                    context,
-                    (closeWith) {
-                      return SizedBox(
-                        width: PopupWidget.popWidth,
-                        height: (PopupWidget.popWidth /
-                                RubricIconGrid.iconsAcross) *
-                            RubricIconGrid.iconsDown,
-                        child: RubricIconGrid(
-                          onSelect: closeWith,
-                          currentIcon: settings.icon,
-                          buttonColor: style.fore98,
-                          iconColor: style.fore4,
-                          hoverColor: style.fore9,
-                          iconSelectedColor: style.theme2,
-                          borderRadius: style.radius,
-                          marginNum: RubricEditorStyle.paddingNum,
-                        ),
-                      );
-                    },
-                  );
+                  final newIcon = PopupWidget.showPopup<String>(context, (closeWith) {
+                    return SizedBox(
+                      width: PopupWidget.popWidth,
+                      height: (PopupWidget.popWidth / RubricIconGrid.iconsAcross) * RubricIconGrid.iconsDown,
+                      child: RubricIconGrid(
+                        onSelect: closeWith,
+                        currentIcon: settings.icon,
+                        buttonColor: style.fore98,
+                        iconColor: style.fore4,
+                        hoverColor: style.fore9,
+                        iconSelectedColor: style.theme2,
+                        borderRadius: style.radius,
+                        marginNum: RubricEditorStyle.paddingNum,
+                      ),
+                    );
+                  });
                   newIcon.then((value) {
                     if (value case String newIcon) {
-                      editorState!.canvas.updateSettings(
-                        editorState!.canvas.value.settings.copyWith(
-                          icon: newIcon,
-                        ),
-                      );
+                      editorState!.canvas.updateSettings(editorState!.canvas.value.settings.copyWith(icon: newIcon));
                     }
                   });
                 },
                 child: RubricContainer(
                   height: 100,
                   width: double.infinity,
-                  child: RubricEditorIcon(
-                    editorState!.canvas.value.settings.icon,
-                    size: 50,
-                    color: style.fore4,
-                  ),
+                  child: RubricEditorIcon(editorState!.canvas.value.settings.icon, size: 50, color: style.fore4),
                 ),
               ),
             ],
@@ -134,18 +105,11 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                     value: editorState!.canvas.value.settings.spacing,
                     items: [
                       for (var item in GridSizes.values)
-                        DropdownMenuItem<double>(
-                          value: item.spacing,
-                          child: Text(item.pretty),
-                        ),
+                        DropdownMenuItem<double>(value: item.spacing, child: Text(item.pretty)),
                     ],
                     onChanged: (value) {
                       if (value != null) {
-                        editorState!.canvas.updateSettings(
-                          editorState!.canvas.value.settings.copyWith(
-                            spacing: value,
-                          ),
-                        );
+                        editorState!.canvas.updateSettings(editorState!.canvas.value.settings.copyWith(spacing: value));
                       }
                     },
                   ),
@@ -167,11 +131,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
                 title: "Canvas Color",
                 color: editorState!.canvas.value.settings.canvasColor,
                 onUpdate: (color) {
-                  editorState!.canvas.updateSettings(
-                    editorState!.canvas.value.settings.copyWith(
-                      canvasColor: color,
-                    ),
-                  );
+                  editorState!.canvas.updateSettings(editorState!.canvas.value.settings.copyWith(canvasColor: color));
                 },
               ),
             ],
@@ -232,12 +192,7 @@ class _GeneralSettingsPageWidgetState extends State<GeneralSettingsPageWidget> {
 }
 
 class ColorPickerSettingsWidget extends StatelessWidget {
-  const ColorPickerSettingsWidget({
-    super.key,
-    required this.title,
-    required this.onUpdate,
-    required this.color,
-  });
+  const ColorPickerSettingsWidget({super.key, required this.title, required this.onUpdate, required this.color});
 
   final String title;
   final Color color;
@@ -253,13 +208,8 @@ class ColorPickerSettingsWidget extends StatelessWidget {
         RubricColorButton(
           color: color,
           onTap: () async {
-            final newColor = await PopupWidget.showPopup<Color>(context, (
-              closeWith,
-            ) {
-              return RubricColorPicker(
-                onComplete: closeWith,
-                color: canvas.settings.backgroundColor,
-              );
+            final newColor = await PopupWidget.showPopup<Color>(context, (closeWith) {
+              return RubricColorPicker(onComplete: closeWith, color: canvas.settings.backgroundColor);
             });
             if (newColor == null) return;
             onUpdate(newColor);

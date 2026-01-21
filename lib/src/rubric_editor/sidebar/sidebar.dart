@@ -12,11 +12,7 @@ class RubricSideBar extends StatefulWidget {
 
   static const double sideBarSize = 240;
 
-  static const pages = [
-    ElementPageWidget(),
-    GeneralSettingsPageWidget(),
-    LayersPageWidget(),
-  ];
+  static const pages = [ElementPageWidget(), GeneralSettingsPageWidget(), LayersPageWidget()];
 
   @override
   State<RubricSideBar> createState() => RubricSideBarState();
@@ -64,15 +60,10 @@ class RubricSideBarState extends State<RubricSideBar> {
                       children: [
                         Opacity(
                           opacity: i == pageIndex ? 1 : 0,
-                          child: Container(
-                            color: style.theme,
-                            height: 5,
-                            width: double.infinity,
-                          ),
+                          child: Container(color: style.theme, height: 5, width: double.infinity),
                         ),
                         RubricIcon(menusIcons[i], size: 25),
-                        RubricText(menus[i],
-                            textType: TextType.small, isCentered: true),
+                        RubricText(menus[i], textType: TextType.small, isCentered: true),
                       ],
                     ),
                   ),

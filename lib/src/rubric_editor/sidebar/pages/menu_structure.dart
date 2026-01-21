@@ -28,9 +28,7 @@ class LayersPageWidget extends StatelessWidget {
             itemCount: canvas.elements.length,
             itemBuilder: (context, index) {
               final element = canvas.elements[index];
-              return LayerWidget(
-                element: element,
-              );
+              return LayerWidget(element: element);
             },
           );
         },
@@ -61,14 +59,11 @@ class LayerWidgetState extends State<LayerWidget> {
       TextElementModel e => e.text,
       LinkElementModel e => e.text,
       ButtonElementModel e => e.text,
-      RowElementModel e => "Row (${e.elements.fold(
-          0,
-          (previousValue, element) => previousValue + element.length,
-        )} items)",
+      RowElementModel e =>
+        "Row (${e.elements.fold(0, (previousValue, element) => previousValue + element.length)} items)",
       TextListElementModel e => e.textList.join(" "),
       _ => widget.element.type.title,
-    }
-        .replaceAll("\n", "");
+    }.replaceAll("\n", "");
 
     return MouseRegion(
       onEnter: (event) {
@@ -86,50 +81,47 @@ class LayerWidgetState extends State<LayerWidget> {
           editorState.edits.focusElement(widget.element);
         },
         child: Container(
-            decoration: BoxDecoration(
-              borderRadius: editorState.style.borderRadius,
-              color: switch ((focused, _hovered)) {
-                (true, true) => editorState.style.theme7,
-                (true, false) => editorState.style.theme8,
-                (false, true) => editorState.style.back,
-                (false, false) => editorState.style.fore95,
-              },
-            ),
-            height: LayerWidget.layerHeight,
-            width: double.infinity,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: RubricEditorStyle.paddingNum),
-              child: Row(
-                spacing: RubricEditorStyle.paddingNum,
-                children: [
-                  Icon(
-                    widget.element.type.icon,
-                    size: 12,
-                    color: editorState.style.fore4,
+          decoration: BoxDecoration(
+            borderRadius: editorState.style.borderRadius,
+            color: switch ((focused, _hovered)) {
+              (true, true) => editorState.style.theme7,
+              (true, false) => editorState.style.theme8,
+              (false, true) => editorState.style.back,
+              (false, false) => editorState.style.fore95,
+            },
+          ),
+          height: LayerWidget.layerHeight,
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: RubricEditorStyle.paddingNum),
+            child: Row(
+              spacing: RubricEditorStyle.paddingNum,
+              children: [
+                Icon(widget.element.type.icon, size: 12, color: editorState.style.fore4),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(color: editorState.style.fore4),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: TextStyle(color: editorState.style.fore4),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  if (focused || _hovered)
-                    GestureDetector(
-                      onTapUp: (details) {
-                        editorState.pushOverlay(RightClickMenu(
+                ),
+                if (focused || _hovered)
+                  GestureDetector(
+                    onTapUp: (details) {
+                      editorState.pushOverlay(
+                        RightClickMenu(
                           offset: details.globalPosition,
                           editorState: editorState,
                           element: widget.element,
-                        ));
-                      },
-                      child:
-                          Icon(Icons.more_vert, color: editorState.style.fore4),
-                    )
-                ],
-              ),
-            )),
+                        ),
+                      );
+                    },
+                    child: Icon(Icons.more_vert, color: editorState.style.fore4),
+                  ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

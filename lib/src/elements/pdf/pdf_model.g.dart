@@ -9,5 +9,4 @@ part of 'pdf_model.dart';
 _PdfElementModel _$PdfElementModelFromJson(Map<String, dynamic> json) =>
     _PdfElementModel(pdfUrl: json['pdfUrl'] as String);
 
-Map<String, dynamic> _$PdfElementModelToJson(_PdfElementModel instance) =>
-    <String, dynamic>{'pdfUrl': instance.pdfUrl};
+Map<String, dynamic> _$PdfElementModelToJson(_PdfElementModel instance) => <String, dynamic>{'pdfUrl': instance.pdfUrl};

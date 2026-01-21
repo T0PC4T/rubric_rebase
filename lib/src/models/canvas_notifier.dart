@@ -50,27 +50,16 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
 
         if (columnIndex != -1) {
           final newColumns = List<List<Map<String, dynamic>>>.from(
-            rowModel.elements.map(
-              (col) => List<Map<String, dynamic>>.from(col),
-            ),
+            rowModel.elements.map((col) => List<Map<String, dynamic>>.from(col)),
           );
 
           if (above) {
-            newColumns[columnIndex].insert(
-              elementIndexInColumn,
-              insert.toMap(),
-            );
+            newColumns[columnIndex].insert(elementIndexInColumn, insert.toMap());
           } else {
-            newColumns[columnIndex].insert(
-              elementIndexInColumn + 1,
-              insert.toMap(),
-            );
+            newColumns[columnIndex].insert(elementIndexInColumn + 1, insert.toMap());
           }
 
-          updateProperties<RowElementModel>(
-            parent,
-            (properties) => properties.copyWith(elements: newColumns).toJson(),
-          );
+          updateProperties<RowElementModel>(parent, (properties) => properties.copyWith(elements: newColumns).toJson());
         } else {
           print("Unable to find id ${exiting.id} in row");
         }
@@ -128,10 +117,7 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
             if (rowElement.id == seek.id) {
               rowModel.elements[i][j] = updateFunc(rowElement).toMap();
               // ? Update the whole row with new subelement properties.
-              return updateProperties(
-                element,
-                (properties) => rowModel.toJson(),
-              );
+              return updateProperties(element, (properties) => rowModel.toJson());
             }
           }
         }
@@ -187,11 +173,7 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     // }
   }
 
-  void reorderElements(
-    List<ElementModel>? cachedElements,
-    int oldIndex,
-    int newIndex,
-  ) {
+  void reorderElements(List<ElementModel>? cachedElements, int oldIndex, int newIndex) {
     // ? I switched this around because the list is reverse beware.
     if (cachedElements != null) {
       value.elements = cachedElements;
@@ -226,9 +208,7 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
           return ElementModel.fromMap(e).copyWith(id: newID()).toMap();
         }).toList();
       }).toList();
-      newElement = newElement.copyWith(
-        properties: properties.copyWith(elements: newElements).toJson(),
-      );
+      newElement = newElement.copyWith(properties: properties.copyWith(elements: newElements).toJson());
     }
 
     dragInElement(insert: newElement, exiting: element, above: false);
@@ -239,30 +219,19 @@ class CanvasNotifier extends ValueNotifier<CanvasModel> {
     for (var element in value.elements) {
       if (element.type.category == ElementCategories.flex) {
         final rowProperties = element.getProperties<RowElementModel>();
-        for (
-          var columnIndex = 0;
-          columnIndex < rowProperties.columns;
-          columnIndex++
-        ) {
+        for (var columnIndex = 0; columnIndex < rowProperties.columns; columnIndex++) {
           final column = rowProperties.elements[columnIndex];
-          for (
-            var elementIndex = 0;
-            elementIndex < column.length;
-            elementIndex++
-          ) {
+          for (var elementIndex = 0; elementIndex < column.length; elementIndex++) {
             final rowElement = ElementModel.fromMap(column[elementIndex]);
             if (rowElement.id == deleteElement.id) {
               // DELETE THIS ITEM AND REPACKAGE PROPERTIES DO AN UPDATE INSTEAD
               final newColumn = List<Map<String, dynamic>>.from(column);
               newColumn.removeAt(elementIndex);
-              final newElements = List<List<Map<String, dynamic>>>.from(
-                rowProperties.elements,
-              );
+              final newElements = List<List<Map<String, dynamic>>>.from(rowProperties.elements);
               newElements[columnIndex] = newColumn;
               updateProperties<RowElementModel>(
                 element,
-                (properties) =>
-                    properties.copyWith(elements: newElements).toJson(),
+                (properties) => properties.copyWith(elements: newElements).toJson(),
               );
               notifyListeners();
               return;
