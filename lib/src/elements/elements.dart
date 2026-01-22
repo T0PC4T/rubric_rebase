@@ -11,8 +11,6 @@ import 'package:rubric/src/elements/image/image_elements.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/link/link_elements.dart';
 import 'package:rubric/src/elements/link/link_model.dart';
-import 'package:rubric/src/elements/pdf/pdf_elements.dart';
-import 'package:rubric/src/elements/pdf/pdf_model.dart';
 import 'package:rubric/src/elements/row/row_elements.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/elements/text/text_elements.dart';
@@ -100,13 +98,13 @@ enum ElementType {
     readerBuilder: VideoReaderElement.new,
   ),
 
-  pdf(
-    "Pdf",
-    ElementCategories.media,
-    Icons.picture_as_pdf,
-    editorBuilder: PdfEditorElement.new,
-    readerBuilder: PdfReaderElement.new,
-  ),
+  // pdf(
+  //   "Pdf",
+  //   ElementCategories.media,
+  //   Icons.picture_as_pdf,
+  //   editorBuilder: PdfEditorElement.new,
+  //   readerBuilder: PdfReaderElement.new,
+  // ),
 
   divider(
     "Divider",
@@ -237,9 +235,9 @@ Map<String, dynamic> generateDefaultProperties(ElementType elementType) {
       videoUrl:
           "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Fdefault_video.mp4?alt=media",
     ).toJson(),
-    ElementType.pdf => PdfElementModel(
-      pdfUrl:
-          "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Fdefault_pdf.pdf?alt=media",
-    ).toJson(),
+    // ElementType.pdf => PdfElementModel(
+    //   pdfUrl:
+    //       "https://firebasestorage.googleapis.com/v0/b/academy-5q7q96.firebasestorage.app/o/static%2Fdefault_pdf.pdf?alt=media",
+    // ).toJson(),
   };
 }

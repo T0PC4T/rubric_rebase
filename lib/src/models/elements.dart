@@ -8,7 +8,6 @@ import 'package:rubric/src/elements/elements.dart';
 import 'package:rubric/src/elements/html_text/html_text_model.dart';
 import 'package:rubric/src/elements/image/image_model.dart';
 import 'package:rubric/src/elements/link/link_model.dart';
-import 'package:rubric/src/elements/pdf/pdf_model.dart';
 import 'package:rubric/src/elements/row/row_model.dart';
 import 'package:rubric/src/elements/text/text_model.dart';
 import 'package:rubric/src/elements/text_list/text_list_model.dart';
@@ -35,7 +34,7 @@ class ElementModel {
           ElementType.image => ImageElementModel.fromJson(properties),
           ElementType.video => VideoElementModel.fromJson(properties),
           ElementType.divider => DividerElementModel.fromJson(properties),
-          ElementType.pdf => PdfElementModel.fromJson(properties),
+          // ElementType.pdf => PdfElementModel.fromJson(properties),
 
           // ElementTypes.richtext => RichTextElementModel.fromJson(properties),
         }
@@ -68,7 +67,7 @@ class ElementModel {
       ElementType.image => ImageElementModel.toHTML(properties),
       ElementType.video => VideoElementModel.toHTML(properties),
       ElementType.divider => DividerElementModel.toHTML(properties),
-      ElementType.pdf => PdfElementModel.toHTML(properties),
+      // ElementType.pdf => PdfElementModel.toHTML(properties),
     };
     // add padding
     return """<div style="padding: ${padding}px;">$html</div>""";
