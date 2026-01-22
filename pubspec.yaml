@@ -25,7 +25,7 @@ dependencies:
   flutter_widget_from_html: ^0.17.1
   internet_file: ^1.2.0
   http: ^1.6.0
-  pdfrx: ^2.1.5
+  pdfrx: ^1.0.84
 
 dev_dependencies:
   flutter_test:

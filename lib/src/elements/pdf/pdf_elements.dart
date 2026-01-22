@@ -134,7 +134,7 @@ class PdfReaderElementState extends State<PdfReaderElement> {
                   boundaryMargin: EdgeInsets.all(0),
                   margin: 0,
                   scrollByMouseWheel: 0,
-                  textSelectionParams: const PdfTextSelectionParams(enabled: false),
+                  // textSelectionParams: const PdfTextSelectionParams(enabled: false),
 
                   // 3. Add the scrollbar using the overlay builder
                   viewerOverlayBuilder: (context, size, handleLinkTap) => [
